@@ -1,10 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import axios from "axios";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+import App from "./App";
+import "./index.css";
+
+axios.defaults.baseURL = "http://apps.gp:3001";
+
+const container = document.getElementById("root") as HTMLElement;
+const root = createRoot(container);
+root.render(
+  <BrowserRouter>
     <App />
-  </React.StrictMode>
-)
+  </BrowserRouter>
+);

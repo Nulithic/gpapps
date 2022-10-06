@@ -1,28 +1,15 @@
-import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+import { useState, useEffect, StrictMode } from "react";
 import axios from "axios";
 
-const USER = "Test";
-const TIME_STAMP = new Date();
-const socket = io("http://apps.gp:3001", {
-  query: {
-    user: USER,
-    timeStamp: TIME_STAMP.toISOString(),
-  },
-});
+import { AuthProvider } from "@/auth/context";
+import Router from "@/pages/routes";
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  const hello = async () => {
-    console.log("hello");
-  };
-
+const App = () => {
   return (
-    <div className="App">
-      <button onClick={hello}>Hello</button>
-    </div>
+    <AuthProvider>
+      <Router />
+    </AuthProvider>
   );
-}
+};
 
 export default App;
