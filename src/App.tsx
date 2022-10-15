@@ -1,4 +1,5 @@
 import { useState, useEffect, StrictMode } from "react";
+import { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 import { AuthProvider } from "@/auth/context";
@@ -8,6 +9,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router />
+      <Toaster position="bottom-left" reverseOrder={false} />
     </AuthProvider>
   );
 };

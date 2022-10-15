@@ -1,13 +1,13 @@
 import axios from "axios";
 import { getUserToken } from "@/auth/token";
 
-const getUser = () => {
+export const getUser = () => {
   return axios.get("/api/get/user", {
     headers: { "x-access-token": getUserToken() },
   });
 };
 
-const userLogin = (username: string, password: string) => {
+export const userLogin = (username: string, password: string) => {
   return axios.post(
     "/api/post/user/login",
     {
@@ -18,8 +18,6 @@ const userLogin = (username: string, password: string) => {
   );
 };
 
-const userLogout = () => {
+export const userLogout = () => {
   return axios.post("/api/post/user/logout", {}, { headers: { "x-access-token": getUserToken() } });
 };
-
-export { getUser, userLogin, userLogout };
