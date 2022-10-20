@@ -1,6 +1,8 @@
 export interface Role {
+  _id: string;
   role: string;
   parent: string | null;
+  path: string;
   name: string;
   status: boolean;
   children: Role[];
@@ -16,5 +18,4 @@ export interface User {
 
 export interface AuthType {
   currentUser: User | undefined;
-  setCurrentUser: () => void;
 }

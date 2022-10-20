@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Login from "@/pages/Auth/Login";
 import Home from "@/pages/Auth/Home";
 import Roles from "@/pages/Admin/Roles";
+import Users from "@/pages/Admin/Users";
 // import Error from "pages/Error";
 
 const Router = () => {
@@ -23,7 +24,7 @@ const Router = () => {
       path: "/admin",
       element: <Navbar />,
       children: [
-        // { path: "users", element: <Users /> },
+        { path: "users", element: <Users /> },
         { path: "roles", element: <Roles /> },
       ],
     },

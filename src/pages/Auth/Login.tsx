@@ -35,6 +35,7 @@ export default function Login() {
       if (res.data.accessToken) {
         saveUserToken(res.data.accessToken);
         navigate(from, { replace: true });
+        window.location.reload();
       }
     }
   };

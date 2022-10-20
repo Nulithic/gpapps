@@ -25,16 +25,16 @@ export const addUser = (username: string, password: string) => {
   );
 };
 
-export const addRole = (role: string, name: string, parent: string | null) => {
-  return axios.post("/api/admin/post/role/add", { role, parent, name }, { headers: { "x-access-token": getUserToken() } });
+export const addRole = (roleName: string, role?: Role) => {
+  return axios.post("/api/admin/post/role/add", { roleName, role }, { headers: { "x-access-token": getUserToken() } });
 };
 
-export const updateUserRole = (username: string, role: string) => {
+export const updateUserRole = (username: string, role_id: string) => {
   return axios.post(
     "/api/admin/post/user/role/update",
     {
       username,
-      role,
+      role_id,
     },
     { headers: { "x-access-token": getUserToken() } }
   );

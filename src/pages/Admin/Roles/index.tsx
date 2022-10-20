@@ -15,24 +15,20 @@ const Roles = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
 
-  const handleAddRole = async (name: string, parent: string | null) => {
-    const lowerCase = name.charAt(0).toLowerCase() + name.slice(1);
-    const roleCase = lowerCase.replace(/\s+/g, "");
-
+  const handleAddRole = async (roleName: string, role?: Role) => {
     try {
-      const res = await addRole(roleCase, name, parent);
+      const res = await addRole(roleName, role);
       console.log(res.data);
-      toast.success(`${name} was added.`);
+      toast.success(`${roleName} was added.`);
       setRoles(res.data.roles);
     } catch (err: any) {
       console.log(err);
-      toast.error(err.response.data.message ?? `Failed to add ${name}`);
+      toast.error(err.response.data.message ?? `Failed to add ${roleName}`);
     }
     closeAddModal();
   };
 
   const handleDeleteRole = async (role: Role) => {
-    console.log("delete", role);
     const res = await deleteRole(role);
     if (res.status == 200) {
       console.log(res.data);

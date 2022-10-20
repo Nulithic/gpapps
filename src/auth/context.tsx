@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from "rea
 import { useNavigate } from "react-router-dom";
 
 import { getUser } from "@/services/authService";
-import { AuthType, User } from "@/types/AuthType";
+import { AuthType, User, Role } from "@/types/AuthType";
 
 const AuthContext = createContext<AuthType>(null!);
 
@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleCurrentUser = useCallback(async () => {
     try {
       const res = await getUser();
-      setCurrentUser(res.data.user);
+      const user = res.data.user as User;
+      setCurrentUser(user);
     } catch (err) {
       console.log(err);
       localStorage.removeItem("token");
@@ -29,5 +30,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (localStorage.getItem("token")) handleCurrentUser();
   }, [handleCurrentUser]);
 
-  return <AuthContext.Provider value={{ currentUser, setCurrentUser: handleCurrentUser }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ currentUser }}>{children}</AuthContext.Provider>;
 };
