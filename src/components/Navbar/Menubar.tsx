@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 import { Role, AuthType } from "@/types/AuthType";
@@ -38,26 +38,30 @@ const SingleLevel = ({ item }: { item: Role }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(item.path);
+    navigate(0);
   };
 
   return (
-    <li>
-      <a onClick={handleNavigate}>{item.name}</a>
+    <li className="menu-compact">
+      {/* <a onClick={handleNavigate}>{item.name}</a> */}
+      <NavLink to={item.path} style={({ isActive }) => (isActive ? {} : undefined)}>
+        {item.name}
+      </NavLink>
     </li>
   );
 };
 
 const MultiLevel = ({ item, auth }: { item: Role; auth: AuthType }) => {
-  const group = (item.path.match(/\//g) || []).length;
   return (
-    <li className={`group-${group}`}>
+    <li className={`${item.parent === "" ? "group/1" : "group/2"}`}>
       <a>
         {item.name}
-        <ChevronUpIcon className={`h-4 w-4 [.group-${group}:hover_&]:${item.parent === "" ? `rotate-180` : `rotate-90`} transition-transform`} />
+        <ChevronUpIcon
+          className={`${item.parent === "" ? "group-hover/1:rotate-180 transition-transform h-4 w-4" : "group-hover/2:rotate-90 transition-transform h-4 w-4"}`}
+        />
       </a>
       <ul className="bg-base-300 p-2">
-        <ul className="menu p-0">
+        <ul className="menu menu-compact p-0">
           {item.children.map((child, i) => (
             <MenuItem key={i} item={child} auth={auth} />
           ))}

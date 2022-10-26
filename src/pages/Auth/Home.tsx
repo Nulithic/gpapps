@@ -24,7 +24,7 @@ const Home = () => {
   };
 
   return (
-    <>
+    <div className="items-center">
       <button className="btn btn-primary" onClick={hello}>
         Hello
       </button>
@@ -32,7 +32,7 @@ const Home = () => {
       <button className="btn btn-error" onClick={handleLogout}>
         Logout
       </button>
-    </>
+    </div>
   );
 };
 
