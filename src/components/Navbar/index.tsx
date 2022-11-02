@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, NavLink, Outlet } from "react-router-dom";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import { ChevronUpIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/auth/context";
 import { userLogout } from "@/services/authService";
@@ -10,10 +10,6 @@ import Menubar from "./Menubar";
 const Navbar = () => {
   const navigate = useNavigate();
   const auth = useAuth();
-
-  const handleNavigate = () => {
-    navigate(0);
-  };
 
   const handleLogout = async () => {
     await userLogout();
@@ -25,9 +21,9 @@ const Navbar = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="grid overflow-hidden">
-        <div className="navbar bg-base-300 drop-shadow-lg z-50">
+        <div className="navbar bg-base-300 drop-shadow-lg z-50 px-5">
           <div className="navbar-start">
-            <a className="btn btn-ghost normal-case text-xl">GP Apps</a>
+            <a className="normal-case text-xl">GP Apps</a>
           </div>
 
           <div className="navbar-center hidden lg:flex">
@@ -39,7 +35,7 @@ const Navbar = () => {
                     Admin
                     <ChevronUpIcon className="h-4 w-4 group-hover/admin:rotate-180 transition-transform" />
                   </a>
-                  <ul className="menu-compact bg-base-300 p-2 space-y-2">
+                  <ul className="menu-compact border-solid border-2 border-base-100 bg-base-300 p-2 space-y-2">
                     <li>
                       <NavLink to="/admin/roles" style={({ isActive }) => (isActive ? {} : undefined)}>
                         Roles
@@ -57,8 +53,8 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end">
-            <button className="btn btn-error" onClick={handleLogout}>
-              Logout
+            <button className="btn btn-sm btn-error" onClick={handleLogout}>
+              <ArrowRightOnRectangleIcon className="h-4 w-4 group-hover/admin:rotate-180 transition-transform" />
             </button>
           </div>
         </div>

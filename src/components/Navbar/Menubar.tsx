@@ -60,8 +60,8 @@ const MultiLevel = ({ item, auth }: { item: Role; auth: AuthType }) => {
           className={`${item.parent === "" ? "group-hover/1:rotate-180 transition-transform h-4 w-4" : "group-hover/2:rotate-90 transition-transform h-4 w-4"}`}
         />
       </a>
-      <ul className="bg-base-300 p-2">
-        <ul className="menu menu-compact p-0">
+      <ul className="border-solid border-2 border-base-100 bg-base-300 p-2">
+        <ul className="menu menu-compact p-0 border-solid space-y-1">
           {item.children.map((child, i) => (
             <MenuItem key={i} item={child} auth={auth} />
           ))}

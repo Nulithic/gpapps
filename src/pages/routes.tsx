@@ -8,6 +8,8 @@ import Roles from "@/pages/Admin/Roles";
 import Users from "@/pages/Admin/Users";
 // import Error from "pages/Error";
 
+import Transfer from "@/pages/Warehouse/Transfer";
+
 const Router = () => {
   return useRoutes([
     {
@@ -26,6 +28,14 @@ const Router = () => {
       children: [
         { path: "users", element: <Users /> },
         { path: "roles", element: <Roles /> },
+      ],
+    },
+    {
+      path: "/warehouse",
+      element: <Navbar />,
+      children: [
+        { path: "transfer", element: <Transfer /> },
+        // { path: "roles", element: <Roles /> },
       ],
     },
   ]);

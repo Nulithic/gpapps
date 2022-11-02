@@ -9,18 +9,27 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: "#4EA346",
-          secondary: "#9B46A3",
-          accent: "#1FB2A6",
+          primary: "#661AE6",
+          "primary-content": "#ffffff",
+          secondary: "#D926AA",
+          "secondary-content": "#ffffff",
+          accent: "#1FB2A5",
+          "accent-content": "#ffffff",
           neutral: "#191D24",
+          "neutral-focus": "#111318",
+          "neutral-content": "#ffffff",
           "base-100": "#2A303C",
-          info: "#3ABFF8",
-          success: "#36D399",
-          warning: "#FBBD23",
-          error: "#F87272",
+          "base-200": "#242933",
+          "base-300": "#20252E",
+          "base-content": "#ffffff",
         },
       },
     ],
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require("@tailwindcss/forms")({
+      strategy: "class",
+    }),
+  ],
 };
