@@ -1,24 +1,22 @@
 import DatePicker from "react-datepicker";
 import { forwardRef, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { format, getYear } from "date-fns";
+import { format, getMonth, getYear } from "date-fns";
 
 import "./datePicker.css";
-import { getMonth } from "date-fns/esm";
 
-interface ButtonInput {
-  value: Date;
-  onClick: () => void;
+interface DateComponentProps {
+  date: Date;
+  setDate: (date: Date) => void;
 }
 
 const ButtonInput = forwardRef(({ value, onClick }: any, ref: any) => (
-  <button onClick={onClick} ref={ref} type="button" className="btn">
+  <button onClick={onClick} ref={ref} type="button" className="btn btn-mid">
     {format(new Date(value), "MM/dd/yyyy")}
   </button>
 ));
 
-const DateComponent = () => {
-  const [date, setDate] = useState(new Date());
+const DateComponent = ({ date, setDate }: DateComponentProps) => {
   const range = (start: number, end: number) => {
     return new Array(end - start).fill("").map((d, i) => i + start);
   };
