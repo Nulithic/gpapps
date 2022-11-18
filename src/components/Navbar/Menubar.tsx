@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 import { Role, AuthType } from "@/types/AuthType";
@@ -35,46 +34,53 @@ const createRoleList = (roles: Role[]) => {
 };
 
 const SingleLevel = ({ item }: { item: Role }) => {
-  const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    navigate(0);
-  };
-
   return (
-    <li className="menu-compact">
-      {/* <a onClick={handleNavigate}>{item.name}</a> */}
-      <NavLink to={item.path} style={({ isActive }) => (isActive ? {} : undefined)}>
+    <li>
+      <NavLink className="whitespace-nowrap" reloadDocument to={item.path} style={({ isActive }) => (isActive ? {} : undefined)}>
         {item.name}
       </NavLink>
     </li>
   );
 };
 
-const MultiLevel = ({ item, auth }: { item: Role; auth: AuthType }) => {
+const MultiLevel = ({ item, auth, index }: { item: Role; auth: AuthType; index: number }) => {
   return (
-    <li className={`${item.parent === "" ? "group/1" : "group/2"}`}>
-      <a>
-        {item.name}
-        <ChevronUpIcon
-          className={`${item.parent === "" ? "group-hover/1:rotate-180 transition-transform h-4 w-4" : "group-hover/2:rotate-90 transition-transform h-4 w-4"}`}
-        />
-      </a>
-      <ul className="border-solid border-2 border-base-100 bg-base-300 p-2">
-        <ul className="menu menu-compact p-0 border-solid space-y-1">
-          {item.children.map((child, i) => (
-            <MenuItem key={i} item={child} auth={auth} />
-          ))}
-        </ul>
-      </ul>
-    </li>
+    <div className={`${index > 0 ? "menu p-2 w-full space-x-2" : "dropdown"}`}>
+      {index > 0 ? (
+        <div className="flex flex-row justify-between">
+          <label className="self-center whitespace-nowrap font-bold">
+            <span>{item.name}</span>
+          </label>
+          <div className="flex flex-row space-x-2">
+            <div className="divider divider-horizontal"></div>
+            {item.children.map((child, i) => (
+              <MenuItem key={i} item={child} auth={auth} index={index + 1} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <>
+          <label tabIndex={index} className="btn btn-ghost m-1 group/1 space-x-2">
+            <span>{item.name}</span>
+            <ChevronUpIcon className="group-focus/1:rotate-180 transition-transform h-4 w-4" />
+          </label>
+          <ul tabIndex={index} className="dropdown-content menu border-solid border-2 border-base-100 rounded-box bg-base-300 p-2 w-fit space-y-2">
+            {item.children.map((child, i) => (
+              <MenuItem key={i} item={child} auth={auth} index={index + 1} />
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
   );
 };
 
-const MenuItem = ({ item, auth }: { item: Role; auth: AuthType }) => {
+const MenuItem = ({ item, auth, index }: { item: Role; auth: AuthType; index?: number }) => {
   if (auth.currentUser) {
-    const Component = hasChildren(item) ? MultiLevel : SingleLevel;
-    return <Component item={item} auth={auth} />;
+    if (hasChildren(item)) {
+      let sumIndex = index ?? 0;
+      return <MultiLevel item={item} auth={auth} index={sumIndex} />;
+    } else return <SingleLevel item={item} />;
   } else return null;
 };
 

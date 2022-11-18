@@ -26,30 +26,8 @@ const Navbar = () => {
             <a className="normal-case text-xl">GP Apps</a>
           </div>
 
-          <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal p-0">
-              <Menubar auth={auth} />
-              {auth.currentUser?.admin ? (
-                <li className="group/admin">
-                  <a>
-                    Admin
-                    <ChevronUpIcon className="h-4 w-4 group-hover/admin:rotate-180 transition-transform" />
-                  </a>
-                  <ul className="menu-compact border-solid border-2 border-base-100 bg-base-300 p-2 space-y-2">
-                    <li>
-                      <NavLink to="/admin/roles" style={({ isActive }) => (isActive ? {} : undefined)}>
-                        Roles
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="/admin/users" style={({ isActive }) => (isActive ? {} : undefined)}>
-                        Users
-                      </NavLink>
-                    </li>
-                  </ul>
-                </li>
-              ) : null}
-            </ul>
+          <div className="navbar-center lg:flex">
+            <Menubar auth={auth} />
           </div>
 
           <div className="navbar-end">

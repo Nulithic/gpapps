@@ -993,7 +993,7 @@ const AddLine = ({ addLineData, setAddLineData }: AddLineProps) => {
 
   return (
     <>
-      <div className="flex flex-row justify-items-stretch items-center">
+      <div className="flex flex-row justify-items-stretch items-center space-x-2">
         <AutoComplete options={options} value={addLineData.fromLocation} onChange={handleFromLocation} placeholder="From Location" />
         <AutoComplete options={options} value={addLineData.toLocation} onChange={handleToLocation} placeholder="To Location" />
         <AutoComplete options={options} value={addLineData.SKU} onChange={handleToSKU} placeholder="SKU" />
@@ -1011,6 +1011,9 @@ const AddLine = ({ addLineData, setAddLineData }: AddLineProps) => {
           onChange={handleToReference}
           placeholder="Reference"
         />
+        <button className="btn btn-mid" onClick={() => {}}>
+          Add
+        </button>
       </div>
     </>
   );

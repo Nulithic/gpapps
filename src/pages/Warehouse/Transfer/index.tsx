@@ -17,7 +17,7 @@ const Transfer = () => {
   console.log(addLineData);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full space-y-4">
       <ActionBar date={date} setDate={setDate} />
       <AddLine addLineData={addLineData} setAddLineData={setAddLineData} />
       <TransferTable />

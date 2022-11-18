@@ -10,6 +10,8 @@ import Users from "@/pages/Admin/Users";
 
 import Transfer from "@/pages/Warehouse/Transfer";
 
+import MicroCenterOrders from "@/pages/Customers/MicroCenter/Orders";
+
 const Router = () => {
   return useRoutes([
     {
@@ -35,6 +37,14 @@ const Router = () => {
       element: <Navbar />,
       children: [
         { path: "transfer", element: <Transfer /> },
+        // { path: "roles", element: <Roles /> },
+      ],
+    },
+    {
+      path: "/customer",
+      element: <Navbar />,
+      children: [
+        { path: "micro_center", children: [{ path: "orders", element: <MicroCenterOrders /> }] },
         // { path: "roles", element: <Roles /> },
       ],
     },

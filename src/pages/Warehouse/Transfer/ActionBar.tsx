@@ -19,7 +19,7 @@ const ActionBar = ({ date, setDate }: ActionBarProps) => {
       </div>
       <div className="flex flex-row items-center space-x-2">
         <button className="btn btn-mid btn-primary">Import</button>
-        <button className="btn btn-mid btn-success">Transfer</button>
+        <button className="btn btn-mid btn-secondary">Transfer</button>
       </div>
     </div>
   );
