@@ -1,8 +1,8 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "@/auth/context";
-import { saveUserToken } from "@/auth/token";
+import { getUserToken, saveUserToken, saveSPSToken } from "@/auth/storage";
 import { userLogin } from "@/services/authService";
 
 type LocationProps = {
@@ -39,6 +39,16 @@ export default function Login() {
       }
     }
   };
+
+  useEffect(() => {
+    saveSPSToken();
+  }, []);
+
+  useEffect(() => {
+    const userToken = getUserToken();
+    const from = location.state?.from?.pathname || "/home";
+    if (userToken) navigate(from, { replace: true });
+  }, []);
 
   return (
     <form onSubmit={handleLogin}>

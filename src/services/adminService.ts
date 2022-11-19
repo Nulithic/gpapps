@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getUserToken } from "@/auth/token";
+import { getUserToken } from "@/auth/storage";
 import { Role } from "@/types/AuthType";
 
 export const getUsers = () => {
