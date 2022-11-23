@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { getUser } from "@/services/authService";
-import { AuthType, User, Role } from "@/types/AuthType";
+import { AuthType, User } from "@/types/AuthType";
 
 const AuthContext = createContext<AuthType>(null!);
 
@@ -30,5 +30,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (localStorage.getItem("token")) handleCurrentUser();
   }, [handleCurrentUser]);
 
+  if (!localStorage.getItem("token") && window.location.pathname !== "/") return <Navigate to="/" />;
   return <AuthContext.Provider value={{ currentUser }}>{children}</AuthContext.Provider>;
 };

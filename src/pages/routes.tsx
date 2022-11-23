@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 
 import Login from "@/pages/Auth/Login";
 import Home from "@/pages/Auth/Home";
+import Redirect from "@/pages/Auth/Redirect";
 import Roles from "@/pages/Admin/Roles";
 import Users from "@/pages/Admin/Users";
 // import Error from "pages/Error";
@@ -18,6 +19,10 @@ const Router = () => {
       path: "/",
       element: <Login />,
       children: [{ path: "/", element: <Navigate to="/home" /> }],
+    },
+    {
+      path: "/redirect",
+      element: <Redirect />,
     },
     {
       path: "/home",

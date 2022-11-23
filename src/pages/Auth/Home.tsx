@@ -13,24 +13,16 @@ const Home = () => {
   // const socket = useSocket();
   // console.log(socket.id);
 
+  // console.log("hello", auth.currentUser);
+
   const hello = async () => {
     console.log("hello", auth.currentUser);
-  };
-
-  const handleLogout = () => {
-    userLogout();
-    localStorage.removeItem("token");
-    navigate("/");
   };
 
   return (
     <div className="items-center">
       <button className="btn btn-primary" onClick={hello}>
         Hello
-      </button>
-
-      <button className="btn btn-error" onClick={handleLogout}>
-        Logout
       </button>
     </div>
   );

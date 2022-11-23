@@ -23,7 +23,9 @@ const Navbar = () => {
       <div className="grid overflow-hidden">
         <div className="navbar bg-base-300 drop-shadow-lg z-50 px-5">
           <div className="navbar-start">
-            <a className="normal-case text-xl">GP Apps</a>
+            <a className="btn btn-ghost normal-case text-xl" onClick={() => navigate("/")}>
+              GP Apps
+            </a>
           </div>
 
           <div className="navbar-center lg:flex">
