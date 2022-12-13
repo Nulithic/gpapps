@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 12px;
+  height: 12px;
   background: #161c24;
 }
 
@@ -16,6 +16,28 @@
   background: #454f5b;
 }
 
+.btn {
+  @apply rounded;
+}
+
+.input {
+  @apply rounded;
+}
+
+.menu {
+  @apply rounded;
+}
+
+.menu[class*=" p-"] li > * {
+  @apply rounded;
+}
+
+.table th:first-child {
+  position: unset;
+  left: unset;
+  z-index: unset;
+}
+
 @layer components {
   .btn-mid {
     height: 2.25rem;
@@ -23,6 +45,7 @@
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 0.875rem;
+    border-radius: 0.25rem;
   }
 
   .input-mid {
@@ -31,5 +54,15 @@
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 0.875rem;
+    border-radius: 0.25rem;
+  }
+
+  .select-mid {
+    height: 2.25rem;
+    min-height: 2.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
   }
 }

@@ -8,8 +8,11 @@ import { getCookie } from "@/auth/cookies";
 const AuthSPS = () => {
   useEffect(() => {
     const handleCookie = async () => {
-      const res = await setStateCookie();
-      console.log(res.data);
+      try {
+        await setStateCookie();
+      } catch (error) {
+        console.log(error);
+      }
     };
     handleCookie();
   }, []);
@@ -20,7 +23,8 @@ const AuthSPS = () => {
 
       const audience = "audience=api://api.spscommerce.com/";
       const response_type = "response_type=token";
-      const client_id = "client_id=FLrDHPBYiMS815dB2609EE55ly5vDuzD";
+      // const client_id = "client_id=FLrDHPBYiMS815dB2609EE55ly5vDuzD"; // Sandbox
+      const client_id = "client_id=wnMSFrUIEMYZbExnRHTozHeCGXicyfAf"; // Production
       const redirect_uri = "redirect_uri=http://apps.gp:5173/redirect";
       const state = `state=${getCookie("state")}`;
 

@@ -1,0 +1,10 @@
+.dropzone-ui {
+  @apply bg-base-300 border-none !important;
+}
+.dz-ui-label {
+  @apply font-sans text-2xl  tracking-normal;
+}
+
+.file-item-full-container-container .file-item-name {
+  @apply font-sans text-white text-base tracking-normal;
+}

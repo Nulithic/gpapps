@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dropzone, FileItem, FileValidated } from "@dropzone-ui/react";
 
+import "./styles.css";
+
 interface ImportFileProps {
   label: string;
   maxFiles: number;
@@ -20,9 +22,7 @@ const ImportFile = ({ label, maxFiles, acceptFile, importFile, setImportFile }: 
 
   return (
     <Dropzone onChange={updateFile} value={importFile} accept={acceptFile} maxFiles={maxFiles} label={label} header={false} footer={false}>
-      {importFile.map((file) => (
-        <FileItem {...file} onDelete={removeImportFile} key={file.id} alwaysActive />
-      ))}
+      {importFile.length > 0 && importFile.map((file) => <FileItem {...file} onDelete={removeImportFile} key={file.id} alwaysActive />)}
     </Dropzone>
   );
 };

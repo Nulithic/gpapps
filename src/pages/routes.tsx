@@ -2,16 +2,19 @@ import { Navigate, useRoutes } from "react-router-dom";
 
 import Navbar from "@/components/Navbar";
 
-import Login from "@/pages/Auth/Login";
-import Home from "@/pages/Auth/Home";
-import Redirect from "@/pages/Auth/Redirect";
-import Roles from "@/pages/Admin/Roles";
-import Users from "@/pages/Admin/Users";
-// import Error from "pages/Error";
+import Login from "./Auth/Login";
+import Home from "./Auth/Home";
+import Redirect from "./Auth/Redirect";
+import Roles from "./Admin/Roles";
+import Users from "./Admin/Users";
+import Error from "./Auth/Error";
 
-import Transfer from "@/pages/Warehouse/Transfer";
+import Transfer from "./Warehouse/Transfer";
+import Compare from "./Warehouse/Compare";
+import BulkShip from "./Warehouse/BulkShip";
+import InventoryCount from "./Warehouse/InventoryCount";
 
-import MicroCenterOrders from "@/pages/Customers/MicroCenter/Orders";
+import MicroCenterOrders from "./Customers/MicroCenter/Orders";
 
 const Router = () => {
   return useRoutes([
@@ -42,7 +45,9 @@ const Router = () => {
       element: <Navbar />,
       children: [
         { path: "transfer", element: <Transfer /> },
-        // { path: "roles", element: <Roles /> },
+        { path: "compare", element: <Compare /> },
+        { path: "bulk_ship", element: <BulkShip /> },
+        { path: "inventory_count", element: <InventoryCount /> },
       ],
     },
     {
@@ -52,6 +57,11 @@ const Router = () => {
         { path: "micro_center", children: [{ path: "orders", element: <MicroCenterOrders /> }] },
         // { path: "roles", element: <Roles /> },
       ],
+    },
+    {
+      path: "/error",
+      element: <Navbar />,
+      children: [{ index: true, element: <Error /> }],
     },
   ]);
 };

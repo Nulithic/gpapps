@@ -2,10 +2,10 @@ import { getMicroCenterOrders } from "@/services/customerService";
 import AuthSPS from "@/auth/SPSCommerce";
 
 const Orders = () => {
-  AuthSPS();
+  // AuthSPS();
 
   const getOrders = async () => {
-    const res = await getMicroCenterOrders("CA/CA584615-1-v7.7-BulkImport.xml");
+    const res = await getMicroCenterOrders("");
     console.log(res.data.orders);
   };
 

@@ -17,6 +17,8 @@ const Home = () => {
 
   const hello = async () => {
     console.log("hello", auth.currentUser);
+    const roles = auth.currentUser?.roles.filter((item) => item.status === true);
+    console.log(roles);
   };
 
   return (
