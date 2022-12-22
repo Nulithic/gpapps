@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { format, getMonth, getYear } from "date-fns";
 
-import "./datePicker.css";
+import "./DatePicker.css";
 
 interface DateComponentProps {
   date: Date;

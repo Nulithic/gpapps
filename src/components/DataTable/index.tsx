@@ -27,6 +27,7 @@ interface TableProps {
   columns: any;
   sortList: SortingState;
   height: string;
+  enableFilters?: boolean;
 }
 
 interface FilterType {
@@ -58,10 +59,8 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 const Filter = ({ column }: FilterType) => {
   const columnFilterValue = column.getFilterValue();
   const facetedUniqueValues = column.getFacetedUniqueValues();
-  const sortedUniqueValues = useMemo(() => Array.from(facetedUniqueValues.keys()).sort(), [facetedUniqueValues]).filter((x) => x !== "");
+  const sortedUniqueValues = useMemo(() => Array.from(facetedUniqueValues.keys()).sort(), [facetedUniqueValues]).filter((x) => x !== "" && x !== null);
   const options = sortedUniqueValues.map((item: any) => ({ name: item, value: item }));
-
-  console.log(options);
 
   const [value, setValue] = useState((columnFilterValue ?? "") as string);
 
@@ -84,7 +83,7 @@ const Filter = ({ column }: FilterType) => {
   return <AutoComplete options={options} value={value} onChange={handleAutoComplete} placeholder="Filter" />;
 };
 
-const DataTable = ({ data, columns, sortList, height }: TableProps) => {
+const DataTable = ({ data, columns, sortList, height, enableFilters = true }: TableProps) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 50,
@@ -123,7 +122,7 @@ const DataTable = ({ data, columns, sortList, height }: TableProps) => {
   });
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4 ">
       <div className={`flex bg-base-100 rounded ${height} overflow-auto`}>
         <table className="table table-compact min-w-full h-fit">
           <thead className="sticky top-0">
@@ -139,7 +138,7 @@ const DataTable = ({ data, columns, sortList, height }: TableProps) => {
                           desc: <ChevronDownIcon className="h-4 w-4" />,
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
-                      {header.column.getCanFilter() ? <Filter column={header.column} /> : null}
+                      {header.column.getCanFilter() && enableFilters ? <Filter column={header.column} /> : null}
                     </div>
                   </th>
                 ))}
@@ -203,7 +202,6 @@ const DataTable = ({ data, columns, sortList, height }: TableProps) => {
           <span className="label-text whitespace-nowrap">Show:</span>
           <select
             className="select select-bordered select-mid w-20"
-            defaultValue={table.getState().pagination.pageSize}
             value={table.getState().pagination.pageSize}
             onChange={(e) => {
               table.setPageSize(Number(e.target.value));

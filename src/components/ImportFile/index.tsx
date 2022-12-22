@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dropzone, FileItem, FileValidated } from "@dropzone-ui/react";
 
-import "./styles.css";
+import "./ImportFile.css";
 
 interface ImportFileProps {
   label: string;
