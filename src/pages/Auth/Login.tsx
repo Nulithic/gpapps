@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { useAuth } from "@/auth/context";
 import { saveUserToken } from "@/auth/storage";
 import { userLogin } from "@/services/authService";
 
@@ -12,7 +11,6 @@ type LocationProps = {
 };
 
 export default function Login() {
-  const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation() as unknown as LocationProps;
 

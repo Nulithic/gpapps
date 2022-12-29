@@ -14,6 +14,8 @@ import Compare from "./Warehouse/Compare";
 import BulkShip from "./Warehouse/BulkShip";
 import InventoryCount from "./Warehouse/InventoryCount";
 
+import Settings from "./Dear/Settings";
+
 import MicroCenterOrders from "./Customers/MicroCenter/Orders";
 
 const Router = () => {
@@ -57,6 +59,11 @@ const Router = () => {
         { path: "micro_center", children: [{ path: "orders", element: <MicroCenterOrders /> }] },
         // { path: "roles", element: <Roles /> },
       ],
+    },
+    {
+      path: "/dear",
+      element: <Navbar />,
+      children: [{ path: "dear_settings", element: <Settings /> }],
     },
     {
       path: "/error",

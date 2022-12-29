@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, NavLink, Outlet } from "react-router-dom";
+import { useNavigate, NavLink, Outlet, Link } from "react-router-dom";
 import { ChevronUpIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/auth/context";
@@ -23,13 +23,13 @@ const Navbar = () => {
       <div className="grid overflow-hidden">
         <div className="navbar bg-base-300 drop-shadow-lg z-50 px-5">
           <div className="navbar-start">
-            <a className="btn btn-ghost normal-case text-xl" onClick={() => navigate("/home")}>
+            <Link className="btn btn-ghost normal-case text-xl" reloadDocument to="/home">
               GP Apps
-            </a>
+            </Link>
           </div>
 
           <div className="navbar-center lg:flex">
-            <Menubar auth={auth} />
+            <Menubar auth={auth.state!!} />
           </div>
 
           <div className="navbar-end">

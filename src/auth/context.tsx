@@ -1,10 +1,36 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useEffect, useCallback, useReducer } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
+import useSocket from "@/libs/socket";
+import { setCookie } from "./cookies";
 import { getUser } from "@/services/authService";
-import { AuthType, User } from "@/types/AuthType";
+import { User } from "@/types/AuthType";
 
-const AuthContext = createContext<AuthType>(null!);
+interface ActionType {
+  type: String;
+  payload: User;
+}
+
+const initialState = {
+  currentUser: {
+    username: "",
+    lastLogin: "",
+    online: false,
+    roles: [],
+    admin: false,
+  },
+};
+
+const AuthContext = createContext<{ state: { currentUser: User } }>({ state: initialState });
+
+const UserReducer = (state: any, action: ActionType) => {
+  switch (action.type) {
+    case "GET_USER":
+      return { currentUser: action.payload };
+    default:
+      return state;
+  }
+};
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -12,13 +38,16 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<User | undefined>();
+
+  const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const handleCurrentUser = useCallback(async () => {
     try {
       const res = await getUser();
       const user = res.data.user as User;
-      setCurrentUser(user);
+      const { roles, ...socketUser } = user;
+      dispatch({ type: "GET_USER", payload: user });
+      useSocket(JSON.stringify(socketUser));
     } catch (err) {
       console.log(err);
       localStorage.removeItem("token");
@@ -31,5 +60,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [handleCurrentUser]);
 
   if (!localStorage.getItem("token") && window.location.pathname !== "/") return <Navigate to="/" />;
-  return <AuthContext.Provider value={{ currentUser }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ state }}>{children}</AuthContext.Provider>;
 };
