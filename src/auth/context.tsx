@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useCallback, useReducer } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import useSocket from "@/libs/socket";
+import socket from "@/libs/socket";
 import { setCookie } from "./cookies";
 import { getUser } from "@/services/authService";
 import { User } from "@/types/AuthType";
@@ -45,9 +45,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const res = await getUser();
       const user = res.data.user as User;
-      const { roles, ...socketUser } = user;
+      const { admin, roles, ...socketUser } = user;
       dispatch({ type: "GET_USER", payload: user });
-      useSocket(JSON.stringify(socketUser));
+      socket.emit("user", socketUser);
+      // localStorage.setItem("user", JSON.stringify(socketUser));
     } catch (err) {
       console.log(err);
       localStorage.removeItem("token");

@@ -1,19 +1,48 @@
 import { useState, useEffect } from "react";
-// import useSocket from "@/libs/socket";
+
+import { updateDearProducts, updateDearLocations, updateDearInventory } from "@/services/dearService";
+import ProgressButton from "@/components/ProgressButton";
 
 const Settings = () => {
-  //   const socket = useSocket();
-  //   console.log(socket.id);
+  console.count("render");
+
+  const handleProducts = async (socketID: string) => {
+    try {
+      const res = await updateDearProducts(socketID);
+      return res.data;
+    } catch (err) {
+      return false;
+    }
+  };
 
   const handleLocations = () => {};
-  const handleProducts = () => {};
   const handleInventory = () => {};
 
   return (
     <div className="flex flex-col w-1/2 items-center space-y-4">
-      <button className="btn btn-mid">Locations</button>
-      <button className="btn btn-mid">Products</button>
-      <button className="btn btn-mid">Inventory</button>
+      <ProgressButton
+        btnName="Products"
+        maxProgressKey="updateDearProductsMax"
+        progressKey="updateDearProducts"
+        maxProgressKey2="asdfMax"
+        progressKey2="asdf"
+        secondBar={true}
+        method={handleProducts}
+      />
+      <ProgressButton
+        btnName="Locations"
+        maxProgressKey="updateDearLocationsMax"
+        progressKey="updateDearLocations"
+        secondBar={false}
+        method={handleLocations}
+      />
+      <ProgressButton
+        btnName="Inventory"
+        maxProgressKey="updateDearInventoryMax"
+        progressKey="updateDearInventory"
+        secondBar={false}
+        method={handleInventory}
+      />
     </div>
   );
 };

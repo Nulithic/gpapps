@@ -17,6 +17,14 @@ export const getDearProducts = () => {
   });
 };
 
+export const updateDearProducts = (socketID: string) => {
+  return axios.get("/api/get/dear/update_products", {
+    params: {
+      socketID: socketID,
+    },
+    headers: { "x-access-token": getUserToken() },
+  });
+};
 export const updateDearLocations = (socketID: string) => {
   return axios.get("/api/get/dear/update_locations", {
     params: {
@@ -27,14 +35,6 @@ export const updateDearLocations = (socketID: string) => {
 };
 export const updateDearInventory = (socketID: string) => {
   return axios.get("/api/get/dear/update_inventory", {
-    params: {
-      socketID: socketID,
-    },
-    headers: { "x-access-token": getUserToken() },
-  });
-};
-export const updateDearProducts = (socketID: string) => {
-  return axios.get("/api/get/dear/update_products", {
     params: {
       socketID: socketID,
     },
