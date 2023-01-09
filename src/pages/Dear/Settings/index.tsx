@@ -9,38 +9,61 @@ const Settings = () => {
   const handleProducts = async (socketID: string) => {
     try {
       const res = await updateDearProducts(socketID);
-      return res.data;
+      console.log(res.data);
+      return true;
     } catch (err) {
+      console.log(err);
       return false;
     }
   };
-
-  const handleLocations = () => {};
-  const handleInventory = () => {};
+  const handleLocations = async (socketID: string) => {
+    try {
+      const res = await updateDearLocations(socketID);
+      console.log(res.data);
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
+  const handleInventory = async (socketID: string) => {
+    try {
+      const res = await updateDearInventory(socketID);
+      console.log(res.data);
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
 
   return (
     <div className="flex flex-col w-1/2 items-center space-y-4">
       <ProgressButton
         btnName="Products"
-        maxProgressKey="updateDearProductsMax"
-        progressKey="updateDearProducts"
-        maxProgressKey2="asdfMax"
-        progressKey2="asdf"
+        progressKey="getDearProducts"
+        progressKey2="updateDearProducts"
+        maxProgressKey="getDearProductsMax"
+        maxProgressKey2="updateDearProductsMax"
         secondBar={true}
         method={handleProducts}
       />
       <ProgressButton
         btnName="Locations"
-        maxProgressKey="updateDearLocationsMax"
-        progressKey="updateDearLocations"
-        secondBar={false}
+        progressKey="getDearLocations"
+        progressKey2="updateDearLocations"
+        maxProgressKey="getDearLocationsMax"
+        maxProgressKey2="updateDearLocationsMax"
+        secondBar={true}
         method={handleLocations}
       />
       <ProgressButton
         btnName="Inventory"
-        maxProgressKey="updateDearInventoryMax"
-        progressKey="updateDearInventory"
-        secondBar={false}
+        progressKey="getDearInventory"
+        progressKey2="updateDearInventory"
+        maxProgressKey="getDearInventoryMax"
+        maxProgressKey2="updateDearInventoryMax"
+        secondBar={true}
         method={handleInventory}
       />
     </div>
