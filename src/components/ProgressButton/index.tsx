@@ -18,7 +18,7 @@ const ProgressButton = ({ btnName, progressKey, maxProgressKey, progressKey2, ma
   const [maxProgress2, setMaxProgress2] = useState(100);
 
   const handleProgress = async () => {
-    setProgress(0.01);
+    setProgress(0.0001);
     socket.on(maxProgressKey, (args) => {
       setMaxProgress(args);
     });
