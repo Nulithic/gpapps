@@ -4,8 +4,6 @@ import { updateDearProducts, updateDearLocations, updateDearInventory } from "@/
 import ProgressButton from "@/components/ProgressButton";
 
 const Settings = () => {
-  console.count("render");
-
   const handleProducts = async (socketID: string) => {
     try {
       const res = await updateDearProducts(socketID);

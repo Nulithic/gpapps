@@ -18,13 +18,17 @@ const Navbar = () => {
     window.location.reload();
   };
 
+  const path = window.location.pathname;
+  const roles = auth.state.currentUser.roles;
+  const filter = roles.find((item) => item.path === path);
+
   return (
     <div className="flex flex-col h-screen">
       <div className="grid overflow-hidden">
-        <div className="navbar bg-base-300 drop-shadow-lg z-50 px-5">
+        <div className="navbar bg-base-300 z-50 px-5">
           <div className="navbar-start">
             <Link className="btn btn-ghost normal-case text-xl" reloadDocument to="/home">
-              GP Apps
+              {path === "/home" ? "GP Apps" : filter?.name}
             </Link>
           </div>
 
