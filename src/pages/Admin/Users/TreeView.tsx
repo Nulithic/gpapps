@@ -1,6 +1,6 @@
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-import { Role } from "@/types/AuthType";
+import { Role } from "@/types/authType";
 
 interface ItemProps {
   item: Role;

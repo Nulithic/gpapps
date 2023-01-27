@@ -1,6 +1,6 @@
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-import { User } from "@/types/AuthType";
+import { User } from "@/types/authType";
 
 interface UserProps {
   user: User;

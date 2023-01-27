@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
 import toast from "react-hot-toast";
 
-import { Role } from "@/types/AuthType";
+import { Role } from "@/types/authType";
 
 interface ModalProps {
   addModal: boolean;

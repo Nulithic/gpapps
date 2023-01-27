@@ -4,7 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import socket from "@/libs/socket";
 import { setCookie } from "./cookies";
 import { getUser } from "@/services/authService";
-import { User } from "@/types/AuthType";
+import { User } from "@/types/authType";
 
 interface ActionType {
   type: String;

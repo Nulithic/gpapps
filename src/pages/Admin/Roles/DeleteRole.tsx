@@ -1,4 +1,4 @@
-import { Role } from "@/types/AuthType";
+import { Role } from "@/types/authType";
 
 interface ModalProps {
   deleteModal: boolean;

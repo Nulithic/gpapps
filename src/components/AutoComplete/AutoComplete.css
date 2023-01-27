@@ -9,3 +9,26 @@
 .select-search-container.select-search-has-focus .select-search-select {
   @apply block;
 }
+
+.react-select-container {
+  @apply w-full;
+}
+
+.react-select__control {
+  @apply input input-mid input-bordered text-base;
+}
+
+.react-select__input,
+.react-select__single-value,
+.react-select__placeholder,
+.react-select__menu-notice {
+  @apply font-normal text-sm normal-case !important;
+}
+
+.react-select__menu {
+  @apply bg-base-300;
+}
+
+.react-select__option {
+  @apply flex px-4 h-10 items-center w-full text-sm font-normal cursor-pointer hover:bg-primary-focus !important;
+}

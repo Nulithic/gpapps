@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUserToken } from "@/auth/storage";
-import { Role } from "@/types/AuthType";
+import { Role } from "@/types/authType";
 
 export const getUsers = () => {
   return axios.get("/api/admin/get/users", {

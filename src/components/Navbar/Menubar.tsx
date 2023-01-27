@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
-import { Role, AuthType } from "@/types/AuthType";
+import { Role, AuthType } from "@/types/authType";
 
 const hasChildren = (item: Role) => {
   if (item === undefined) return false;

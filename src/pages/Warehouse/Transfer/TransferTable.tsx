@@ -1,13 +1,4 @@
-import { useState, useEffect } from "react";
 import DataTable from "@/components/DataTable";
-
-interface TransferList {
-  fromLocation: string;
-  toLocation: string;
-  product: string;
-  qty: number;
-  reference: string;
-}
 
 const columns = [
   { accessorKey: "fromLocation", header: "From Location", enableColumnFilter: true },
@@ -17,14 +8,8 @@ const columns = [
   { accessorKey: "reference", header: "Reference", enableColumnFilter: true },
 ];
 
-const TransferTable = () => {
-  const [data, setData] = useState<TransferList[]>([]);
-
-  return (
-    <>
-      <DataTable data={data} columns={columns} sortList={[]} height={"h-auto"} />
-    </>
-  );
+const TransferTable = ({ data }: any) => {
+  return <DataTable data={data} columns={columns} sortList={[]} height={"h-[calc(100vh-292px)]"} enableFilters={false} />;
 };
 
 export default TransferTable;

@@ -34,48 +34,47 @@ interface FilterType {
   column: Column<any, unknown>;
 }
 
-declare module "@tanstack/table-core" {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
+// declare module "@tanstack/table-core" {
+//   interface FilterFns {
+//     fuzzy: FilterFn<unknown>;
+//   }
+//   interface FilterMeta {
+//     itemRank: RankingInfo;
+//   }
+// }
 
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value);
+// const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+//   // Rank the item
+//   const itemRank = rankItem(row.getValue(columnId), value);
 
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  });
+//   // Store the itemRank info
+//   addMeta({
+//     itemRank,
+//   });
 
-  // Return if the item should be filtered in/out
-  return itemRank.passed;
-};
+//   // Return if the item should be filtered in/out
+//   return itemRank.passed;
+// };
 
 const Filter = ({ column }: FilterType) => {
   const columnFilterValue = column.getFilterValue();
   const facetedUniqueValues = column.getFacetedUniqueValues();
   const sortedUniqueValues = useMemo(() => Array.from(facetedUniqueValues.keys()).sort(), [facetedUniqueValues]).filter((x) => x !== "" && x !== null);
-  const options = sortedUniqueValues.map((item: any) => ({ name: item, value: item }));
+  const options = sortedUniqueValues.map((item: any) => ({ value: item, label: item }));
 
-  const [value, setValue] = useState((columnFilterValue ?? "") as string);
+  const [value, setValue] = useState<any>();
 
-  const handleAutoComplete = (value: string) => {
+  const handleAutoComplete = (value: any) => {
     setValue(value);
   };
 
   useEffect(() => {
-    setValue((columnFilterValue ?? "") as string);
-  }, [columnFilterValue]);
-
-  useEffect(() => {
     const timeout = setTimeout(() => {
-      column.setFilterValue(value);
-    }, 500);
+      console.log(value);
+      if (value) {
+        column.setFilterValue(value.value);
+      } else column.setFilterValue(null);
+    }, 100);
 
     return () => clearTimeout(timeout);
   }, [column, value]);
@@ -97,9 +96,9 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
   const table = useReactTable({
     data,
     columns,
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
+    // filterFns: {
+    //   fuzzy: fuzzyFilter,
+    // },
     state: {
       sorting,
       pagination,
@@ -110,7 +109,7 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
     onExpandedChange: setExpanded,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
+    // globalFilterFn: fuzzyFilter,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -132,7 +131,7 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
                   <th key={header.id}>
                     <div className="flex flex-col min-w-[8rem]">
                       <div className="flex flex-row items-center space-x-2 cursor-pointer" onClick={header.column.getToggleSortingHandler()}>
-                        <span>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>
+                        <span className="text-base">{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</span>
                         {{
                           asc: <ChevronUpIcon className="h-4 w-4" />,
                           desc: <ChevronDownIcon className="h-4 w-4" />,

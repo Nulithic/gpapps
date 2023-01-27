@@ -4,12 +4,15 @@ import DataTable from "@/components/DataTable";
 
 import ActionBar from "./ActionBar";
 import AddLine from "./AddLine";
+import TransferTable from "./TransferTable";
 
 interface TransferList {
   fromLocation: string;
+  fromLocationData: {};
   toLocation: string;
-  product: string;
-  qty: number;
+  toLocationData: {};
+  sku: string;
+  transferQty: string;
   reference: string;
 }
 
@@ -25,21 +28,17 @@ const Transfer = () => {
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState<TransferList[]>([]);
 
-  const [addLineData, setAddLineData] = useState({
-    fromLocation: "",
-    toLocation: "",
-    SKU: "",
-    transferQty: "",
-    reference: "",
-  });
+  const handleAddData = (addLineData: TransferList) => {
+    setData((prev) => [...prev, addLineData]);
+  };
 
-  console.log(addLineData);
+  console.log(data);
 
   return (
     <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
       <ActionBar date={date} setDate={setDate} />
-      <AddLine addLineData={addLineData} setAddLineData={setAddLineData} />
-      <DataTable data={data} columns={columns} sortList={[]} height={"h-auto"} enableFilters={false} />
+      <AddLine handleAddData={handleAddData} />
+      <TransferTable data={data} />
     </div>
   );
 };

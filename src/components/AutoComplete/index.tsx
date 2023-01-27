@@ -1,33 +1,36 @@
-import SelectSearch, { useSelect } from "react-select-search";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import Select, { components, MenuListProps } from "react-select";
+
 import "./AutoComplete.css";
 
 interface AutoCompleteProps {
   placeholder: string;
-  options: any;
-  value: string;
-  onChange: (e: any) => void;
+  options: any[];
+  value: any;
+  onChange: (value: any, option: any) => void;
 }
+
+// const MenuList = ({ children, ...props }: MenuListProps & { selectProps: MenuListProps["selectProps"] & { maxOptions: number } }) => {
+//   return <components.MenuList {...props}>{Array.isArray(children) ? children.slice(0, props.selectProps?.maxOptions) : children}</components.MenuList>;
+// };
+
+const MenuList = ({ children, ...props }: MenuListProps) => {
+  return <components.MenuList {...props}>{Array.isArray(children) ? children.slice(0, 100) : children}</components.MenuList>;
+};
 
 const AutoComplete = ({ placeholder, options, value, onChange }: AutoCompleteProps) => {
   return (
     <div className="flex flex-row items-center w-full">
-      <SelectSearch
-        search
+      <Select
+        className="react-select-container"
+        classNamePrefix="react-select"
+        unstyled
+        isClearable
         options={options}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        renderValue={(valueProps: any) => <input className="input input-mid w-full select input-bordered text-base" {...valueProps} />}
-        renderOption={(optionsProps: any, option) => (
-          <button className="block px-4 h-10 w-full text-base font-normal text-left cursor-pointer hover:bg-primary-focus" {...optionsProps}>
-            {option.name}
-          </button>
-        )}
+        components={{ MenuList }}
       />
-      <button className="btn btn-square min-h-fit h-9 w-9" onClick={() => onChange("")}>
-        <XMarkIcon className="h-4 w-4" />
-      </button>
     </div>
   );
 };

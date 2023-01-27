@@ -3,7 +3,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 
 import { getUsers, addUser, deleteUser, updateUserRole } from "@/services/adminService";
-import { User, Role } from "@/types/AuthType";
+import { User, Role } from "@/types/authType";
 
 import UserView from "./UserView";
 import TreeView from "./TreeView";
