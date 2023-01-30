@@ -23,6 +23,7 @@
     "react-router-dom": "^6.4.1",
     "react-select": "^5.7.0",
     "react-select-search": "^4.1.5",
+    "react-window": "^1.8.8",
     "socket.io-client": "^4.5.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.1/xlsx-0.19.1.tgz"
   },
@@ -33,6 +34,7 @@
     "@types/react": "^18.0.17",
     "@types/react-datepicker": "^4.8.0",
     "@types/react-dom": "^18.0.6",
+    "@types/react-window": "^1.8.5",
     "@vitejs/plugin-react": "^2.1.0",
     "autoprefixer": "^10.4.12",
     "daisyui": "^2.31.0",

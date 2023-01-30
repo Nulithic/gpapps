@@ -1,11 +1,9 @@
 import { io } from "socket.io-client";
+import URL from "@/libs/url";
 
 const TIME_STAMP = new Date();
 
-const url = "http://apps.gp:3001";
-// const url = "http://localhost:3001";
-
-const socket = io(url, {
+const socket = io(URL, {
   query: {
     timeStamp: TIME_STAMP.toISOString(),
   },

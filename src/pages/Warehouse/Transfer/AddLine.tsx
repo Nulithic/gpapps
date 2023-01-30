@@ -9,28 +9,28 @@ interface AddLineProps {
 }
 
 const AddLine = ({ handleAddData }: AddLineProps) => {
-  const [fromLocation, setFromLocation] = useState([]);
-  const [toLocation, setToLocation] = useState([]);
+  const [location, setLocation] = useState([]);
   const [products, setProducts] = useState([]);
 
   const [addLineData, setAddLineData] = useState({
     fromLocation: "",
-    fromLocationData: {},
+    fromLocationData: "",
     toLocation: "",
-    toLocationData: {},
+    toLocationData: "",
     sku: "",
+    skuData: "",
     transferQty: "",
     reference: "",
   });
 
-  const handleFromLocation = (value: any, data: any) => {
-    setAddLineData({ ...addLineData, fromLocation: value, fromLocationData: data });
+  const handleFromLocation = (value: any) => {
+    setAddLineData({ ...addLineData, fromLocation: value ? value.label : "", fromLocationData: value });
   };
-  const handleToLocation = (value: any, data: any) => {
-    setAddLineData({ ...addLineData, toLocation: value, toLocationData: data });
+  const handleToLocation = (value: any) => {
+    setAddLineData({ ...addLineData, toLocation: value ? value.label : "", toLocationData: value });
   };
-  const handleToSKU = (value: any, data: any) => {
-    setAddLineData({ ...addLineData, sku: value });
+  const handleToSKU = (value: any) => {
+    setAddLineData({ ...addLineData, sku: value ? value.label : "", skuData: value });
   };
   const handleToNumber = (event: ChangeEvent<HTMLInputElement>) => {
     setAddLineData({ ...addLineData, transferQty: event.target.value });
@@ -43,9 +43,8 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
     (async () => {
       try {
         const res = await getDearLocations();
-        const list = res.data.map((item: DearLocations) => ({ ...item, name: item.location, value: item.location }));
-        setFromLocation(list);
-        setToLocation(list);
+        const list = res.data.map((item: DearLocations) => ({ ...item, value: item.location, label: item.location }));
+        setLocation(list);
       } catch (err) {
         console.log(err);
       }
@@ -54,7 +53,7 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
     (async () => {
       try {
         const res = await getDearProducts();
-        const list = res.data.map((item: DearProducts) => ({ ...item, name: item.sku, value: item.sku }));
+        const list = res.data.map((item: DearProducts) => ({ ...item, value: item.sku, label: item.sku }));
         setProducts(list);
       } catch (err) {
         console.log(err);
@@ -65,9 +64,10 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
   return (
     <>
       <div className="flex flex-row justify-items-stretch items-center space-x-2">
-        <AutoComplete options={fromLocation} value={addLineData.fromLocation} onChange={handleFromLocation} placeholder="From Location" />
-        <AutoComplete options={toLocation} value={addLineData.toLocation} onChange={handleToLocation} placeholder="To Location" />
-        <AutoComplete options={products} value={addLineData.sku} onChange={handleToSKU} placeholder="SKU" />
+        <AutoComplete options={location} value={addLineData.fromLocationData} onChange={handleFromLocation} placeholder="From Location" />
+        <AutoComplete options={location} value={addLineData.toLocationData} onChange={handleToLocation} placeholder="To Location" />
+        <AutoComplete options={products} value={addLineData.skuData} onChange={handleToSKU} placeholder="SKU" />
+
         <input
           type="number"
           className="input input-mid input-bordered text-base placeholder:font-semibold"
