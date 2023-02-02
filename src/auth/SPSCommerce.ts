@@ -25,7 +25,7 @@ const AuthSPS = () => {
       const response_type = "response_type=token";
       // const client_id = "client_id=FLrDHPBYiMS815dB2609EE55ly5vDuzD"; // Sandbox
       const client_id = "client_id=wnMSFrUIEMYZbExnRHTozHeCGXicyfAf"; // Production
-      const redirect_uri = "redirect_uri=http://apps.gp:5173/redirect";
+      const redirect_uri = "redirect_uri=http://192.168.1.134/redirect";
       const state = `state=${getCookie("state")}`;
 
       window.location.replace(`https://auth.spscommerce.com/authorize?${audience}&${response_type}&${client_id}&${redirect_uri}&${state}`);

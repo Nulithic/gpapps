@@ -2,7 +2,7 @@ import { getMicroCenterOrders } from "@/services/customerService";
 import AuthSPS from "@/auth/SPSCommerce";
 
 const Orders = () => {
-  // AuthSPS();
+  AuthSPS();
 
   const getOrders = async () => {
     const res = await getMicroCenterOrders("");
