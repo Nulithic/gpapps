@@ -19,3 +19,23 @@ export const postBulkShip = (importData: any, socketID: string) => {
     }
   );
 };
+
+//Transfer
+export const getWarehouseTransferTemplate = () => {
+  return axios.get("/api/get/warehouse/transfer/template", {
+    responseType: "blob",
+    headers: { "x-access-token": getUserToken() },
+  });
+};
+export const postWarehouseTransfer = (transferData: any, socketID: string) => {
+  return axios.post(
+    "/api/post/warehouse/transfer",
+    {
+      transferData,
+      socketID,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};

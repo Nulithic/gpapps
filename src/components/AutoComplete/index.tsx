@@ -12,7 +12,6 @@ interface AutoCompleteProps {
 
 const MenuList = ({ children, ...props }: MenuListProps) => {
   const list = Array.isArray(children) ? children : [];
-  // console.log(list.length > 8 ? 320 : list.length * 40);
   return (
     <components.MenuList {...props}>
       <List width="100%" height={list.length > 8 ? 320 : list.length * 40} itemCount={list.length} itemSize={40}>

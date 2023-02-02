@@ -30,6 +30,7 @@ const DateComponent = ({ date, setDate }: DateComponentProps) => {
       popperClassName="react-datepicker-popper"
       customInput={<ButtonInput />}
       showMonthYearDropdown
+      todayButton="Today"
       renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
         <div className="flex items-center justify-between px-2 py-2 space-x-1">
           <button
@@ -41,7 +42,7 @@ const DateComponent = ({ date, setDate }: DateComponentProps) => {
             <ChevronLeftIcon className="w-5 h-5" />
           </button>
           <select
-            className="select select-bordered select-sm"
+            className="select select-bordered select-sm rounded"
             value={months[getMonth(date)]}
             onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
           >
@@ -51,7 +52,7 @@ const DateComponent = ({ date, setDate }: DateComponentProps) => {
               </option>
             ))}
           </select>
-          <select className="select select-bordered select-sm" value={getYear(date)} onChange={({ target: { value } }) => changeYear(parseInt(value))}>
+          <select className="select select-bordered select-sm rounded" value={getYear(date)} onChange={({ target: { value } }) => changeYear(parseInt(value))}>
             {years.map((option) => (
               <option key={option} value={option}>
                 {option}

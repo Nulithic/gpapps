@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef, LegacyRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FileValidated } from "@dropzone-ui/react";
 import download from "downloadjs";
 
-import socket from "@/libs/socket";
+import socket, { socketListen } from "@/libs/socket";
 import ImportFile from "@/components/ImportFile";
 import { getBulkShipTemplate, postBulkShip } from "@/services/warehouseService";
 import Results from "@/components/Results";
@@ -26,35 +26,19 @@ const BulkShip = () => {
   const handleBulkShip = async () => {
     try {
       setLoading(true);
-      socket.on("getDearSaleOrderAPI", (args) => {
-        if (textRef && textRef.current) {
-          textRef.current.value += `${args}\n`;
-          textRef.current.scrollTop = textRef.current.scrollHeight;
-        }
-      });
-      socket.on("postDearSaleFulfilmentShipAPI", (args) => {
-        if (textRef && textRef.current) {
-          textRef.current.value += `${args}\n`;
-          textRef.current.scrollTop = textRef.current.scrollHeight;
-        }
-      });
+      socketListen("getDearSaleOrderAPI", textRef);
+      socketListen("postDearSaleFulfilmentShipAPI", textRef);
 
       const res = await postBulkShip(importData, socket.id);
       console.log(res.data);
-
-      if (res.status == 200) {
-        socket.off("getDearSaleOrderAPI");
-        socket.off("postDearSaleFulfilmentShipAPI");
-        setLoading(false);
-        setImportFile([]);
-      }
     } catch (err) {
-      socket.off("getDearSaleOrderAPI");
-      socket.off("postDearSaleFulfilmentShipAPI");
-      setLoading(false);
-      setImportFile([]);
       console.log(err);
     }
+
+    socket.off("getDearSaleOrderAPI");
+    socket.off("postDearSaleFulfilmentShipAPI");
+    setLoading(false);
+    setImportFile([]);
   };
 
   const downloadTemplate = async () => {
