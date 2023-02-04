@@ -19,7 +19,7 @@ const ProcessDialog = ({ loading, textRef, handleTransfer }: ProcessDialogProps)
 
   const handleSubmit = () => {
     setConfirm(false);
-    setTitle("Transfering...");
+    setTitle("Transfer");
     setBody(<Results textRef={textRef} />);
     setRedButtonTxt("Close");
     setHeight("h-48");

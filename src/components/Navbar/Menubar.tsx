@@ -36,7 +36,7 @@ const createRoleList = (roles: Role[]) => {
 const SingleLevel = ({ item }: { item: Role }) => {
   return (
     <li>
-      <NavLink className="whitespace-nowrap" reloadDocument to={item.path} style={({ isActive }) => (isActive ? {} : undefined)}>
+      <NavLink className="whitespace-nowrap btn" reloadDocument to={item.path}>
         {item.name}
       </NavLink>
     </li>
@@ -64,7 +64,7 @@ const MultiLevel = ({ item, auth, index }: { item: Role; auth: AuthType; index: 
             <span>{item.name}</span>
             <ChevronUpIcon className="group-focus/1:rotate-180 transition-transform h-4 w-4" />
           </label>
-          <ul tabIndex={index} className="dropdown-content menu border-solid border-2 border-base-100 rounded-box bg-base-300 p-2 w-fit space-y-2">
+          <ul tabIndex={index} className="dropdown-content menu border-solid border-2 border-base-100 rounded-box bg-base-300 p-2 min-w-[10rem] space-y-2">
             {item.children.map((child, i) => (
               <MenuItem key={i} item={child} auth={auth} index={index + 1} />
             ))}

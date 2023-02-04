@@ -86,3 +86,17 @@ export interface DearProducts {
   cartonQuantity: number;
   cartonInnerQuantity: number;
 }
+
+export interface DearInventory {
+  locationID: string;
+  sku: string;
+  name: string;
+  location: string;
+  bin: string;
+  onHand: number;
+  allocated: number;
+  available: number;
+  onOrder: number;
+  stockOnHand: number;
+  inTransit: number;
+}

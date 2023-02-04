@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { saveUserToken } from "@/auth/storage";
 import { userLogin } from "@/services/authService";
@@ -34,7 +35,7 @@ export default function Login() {
         window.location.reload();
       }
     } else {
-      alert("Login Failed!");
+      toast.error("Login failed.");
     }
   };
 

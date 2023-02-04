@@ -9,7 +9,13 @@ const App = () => {
     <AuthProvider>
       <Permission>
         <Router />
-        <Toaster position="bottom-left" reverseOrder={false} />
+        <Toaster
+          position="bottom-center"
+          reverseOrder={false}
+          toastOptions={{
+            className: "bg-neutral text-white",
+          }}
+        />
       </Permission>
     </AuthProvider>
   );

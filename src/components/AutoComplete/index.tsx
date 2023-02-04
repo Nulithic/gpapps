@@ -1,5 +1,6 @@
-import Select, { components, createFilter, MenuListProps } from "react-select";
+import Select, { components, createFilter, MenuListProps, OptionProps } from "react-select";
 import { FixedSizeList as List } from "react-window";
+import cx from "classnames";
 
 import "./AutoComplete.css";
 
@@ -25,9 +26,18 @@ const MenuList = ({ children, ...props }: MenuListProps) => {
   );
 };
 
-// const MenuList = ({ children, ...props }: MenuListProps) => {
-//   return <components.MenuList {...props}>{Array.isArray(children) ? children.slice(0, 100) : children}</components.MenuList>;
-// };
+const Option = ({ children, isSelected, innerProps }: OptionProps) => (
+  <div
+    className={cx("react-select__option", {
+      "react-select__option_selected": isSelected,
+    })}
+    id={innerProps.id}
+    tabIndex={innerProps.tabIndex}
+    onClick={innerProps.onClick}
+  >
+    {children}
+  </div>
+);
 
 const AutoComplete = ({ placeholder, options, value, onChange }: AutoCompleteProps) => {
   return (
@@ -41,7 +51,7 @@ const AutoComplete = ({ placeholder, options, value, onChange }: AutoCompletePro
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        components={{ MenuList }}
+        components={{ MenuList, Option }}
         captureMenuScroll={false}
         filterOption={createFilter({ ignoreAccents: false })}
       />

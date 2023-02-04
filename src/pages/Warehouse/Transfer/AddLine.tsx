@@ -1,17 +1,15 @@
-import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import AutoComplete from "@/components/AutoComplete";
 
-import { getDearLocations, getDearProducts } from "@/services/dearService";
 import { DearLocations, DearProducts } from "@/types/dbType";
 
 interface AddLineProps {
+  locations: DearLocations[];
+  products: DearProducts[];
   handleAddData: (data: any) => void;
 }
 
-const AddLine = ({ handleAddData }: AddLineProps) => {
-  const [location, setLocation] = useState([]);
-  const [products, setProducts] = useState([]);
-
+const AddLine = ({ locations, products, handleAddData }: AddLineProps) => {
   const [addLineData, setAddLineData] = useState({
     fromLocation: "",
     fromLocationData: "",
@@ -39,33 +37,11 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
     setAddLineData({ ...addLineData, reference: event.target.value });
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await getDearLocations();
-        const list = res.data.map((item: DearLocations) => ({ ...item, value: item.location, label: item.location }));
-        setLocation(list);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-
-    (async () => {
-      try {
-        const res = await getDearProducts();
-        const list = res.data.map((item: DearProducts) => ({ ...item, value: item.sku, label: item.sku }));
-        setProducts(list);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
-
   return (
     <>
       <div className="flex flex-row justify-items-stretch items-center space-x-2">
-        <AutoComplete options={location} value={addLineData.fromLocationData} onChange={handleFromLocation} placeholder="From Location" />
-        <AutoComplete options={location} value={addLineData.toLocationData} onChange={handleToLocation} placeholder="To Location" />
+        <AutoComplete options={locations} value={addLineData.fromLocationData} onChange={handleFromLocation} placeholder="From Location" />
+        <AutoComplete options={locations} value={addLineData.toLocationData} onChange={handleToLocation} placeholder="To Location" />
         <AutoComplete options={products} value={addLineData.skuData} onChange={handleToSKU} placeholder="SKU" />
 
         <input
