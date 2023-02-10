@@ -21,7 +21,9 @@ const ActionBar = ({ complete, date, handleDate, handleComplete }: ActionBarProp
         </div>
       </div>
       <div className="flex flex-row items-center space-x-2">
-        <button className="btn btn-mid btn-primary">Import</button>
+        <label className="btn btn-mid btn-primary" htmlFor="importDialog">
+          Import
+        </label>
         <label className="btn btn-mid btn-secondary" htmlFor="processDialog">
           Transfer
         </label>

@@ -3,14 +3,15 @@ import { useState, useEffect, useRef } from "react";
 import ActionBar from "./ActionBar";
 import AddLine from "./AddLine";
 import TransferTable from "./TransferTable";
-import { postWarehouseTransfer } from "@/services/warehouseService";
+import { postTransfer } from "@/services/warehouseService";
 import socket, { socketListen } from "@/libs/socket";
 import ProcessDialog from "./ProcessDialog";
 import { toast } from "react-hot-toast";
 import { getDearInventory, getDearLocations, getDearProducts } from "@/services/dearService";
 import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
+import ImportDialog from "./ImportDialog";
 
-interface TransferList {
+interface TransferData {
   [key: string]: any;
   fromLocation: string;
   fromLocationData: DearLocations;
@@ -37,7 +38,7 @@ const Transfer = () => {
     date: new Date(),
   });
 
-  const [data, setData] = useState<TransferList[]>([]);
+  const [data, setData] = useState<TransferData[]>([]);
 
   const handleComplete = () => {
     setOptions({ ...options, complete: !options.complete });
@@ -46,7 +47,7 @@ const Transfer = () => {
     setOptions({ ...options, date: date });
   };
 
-  const checkForEmpty = (data: TransferList) => {
+  const checkForEmpty = (data: TransferData) => {
     const isEmpty = Object.keys(data).map((key) => {
       switch (key) {
         case "reference":
@@ -80,18 +81,22 @@ const Transfer = () => {
       return false;
     }
   };
-  const checkForStock = (data: TransferList) => {
+  const checkForStock = (data: TransferData) => {
     const filter = inventory.filter((item: DearInventory) => item.sku === data.sku && item.locationID === data.fromLocationData.locationID);
     if (filter.length === 0) return false;
     if (filter[0].available < parseInt(data.transferQty)) return false;
     return true;
   };
 
-  const handleAddData = (addLineData: TransferList) => {
+  const handleAddData = (addLineData: TransferData) => {
     checkForEmpty(addLineData);
     checkForStock(addLineData);
     if (!checkForStock(addLineData)) toast.error(`The transfer quantity is greater than or not available for the selected "From Location".`);
     if (checkForEmpty(addLineData) && checkForStock(addLineData)) setData((prev) => [...prev, addLineData]);
+  };
+
+  const handleImport = (data: TransferData[]) => {
+    setData(data);
   };
 
   const handleTransfer = async () => {
@@ -106,7 +111,7 @@ const Transfer = () => {
         skipOrder: true,
       };
 
-      const res = await postWarehouseTransfer(transferData, socket.id);
+      const res = await postTransfer(transferData, socket.id);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -161,6 +166,7 @@ const Transfer = () => {
           <AddLine handleAddData={handleAddData} locations={locations} products={products} />
           <TransferTable data={data} />
           <ProcessDialog loading={processLoading} textRef={textRef} handleTransfer={handleTransfer} />
+          <ImportDialog inventory={inventory} locations={locations} products={products} handleImport={handleImport} />
         </div>
       )}
     </>

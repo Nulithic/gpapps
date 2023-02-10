@@ -21,13 +21,13 @@ export const postBulkShip = (importData: any, socketID: string) => {
 };
 
 //Transfer
-export const getWarehouseTransferTemplate = () => {
+export const getTransferTemplate = () => {
   return axios.get("/api/get/warehouse/transfer/template", {
     responseType: "blob",
     headers: { "x-access-token": getUserToken() },
   });
 };
-export const postWarehouseTransfer = (transferData: any, socketID: string) => {
+export const postTransfer = (transferData: any, socketID: string) => {
   return axios.post(
     "/api/post/warehouse/transfer",
     {

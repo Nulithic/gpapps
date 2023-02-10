@@ -91,6 +91,7 @@ export interface DearInventory {
   locationID: string;
   sku: string;
   name: string;
+  site: string;
   location: string;
   bin: string;
   onHand: number;
