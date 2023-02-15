@@ -9,14 +9,12 @@ import {
   getFacetedUniqueValues,
   getPaginationRowModel,
   getSortedRowModel,
-  FilterFn,
-  ColumnDef,
   flexRender,
   SortingState,
   PaginationState,
+  RowSelectionState,
   ExpandedState,
 } from "@tanstack/react-table";
-import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 
 import { ChevronUpIcon, ChevronDownIcon, ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 
@@ -34,30 +32,8 @@ interface FilterType {
   column: Column<any, unknown>;
 }
 
-// declare module "@tanstack/table-core" {
-//   interface FilterFns {
-//     fuzzy: FilterFn<unknown>;
-//   }
-//   interface FilterMeta {
-//     itemRank: RankingInfo;
-//   }
-// }
-
-// const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-//   // Rank the item
-//   const itemRank = rankItem(row.getValue(columnId), value);
-
-//   // Store the itemRank info
-//   addMeta({
-//     itemRank,
-//   });
-
-//   // Return if the item should be filtered in/out
-//   return itemRank.passed;
-// };
-
 const Filter = ({ column }: FilterType) => {
-  const columnFilterValue = column.getFilterValue();
+  // const columnFilterValue = column.getFilterValue();
   const facetedUniqueValues = column.getFacetedUniqueValues();
   const sortedUniqueValues = useMemo(() => Array.from(facetedUniqueValues.keys()).sort(), [facetedUniqueValues]).filter((x) => x !== "" && x !== null);
   const options = sortedUniqueValues.map((item: any) => ({ value: item, label: item }));
@@ -88,28 +64,28 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
     pageSize: 50,
   });
 
-  const [expanded, setExpanded] = useState<ExpandedState>({});
   const [globalFilter, setGlobalFilter] = useState("");
+  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>(sortList);
 
   const table = useReactTable({
     data,
     columns,
-    // filterFns: {
-    //   fuzzy: fuzzyFilter,
-    // },
     state: {
       sorting,
       pagination,
+      rowSelection,
       expanded,
       columnFilters,
       globalFilter,
     },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
     onExpandedChange: setExpanded,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
-    // globalFilterFn: fuzzyFilter,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -155,6 +131,7 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
           </tbody>
         </table>
       </div>
+
       <div className="flex flex-row justify-between">
         <div className="flex flex-row space-x-2 items-center">
           <button className="btn btn-mid" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>

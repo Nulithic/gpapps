@@ -1,15 +1,32 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, HTMLProps } from "react";
+import { toast } from "react-hot-toast";
+import {
+  ColumnDef,
+  useReactTable,
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  PaginationState,
+  RowSelectionState,
+  ExpandedState,
+} from "@tanstack/react-table";
 
-import ActionBar from "./ActionBar";
-import AddLine from "./AddLine";
-import TransferTable from "./TransferTable";
+import { getDearInventory, getDearLocations, getDearProducts } from "@/services/dearService";
 import { postTransfer } from "@/services/warehouseService";
 import socket, { socketListen } from "@/libs/socket";
-import ProcessDialog from "./ProcessDialog";
-import { toast } from "react-hot-toast";
-import { getDearInventory, getDearLocations, getDearProducts } from "@/services/dearService";
 import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
+
+import ActionBar from "./ActionBar";
+import SelectBar from "./SelectBar";
+import AddLine from "./AddLine";
+import ProcessDialog from "./ProcessDialog";
 import ImportDialog from "./ImportDialog";
+import TransferTable from "./TransferTable";
 
 interface TransferData {
   [key: string]: any;
@@ -23,22 +40,44 @@ interface TransferData {
   reference: string;
 }
 
+const IndeterminateCheckbox = ({ indeterminate, className = "", ...rest }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) => {
+  const ref = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  return <input type="checkbox" ref={ref} className={className + " cursor-pointer"} {...rest} />;
+};
+
 const Transfer = () => {
   console.count("render");
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const [pageLoading, setPageLoading] = useState(true);
   const [processLoading, setProcessLoading] = useState(false);
+
   const [inventory, setInventory] = useState<DearInventory[]>([]);
   const [locations, setLocations] = useState<DearLocations[]>([]);
   const [products, setProducts] = useState<DearProducts[]>([]);
 
+  const [data, setData] = useState<TransferData[]>([]);
   const [options, setOptions] = useState({
     complete: true,
     date: new Date(),
   });
 
-  const [data, setData] = useState<TransferData[]>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 50,
+  });
 
   const handleComplete = () => {
     setOptions({ ...options, complete: !options.complete });
@@ -87,7 +126,6 @@ const Transfer = () => {
     if (filter[0].available < parseInt(data.transferQty)) return false;
     return true;
   };
-
   const handleAddData = (addLineData: TransferData) => {
     checkForEmpty(addLineData);
     checkForStock(addLineData);
@@ -119,6 +157,74 @@ const Transfer = () => {
 
     socket.off("postDearStockTransferAPI");
     setProcessLoading(false);
+  };
+
+  const columns = useMemo<ColumnDef<TransferData>[]>(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+            className="checkbox checkbox-primary rounded"
+            {...{
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <IndeterminateCheckbox
+            className="checkbox checkbox-primary rounded"
+            {...{
+              checked: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              indeterminate: row.getIsSomeSelected(),
+              onChange: row.getToggleSelectedHandler(),
+            }}
+          />
+        ),
+      },
+      { accessorKey: "fromLocation", header: "From Location", enableColumnFilter: true },
+      { accessorKey: "toLocation", header: "To Location", enableColumnFilter: true },
+      { accessorKey: "sku", header: "SKU", enableColumnFilter: true },
+      { accessorKey: "transferQty", header: "Transfer Quantity", enableColumnFilter: true },
+      { accessorKey: "reference", header: "Reference", enableColumnFilter: true },
+    ],
+    []
+  );
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+      pagination,
+      rowSelection,
+      expanded,
+      columnFilters,
+      globalFilter,
+    },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    onExpandedChange: setExpanded,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
+
+  const handleSelected = () => {
+    console.log(table.getIsAllRowsSelected());
+  };
+
+  const handleDelete = () => {
+    console.log(table.getIsAllRowsSelected());
   };
 
   useEffect(() => {
@@ -154,6 +260,8 @@ const Transfer = () => {
     })();
   }, []);
 
+  const selection = table.getSelectedRowModel().rows.length;
+
   return (
     <>
       {pageLoading ? (
@@ -164,9 +272,11 @@ const Transfer = () => {
         <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
           <ActionBar date={options.date} handleDate={handleDate} complete={options.complete} handleComplete={handleComplete} />
           <AddLine handleAddData={handleAddData} locations={locations} products={products} />
-          <TransferTable data={data} />
-          <ProcessDialog loading={processLoading} textRef={textRef} handleTransfer={handleTransfer} />
+          <SelectBar selection={selection} handleSelected={handleSelected} handleDelete={handleDelete} />
+          <TransferTable table={table} />
+
           <ImportDialog inventory={inventory} locations={locations} products={products} handleImport={handleImport} />
+          <ProcessDialog loading={processLoading} textRef={textRef} handleTransfer={handleTransfer} />
         </div>
       )}
     </>

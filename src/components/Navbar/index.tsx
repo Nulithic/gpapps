@@ -25,7 +25,7 @@ const Navbar = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="grid overflow-hidden">
-        <div className="navbar bg-base-300 z-50 px-5">
+        <div className="navbar bg-neutral z-50 px-5">
           <div className="navbar-start">
             <Link className="btn btn-ghost normal-case text-xl" reloadDocument to="/home">
               {path === "/home" ? "GP Apps" : filter?.name}
@@ -42,7 +42,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-        <div className="flex h-[calc(100vh-64px)] justify-center items-start p-5 overflow-y-auto">
+        <div className="flex h-[calc(100vh-64px)] justify-center items-start p-2 overflow-y-auto">
           <Outlet />
         </div>
       </div>
