@@ -17,9 +17,11 @@ import {
 } from "@tanstack/react-table";
 
 import { getDearInventory, getDearLocations, getDearProducts } from "@/services/dearService";
+import { getLogs } from "@/services/logService";
 import { postTransfer } from "@/services/warehouseService";
 import socket, { socketListen } from "@/libs/socket";
 import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
+import IndeterminateCheckbox from "@/components/CheckBox";
 
 import ActionBar from "./ActionBar";
 import SelectBar from "./SelectBar";
@@ -40,20 +42,7 @@ interface TransferData {
   reference: string;
 }
 
-const IndeterminateCheckbox = ({ indeterminate, className = "", ...rest }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) => {
-  const ref = useRef<HTMLInputElement>(null!);
-
-  useEffect(() => {
-    if (typeof indeterminate === "boolean") {
-      ref.current.indeterminate = !rest.checked && indeterminate;
-    }
-  }, [ref, indeterminate]);
-
-  return <input type="checkbox" ref={ref} className={className + " cursor-pointer"} {...rest} />;
-};
-
 const Transfer = () => {
-  console.count("render");
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const [pageLoading, setPageLoading] = useState(true);
@@ -68,6 +57,8 @@ const Transfer = () => {
     complete: true,
     date: new Date(),
   });
+
+  const [log, setLog] = useState("");
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [expanded, setExpanded] = useState<ExpandedState>({});
@@ -137,6 +128,14 @@ const Transfer = () => {
     setData(data);
   };
 
+  const checkTable = () => {
+    if (data.length === 0) {
+      toast.error("Please enter at least one transfer.");
+    } else {
+      const check = document.getElementById("processDialog");
+      if (check) (check as HTMLInputElement).checked = true;
+    }
+  };
   const handleTransfer = async () => {
     try {
       setProcessLoading(true);
@@ -219,12 +218,11 @@ const Transfer = () => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const handleSelected = () => {
-    console.log(table.getIsAllRowsSelected());
-  };
-
   const handleDelete = () => {
-    console.log(table.getIsAllRowsSelected());
+    const rows = table.getSelectedRowModel().rows.map((item) => item.index);
+    const filtered = data.filter((_, index) => !rows.includes(index));
+    setData(filtered);
+    table.resetRowSelection();
   };
 
   useEffect(() => {
@@ -258,6 +256,15 @@ const Transfer = () => {
         toast.error(err.message);
       }
     })();
+    (async () => {
+      try {
+        const res = await getLogs("updateDearInventory");
+        setLog(res.data.lastUpdated);
+      } catch (err: any) {
+        console.log(err);
+        toast.error(err.message);
+      }
+    })();
   }, []);
 
   const selection = table.getSelectedRowModel().rows.length;
@@ -270,9 +277,16 @@ const Transfer = () => {
         </div>
       ) : (
         <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
-          <ActionBar date={options.date} handleDate={handleDate} complete={options.complete} handleComplete={handleComplete} />
+          <ActionBar
+            date={options.date}
+            handleDate={handleDate}
+            log={log}
+            complete={options.complete}
+            handleComplete={handleComplete}
+            checkTable={checkTable}
+          />
           <AddLine handleAddData={handleAddData} locations={locations} products={products} />
-          <SelectBar selection={selection} handleSelected={handleSelected} handleDelete={handleDelete} />
+          <SelectBar selection={selection} handleDelete={handleDelete} />
           <TransferTable table={table} />
 
           <ImportDialog inventory={inventory} locations={locations} products={products} handleImport={handleImport} />

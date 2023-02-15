@@ -3,15 +3,17 @@ import DateComponent from "@/components/DatePicker";
 interface ActionBarProps {
   date: Date;
   complete: boolean;
+  log: string;
+  checkTable: () => void;
   handleComplete: () => void;
   handleDate: (date: Date) => void;
 }
 
-const ActionBar = ({ complete, date, handleDate, handleComplete }: ActionBarProps) => {
+const ActionBar = ({ complete, date, log, checkTable, handleDate, handleComplete }: ActionBarProps) => {
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row items-center space-x-2">
-        <p>Transfer Date: </p>
+        <p className="text-gray-400">Transfer Date: </p>
         <DateComponent date={date} setDate={handleDate} />
         <div className="form-control">
           <label className="btn btn-mid cursor-pointer space-x-1">
@@ -21,10 +23,11 @@ const ActionBar = ({ complete, date, handleDate, handleComplete }: ActionBarProp
         </div>
       </div>
       <div className="flex flex-row items-center space-x-2">
+        <p className="text-sm text-gray-400">Inventory Last Updated: {log}</p>
         <label className="btn btn-mid btn-primary" htmlFor="importDialog">
           Import
         </label>
-        <label className="btn btn-mid btn-secondary" htmlFor="processDialog">
+        <label className="btn btn-mid btn-secondary" onClick={checkTable}>
           Transfer
         </label>
       </div>
