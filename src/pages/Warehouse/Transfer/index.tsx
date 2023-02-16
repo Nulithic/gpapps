@@ -22,13 +22,13 @@ import { postTransfer } from "@/services/warehouseService";
 import socket, { socketListen } from "@/libs/socket";
 import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
 import IndeterminateCheckbox from "@/components/CheckBox";
+import DataTable from "@/components/DataTable";
 
 import ActionBar from "./ActionBar";
 import SelectBar from "./SelectBar";
 import AddLine from "./AddLine";
 import ProcessDialog from "./ProcessDialog";
 import ImportDialog from "./ImportDialog";
-import TransferTable from "./TransferTable";
 
 interface TransferData {
   [key: string]: any;
@@ -158,7 +158,7 @@ const Transfer = () => {
     setProcessLoading(false);
   };
 
-  const columns = useMemo<ColumnDef<TransferData>[]>(
+  const columns = useMemo<ColumnDef<unknown>[]>(
     () => [
       {
         id: "select",
@@ -287,7 +287,7 @@ const Transfer = () => {
           />
           <AddLine handleAddData={handleAddData} locations={locations} products={products} />
           <SelectBar selection={selection} handleDelete={handleDelete} />
-          <TransferTable table={table} />
+          <DataTable table={table} enableFilter />
 
           <ImportDialog inventory={inventory} locations={locations} products={products} handleImport={handleImport} />
           <ProcessDialog loading={processLoading} textRef={textRef} handleTransfer={handleTransfer} />

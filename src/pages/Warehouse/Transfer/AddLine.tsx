@@ -46,14 +46,14 @@ const AddLine = ({ locations, products, handleAddData }: AddLineProps) => {
 
         <input
           type="number"
-          className="input input-mid input-bordered text-base placeholder:font-semibold"
+          className="input input-mid input-bordered text-sm placeholder:font-semibold"
           value={addLineData.transferQty}
           onChange={handleToNumber}
           placeholder="Transfer Quantity"
         />
         <input
           type="text"
-          className="input input-mid input-bordered text-base placeholder:font-semibold"
+          className="input input-mid input-bordered text-sm placeholder:font-semibold"
           value={addLineData.reference}
           onChange={handleToReference}
           placeholder="Reference"

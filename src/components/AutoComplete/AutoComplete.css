@@ -1,19 +1,19 @@
 .react-select-container {
-  @apply w-full h-9;
+  @apply w-full;
 }
 
 .react-select__control {
-  @apply input input-mid input-bordered text-base h-9 !important;
+  @apply input input-mid input-bordered text-sm !important;
 }
 
 .react-select__input,
 .react-select__single-value,
 .react-select__menu-notice {
-  @apply text-base font-semibold normal-case !important;
+  @apply text-sm font-semibold normal-case !important;
 }
 
 .react-select__placeholder {
-  @apply text-base font-semibold normal-case text-gray-400 !important;
+  @apply text-sm font-semibold normal-case text-gray-400 !important;
 }
 
 .react-select__menu {

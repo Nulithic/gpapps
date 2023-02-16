@@ -1,16 +1,31 @@
-import { useState, useEffect } from "react";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect, useMemo } from "react";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import {
+  ColumnDef,
+  useReactTable,
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  PaginationState,
+  RowSelectionState,
+} from "@tanstack/react-table";
 
 import DataTable from "@/components/DataTable";
+import IndeterminateCheckbox from "@/components/CheckBox";
 import "./InventoryCount.css";
 
-interface InventoryCount {
+interface CountList {
   _id: string;
   name: string;
   date: string;
   info: string;
 }
-interface ItemCount {
+interface CountData {
   _id: string;
   sku: string;
   bin: string;
@@ -23,19 +38,6 @@ interface ItemCount {
   date: string;
 }
 
-const columns = [
-  { accessorKey: "sku", header: "SKU", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "upc", header: "UPC", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "bin", header: "Bin", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "cartonSize", header: "Carton Size", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "cartonQty", header: "Carton Qty", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "loose", header: "Loose", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "totalQty", header: "Total Qty", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "po", header: "PO", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "comment", header: "Comment", enableColumnFilter: true, filterFn: "equals" },
-  { accessorKey: "date", header: "Date", enableColumnFilter: true, filterFn: "equals" },
-];
-
 const convertToString = (data: any) => {
   if (data != null)
     Object.keys(data).forEach((k) => {
@@ -47,7 +49,7 @@ const convertToString = (data: any) => {
   return data;
 };
 
-const tempData = [
+const countListData = [
   {
     _id: "638f85eb477ea60256e03136",
     name: "Test",
@@ -67,8 +69,7 @@ const tempData = [
     info: "dfgh",
   },
 ];
-
-const countData = [
+const tempCountData = [
   {
     sku: "B-LC103BK",
     upc: "",
@@ -1686,52 +1687,172 @@ const countData = [
 const InventoryCount = () => {
   const [hideList, setHideList] = useState(false);
 
-  const [inventoryCountData, setInventoryCountData] = useState<InventoryCount[]>([]);
-  const [itemCountData, setItemCountData] = useState<ItemCount[]>([]);
+  const [listRowSelection, setListRowSelection] = useState<RowSelectionState>({});
+  const [listColumnFilters, setListColumnFilters] = useState<ColumnFiltersState>([]);
+  const [listSorting, setListSorting] = useState<SortingState>([]);
+  const [listPagination, setListPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 50,
+  });
+
+  const [dataRowSelection, setDataRowSelection] = useState<RowSelectionState>({});
+  const [dataColumnFilters, setDataColumnFilters] = useState<ColumnFiltersState>([]);
+  const [dataSorting, setDataSorting] = useState<SortingState>([]);
+  const [dataPagination, setDataPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 50,
+  });
+
+  const [countList, setCountList] = useState<CountList[]>([]);
+  const [countData, setCountData] = useState<CountData[]>([]);
 
   const handleHideList = () => {
     setHideList((prev) => !prev);
   };
 
-  const handleSelected = (id: string) => {
-    if (id === "638f85eb477ea60256e03136")
-      // const filtered = countData.filter((item) => item._id === id);
-      setItemCountData(countData);
-    else setItemCountData([]);
-  };
+  const countListCol = useMemo<ColumnDef<unknown>[]>(
+    () => [
+      {
+        id: "select",
+        cell: ({ row }) => (
+          <IndeterminateCheckbox
+            className="checkbox checkbox-primary rounded"
+            {...{
+              checked: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              indeterminate: row.getIsSomeSelected(),
+              onChange: row.getToggleSelectedHandler(),
+            }}
+          />
+        ),
+      },
+      { accessorKey: "name", header: "Name", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "info", header: "Info", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "date", header: "Date", enableColumnFilter: true, filterFn: "equals" },
+    ],
+    []
+  );
+  const countListTable = useReactTable({
+    data: countList,
+    columns: countListCol,
+    state: {
+      sorting: listSorting,
+      pagination: listPagination,
+      rowSelection: listRowSelection,
+      columnFilters: listColumnFilters,
+    },
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
+    onRowSelectionChange: setListRowSelection,
+    onColumnFiltersChange: setListColumnFilters,
+    onSortingChange: setListSorting,
+    onPaginationChange: setListPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
+
+  const countDataCol = useMemo<ColumnDef<unknown>[]>(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+            className="checkbox checkbox-primary rounded"
+            {...{
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <IndeterminateCheckbox
+            className="checkbox checkbox-primary rounded"
+            {...{
+              checked: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              indeterminate: row.getIsSomeSelected(),
+              onChange: row.getToggleSelectedHandler(),
+            }}
+          />
+        ),
+      },
+      { accessorKey: "sku", header: "SKU", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "upc", header: "UPC", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "bin", header: "Bin", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "cartonSize", header: "Carton Size", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "cartonQty", header: "Carton Qty", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "loose", header: "Loose", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "totalQty", header: "Total Qty", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "po", header: "PO", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "comment", header: "Comment", enableColumnFilter: true, filterFn: "equals" },
+      { accessorKey: "date", header: "Date", enableColumnFilter: true, filterFn: "equals" },
+    ],
+    []
+  );
+  const countDataTable = useReactTable({
+    data: countData,
+    columns: countDataCol,
+    state: {
+      sorting: dataSorting,
+      pagination: dataPagination,
+      rowSelection: dataRowSelection,
+      columnFilters: dataColumnFilters,
+    },
+    enableRowSelection: true,
+    onRowSelectionChange: setDataRowSelection,
+    onColumnFiltersChange: setDataColumnFilters,
+    onSortingChange: setDataSorting,
+    onPaginationChange: setDataPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
 
   useEffect(() => {
-    setInventoryCountData(tempData);
+    setCountList(countListData);
   }, []);
 
-  return (
-    <div className={`flex w-full max-h-[calc(100vh-104px)] ${hideList ? "space-x-0" : "space-x-4"}`}>
-      <form className={hideList ? "hidden" : "flex-auto w-2/12 bg-base-300 rounded p-4 overflow-y-auto"}>
-        <fieldset className="space-y-4">
-          {inventoryCountData.map((item: any, i: number) => (
-            <label key={i} className="card bg-neutral text-neutral-content hover:bg-base-200 cursor-pointer">
-              <div className="card-body items-center text-center">
-                <h2 className="card-title">{item.name}</h2>
-                <p>{item.info}</p>
-                <p>{item.date}</p>
-                <input type="radio" name="radio" value={item._id} className="absolute h-0 w-0 appearance-none" onClick={() => handleSelected(item._id)} />
-                <span className="hidden absolute inset-0 border-2 border-secondary bg-green-200 bg-opacity-10 rounded-box"></span>
-              </div>
-            </label>
-          ))}
-        </fieldset>
-      </form>
+  const rows = countListTable.getSelectedRowModel().rows;
+  useEffect(() => {
+    if (rows.length > 0) {
+      const select = countListTable.getSelectedRowModel().rows[0].original as CountData;
+      if (select._id === "638f85eb477ea60256e03136") setCountData(tempCountData);
+    } else setCountData([]);
+  }, [rows]);
 
-      <div className="flex-auto flex-row w-10/12 bg-base-300 rounded p-4 space-y-4">
+  return (
+    <div className={`flex flex-col w-full ${hideList ? "space-y-0" : "space-y-4"}`}>
+      <div className={`flex-auto bg-base-300 rounded overflow-y-auto transition-all ease-in-out duration-300 ${hideList ? "h-0 !m-0" : "h-[22rem]"}`}>
+        <div className="flex-auto flex-row bg-base-300 rounded p-4 space-y-4">
+          <div className="flex flex-row space-x-2">
+            <button className="btn btn-mid" onClick={() => {}}>
+              Import
+            </button>
+          </div>
+          <DataTable table={countListTable} height={"max-h-[13.5rem]"} enableFilter />
+        </div>
+      </div>
+
+      <div className="flex-auto flex-row bg-base-300 rounded p-4 space-y-4">
         <div className="flex flex-row space-x-2">
           <button className="btn btn-mid" onClick={handleHideList}>
-            <ChevronLeftIcon className={`${hideList ? "rotate-180 h-4 w-4" : "h-4 w-4"}`} />
+            <ChevronUpIcon className={`${hideList ? "rotate-180 h-4 w-4" : "h-4 w-4"} transition-transform duration-300 mr-2`} />
             {hideList ? "Show List" : "Hide List"}
           </button>
-          <button className="btn btn-mid">Submit</button>
+          <button className="btn btn-mid" onClick={() => {}}>
+            Export
+          </button>
         </div>
 
-        <DataTable data={itemCountData} columns={columns} sortList={[]} height={"h-[calc(100vh-244px)]"} />
+        <DataTable table={countDataTable} enableFilter />
       </div>
     </div>
   );

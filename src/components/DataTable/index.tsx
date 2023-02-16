@@ -1,35 +1,16 @@
-import { useState, useEffect, useMemo, useRef } from "react";
-import {
-  Column,
-  useReactTable,
-  ColumnFiltersState,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getPaginationRowModel,
-  getSortedRowModel,
-  flexRender,
-  SortingState,
-  PaginationState,
-  RowSelectionState,
-  ExpandedState,
-} from "@tanstack/react-table";
-
+import { useState, useEffect, useMemo } from "react";
+import { Table, Column, flexRender } from "@tanstack/react-table";
 import { ChevronUpIcon, ChevronDownIcon, ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 
-import AutoComplete from "../AutoComplete";
-
-interface TableProps {
-  data: any;
-  columns: any;
-  sortList: SortingState;
-  height: string;
-  enableFilters?: boolean;
-}
+import AutoComplete from "@/components/AutoComplete";
 
 interface FilterType {
   column: Column<any, unknown>;
+}
+interface TableProps {
+  table: Table<unknown>;
+  height?: string;
+  enableFilter?: boolean;
 }
 
 const Filter = ({ column }: FilterType) => {
@@ -46,7 +27,6 @@ const Filter = ({ column }: FilterType) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log(value);
       if (value) {
         column.setFilterValue(value.value);
       } else column.setFilterValue(null);
@@ -58,46 +38,9 @@ const Filter = ({ column }: FilterType) => {
   return <AutoComplete options={options} value={value} onChange={handleAutoComplete} placeholder="Filter" />;
 };
 
-const DataTable = ({ data, columns, sortList, height, enableFilters = true }: TableProps) => {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 50,
-  });
-
-  const [globalFilter, setGlobalFilter] = useState("");
-  const [expanded, setExpanded] = useState<ExpandedState>({});
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>(sortList);
-
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      pagination,
-      rowSelection,
-      expanded,
-      columnFilters,
-      globalFilter,
-    },
-    enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onExpandedChange: setExpanded,
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    onSortingChange: setSorting,
-    onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
+const DataTable = ({ table, height, enableFilter = false }: TableProps) => {
   return (
-    <div className="flex flex-col space-y-4 ">
+    <div className="flex flex-col space-y-4">
       <div className={`flex bg-base-100 rounded ${height} overflow-auto`}>
         <table className="table table-compact min-w-full h-fit">
           <thead className="sticky top-0">
@@ -113,7 +56,7 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
                           desc: <ChevronDownIcon className="h-4 w-4" />,
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
-                      {header.column.getCanFilter() && enableFilters ? <Filter column={header.column} /> : null}
+                      {header.column.getCanFilter() && enableFilter ? <Filter column={header.column} /> : null}
                     </div>
                   </th>
                 ))}
@@ -122,7 +65,7 @@ const DataTable = ({ data, columns, sortList, height, enableFilters = true }: Ta
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+              <tr key={row.id} onClick={() => row.toggleSelected()}>
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                 ))}
