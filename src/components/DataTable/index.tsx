@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Table, Column, flexRender } from "@tanstack/react-table";
+import { Table, Column, Row, flexRender } from "@tanstack/react-table";
 import { ChevronUpIcon, ChevronDownIcon, ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 
 import AutoComplete from "@/components/AutoComplete";
@@ -11,6 +11,7 @@ interface TableProps {
   table: Table<unknown>;
   height?: string;
   enableFilter?: boolean;
+  rowColors?: (row: Row<any>) => string;
 }
 
 const Filter = ({ column }: FilterType) => {
@@ -38,7 +39,7 @@ const Filter = ({ column }: FilterType) => {
   return <AutoComplete options={options} value={value} onChange={handleAutoComplete} placeholder="Filter" />;
 };
 
-const DataTable = ({ table, height, enableFilter = false }: TableProps) => {
+const DataTable = ({ table, height, rowColors, enableFilter = false }: TableProps) => {
   return (
     <div className="flex flex-col space-y-4">
       <div className={`flex bg-base-100 rounded ${height} overflow-auto`}>
@@ -64,13 +65,18 @@ const DataTable = ({ table, height, enableFilter = false }: TableProps) => {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} onClick={() => row.toggleSelected()}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                ))}
-              </tr>
-            ))}
+            {table.getRowModel().rows.map((row) => {
+              const rowColor = rowColors?.(row) ?? "";
+              return (
+                <tr key={row.id} onClick={() => row.toggleSelected()}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className={rowColor}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

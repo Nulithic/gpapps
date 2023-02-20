@@ -39,3 +39,22 @@ export const postTransfer = (transferData: any, socketID: string) => {
     }
   );
 };
+
+export const getCompareTemplate = () => {
+  return axios.get("/api/get/warehouse/compare/template", {
+    responseType: "blob",
+    headers: { "x-access-token": getUserToken() },
+  });
+};
+export const postCompare = (importData: any, location: string) => {
+  return axios.post(
+    "/api/post/warehouse/compare",
+    {
+      importData,
+      location,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};

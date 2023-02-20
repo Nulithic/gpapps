@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import { updateDearProducts, updateDearLocations, updateDearInventory } from "@/services/dearService";
 import ProgressButton from "@/components/ProgressButton";
 

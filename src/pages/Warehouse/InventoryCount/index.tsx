@@ -1851,7 +1851,6 @@ const InventoryCount = () => {
             Export
           </button>
         </div>
-
         <DataTable table={countDataTable} enableFilter />
       </div>
     </div>
