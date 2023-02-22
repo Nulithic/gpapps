@@ -1,4 +1,4 @@
-import { getMicroCenterOrders } from "@/api/customer";
+import { getMicroCenterOrders } from "@/api/customers/MicroCenter";
 import AuthSPS from "@/auth/SPSCommerce";
 
 const Orders = () => {
