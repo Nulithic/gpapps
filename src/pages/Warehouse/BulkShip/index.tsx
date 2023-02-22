@@ -69,16 +69,18 @@ const BulkShip = () => {
   }, [importFile]);
 
   return (
-    <div className="flex flex-col w-1/2 items-center space-y-4">
-      <div className="flex flex-row w-full space-x-4">
+    <div className="flex flex-col w-2/5 items-center space-y-4">
+      <div className="flex flex-col w-full space-y-2">
         <ImportFile label="Drop File" maxFiles={1} acceptFile=".xlsx" importFile={importFile} setImportFile={setImportFile} />
-        <Results textRef={textRef} />
+        <div className="flex flex-row w-full h-56">
+          <Results textRef={textRef} />
+        </div>
       </div>
 
       {loading ? (
         <progress className="progress progress-secondary w-56"></progress>
       ) : (
-        <div className="flex flex-row w-full space-x-4">
+        <div className="flex flex-row w-full justify-center space-x-4">
           <button className="btn btn-mid" onClick={downloadTemplate}>
             Template
           </button>

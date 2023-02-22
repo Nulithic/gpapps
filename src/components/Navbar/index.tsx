@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate, NavLink, Outlet, Link } from "react-router-dom";
-import { ChevronUpIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import { useNavigate, Outlet, Link } from "react-router-dom";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/auth/context";
 import { userLogout } from "@/services/authService";

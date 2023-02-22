@@ -249,12 +249,14 @@ const Compare = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
-            <button className="btn btn-primary btn-mid" onClick={handleAdjustment}>
-              Download Adjustment
-            </button>
-            <DataTable table={table} rowColors={rowColors} />
-          </div>
+          {data.length > 0 ? (
+            <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
+              <button className="btn btn-primary btn-mid" onClick={handleAdjustment}>
+                Download Adjustment
+              </button>
+              <DataTable table={table} rowColors={rowColors} />
+            </div>
+          ) : null}
         </div>
       )}
     </>
