@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { saveUserToken } from "@/auth/storage";
-import { userLogin } from "@/services/authService";
+import { userLogin } from "@/api/auth";
 
 type LocationProps = {
   state: {

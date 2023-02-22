@@ -2,7 +2,7 @@ import { useNavigate, Outlet, Link } from "react-router-dom";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 import { useAuth } from "@/auth/context";
-import { userLogout } from "@/services/authService";
+import { userLogout } from "@/api/auth";
 
 import Menubar from "./Menubar";
 

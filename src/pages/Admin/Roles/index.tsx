@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 
-import { addRole, deleteRole, getRoles } from "@/services/adminService";
+import { addRole, deleteRole, getRoles } from "@/api/admin";
 import { Role } from "@/types/authType";
 
 import TreeView from "./TreeView";

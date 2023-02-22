@@ -4,7 +4,7 @@ import download from "downloadjs";
 
 import socket, { socketListen } from "@/libs/socket";
 import ImportFile from "@/components/ImportFile";
-import { getBulkShipTemplate, postBulkShip } from "@/services/warehouseService";
+import { getBulkShipTemplate, postBulkShip } from "@/api/warehouse";
 import Results from "@/components/Results";
 
 interface BulkShip {

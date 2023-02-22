@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getUserToken } from "@/auth/storage";
 
+//Bulkship
 export const getBulkShipTemplate = () => {
   return axios.get("/api/get/warehouse/bulk_ship/template", {
     responseType: "blob",
@@ -40,6 +41,7 @@ export const postTransfer = (transferData: any, socketID: string) => {
   );
 };
 
+//Compare
 export const getCompareTemplate = () => {
   return axios.get("/api/get/warehouse/compare/template", {
     responseType: "blob",

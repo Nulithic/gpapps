@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import socket from "@/libs/socket";
 import { setCookie } from "./cookies";
-import { getUser } from "@/services/authService";
+import { getUser } from "@/api/auth";
 import { User } from "@/types/authType";
 
 interface ActionType {

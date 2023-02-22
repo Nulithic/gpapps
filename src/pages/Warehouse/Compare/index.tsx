@@ -18,13 +18,13 @@ import {
   Row,
 } from "@tanstack/react-table";
 
-import { getDearLocations } from "@/services/dearService";
-import { getLogs } from "@/services/logService";
+import { getDearLocations } from "@/api/dear";
+import { getLogs } from "@/api/log";
 import ImportFile from "@/components/ImportFile";
 import DataTable from "@/components/DataTable";
 
 import { DearLocations } from "@/types/dbType";
-import { getCompareTemplate, postCompare } from "@/services/warehouseService";
+import { getCompareTemplate, postCompare } from "@/api/warehouse";
 
 interface ImportData {
   SKU: string;

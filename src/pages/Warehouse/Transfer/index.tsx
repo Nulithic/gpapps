@@ -16,9 +16,9 @@ import {
   ExpandedState,
 } from "@tanstack/react-table";
 
-import { getDearInventory, getDearLocations, getDearProducts } from "@/services/dearService";
-import { getLogs } from "@/services/logService";
-import { postTransfer } from "@/services/warehouseService";
+import { getDearInventory, getDearLocations, getDearProducts } from "@/api/dear";
+import { getLogs } from "@/api/log";
+import { postTransfer } from "@/api/warehouse";
 import socket, { socketListen } from "@/libs/socket";
 import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
 import IndeterminateCheckbox from "@/components/CheckBox";

@@ -1,4 +1,4 @@
-import { updateDearProducts, updateDearLocations, updateDearInventory } from "@/services/dearService";
+import { updateDearProducts, updateDearLocations, updateDearInventory } from "@/api/dear";
 import ProgressButton from "@/components/ProgressButton";
 
 const Settings = () => {

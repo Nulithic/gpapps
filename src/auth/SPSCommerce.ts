@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import isBefore from "date-fns/isBefore";
 
-import { setStateCookie } from "@/services/authService";
+import { setStateCookie } from "@/api/auth";
 import { getSPSToken } from "@/auth/storage";
 import { getCookie } from "@/auth/cookies";
 
