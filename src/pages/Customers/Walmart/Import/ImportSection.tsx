@@ -19,8 +19,8 @@ interface ImportSectionProps {
 const ImportSection = ({ label, disabled, loading, textRef, importFile, acceptFile, maxFiles, setImportFile, handleSubmit }: ImportSectionProps) => {
   return (
     <div className="flex flex-col w-full space-y-2">
-      <ImportFile label={label} maxFiles={maxFiles} acceptFile={acceptFile} importFile={importFile} setImportFile={setImportFile} />
-      <div className="flex flex-row w-full h-56">
+      <ImportFile height="15rem" label={label} maxFiles={maxFiles} acceptFile={acceptFile} importFile={importFile} setImportFile={setImportFile} />
+      <div className="flex flex-row w-full h-44">
         <Results textRef={textRef} />
       </div>
       <button className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`} onClick={handleSubmit} disabled={disabled}>

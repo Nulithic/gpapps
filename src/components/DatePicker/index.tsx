@@ -6,7 +6,9 @@ import { format, getMonth, getYear } from "date-fns";
 import "./DatePicker.css";
 
 interface DateComponentProps {
+  inline?: boolean;
   date: Date;
+  maxDate?: Date;
   setDate: (date: Date) => void;
 }
 
@@ -16,7 +18,7 @@ const ButtonInput = forwardRef(({ value, onClick }: any, ref: any) => (
   </button>
 ));
 
-const DateComponent = ({ date, setDate }: DateComponentProps) => {
+const DateComponent = ({ inline, date, maxDate, setDate }: DateComponentProps) => {
   const range = (start: number, end: number) => {
     return new Array(end - start).fill("").map((d, i) => i + start);
   };
@@ -29,6 +31,8 @@ const DateComponent = ({ date, setDate }: DateComponentProps) => {
       onChange={(date) => setDate(date ?? new Date())}
       popperClassName="react-datepicker-popper"
       customInput={<ButtonInput />}
+      inline={inline}
+      maxDate={maxDate}
       showMonthYearDropdown
       todayButton="Today"
       renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (

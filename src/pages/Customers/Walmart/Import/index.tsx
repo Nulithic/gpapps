@@ -1,14 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { FileValidated } from "@dropzone-ui/react";
 import $ from "jquery";
-import ImportSection from "./ImportSection";
 
+import ImportSection from "./ImportSection";
+import DateComponent from "@/components/DatePicker";
+import Results from "@/components/Results";
 import { WalmartTracker, HTMLOrder, HTMLOrderAllowancesAndCharges, HTMLItems } from "@/types/walmartType";
+import { postWalmartImportEDI, postWalmartImportHTML, postWalmartImportB2B } from "@/api/customers/Walmart";
+import socket, { socketListen, clearRef } from "@/libs/socket";
 
 const WalmartImport = () => {
   const ediRef = useRef<HTMLTextAreaElement>(null);
   const htmlRef = useRef<HTMLTextAreaElement>(null);
+  const b2bRef = useRef<HTMLTextAreaElement>(null);
   const trackerRef = useRef<HTMLTextAreaElement>(null);
+
+  const [date, setDate] = useState(new Date());
 
   const [iframeHTML, setIframeHTML] = useState<(string | undefined)[]>([]);
 
@@ -21,19 +28,63 @@ const WalmartImport = () => {
 
   const [loadEDI, setLoadEDI] = useState(false);
   const [loadHTML, setLoadHTML] = useState(false);
+  const [loadB2B, setLoadB2B] = useState(false);
   const [loadTracker, setLoadTracker] = useState(false);
 
-  const [disableEDI, setDiableEDI] = useState(true);
+  const [disableEDI, setDisableEDI] = useState(true);
   const [disableHTML, setDisableHTML] = useState(true);
+  const [disableB2B, setDisableB2B] = useState(false);
   const [disableTracker, setDisableTracker] = useState(true);
 
-  const handleSubmitEDI = () => {
-    console.log(dataEDI);
+  const handleSubmitEDI = async () => {
+    setLoadEDI(true);
+    setDisableEDI(true);
+    for (const data of dataEDI) {
+      const res = await postWalmartImportEDI(data, socket.id);
+      if (res.status === 200) {
+        console.log(res.data);
+        if (ediRef && ediRef.current) {
+          if (ediRef.current.value !== "") ediRef.current.value += `\n`;
+          ediRef.current.value += "Orders have been imported.";
+          ediRef.current.scrollTop = ediRef.current.scrollHeight;
+        }
+      }
+    }
+    setLoadEDI(false);
+    setImportEDI([]);
+    setDataEDI([]);
   };
-  const handleSubmitHTML = () => {
+  const handleSubmitHTML = async () => {
     console.log(dataHTML);
+    const res = await postWalmartImportHTML(dataHTML);
+    if (res.status === 200) {
+      if (htmlRef && htmlRef.current) {
+        if (htmlRef.current.value !== "") htmlRef.current.value += `\n`;
+        htmlRef.current.value += "Orders have been imported.";
+        htmlRef.current.scrollTop = htmlRef.current.scrollHeight;
+      }
+    }
     setImportHTML([]);
     setDataHTML([]);
+  };
+  const handleSubmitB2B = async () => {
+    setLoadB2B(true);
+    setDisableB2B(true);
+    clearRef(b2bRef);
+    try {
+      const b2bData = {
+        date: date,
+        fileType: "POS",
+      };
+      socketListen("postWalmartImportB2B", b2bRef);
+      const res = await postWalmartImportB2B(b2bData, socket.id);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    socket.off("postWalmartImportB2B");
+    setLoadB2B(false);
+    setDisableB2B(false);
   };
   const handleSubmitTracker = () => {
     console.log(dataTracker);
@@ -200,7 +251,7 @@ const WalmartImport = () => {
     if (importEDI.length > 0) {
       const valid = importEDI.every((item) => item.valid === true);
       if (valid) {
-        setDiableEDI(false);
+        setDisableEDI(false);
         setDataEDI([]);
         for (let i = 0; i < importEDI.length; i++) {
           const fileReader = new FileReader();
@@ -209,8 +260,8 @@ const WalmartImport = () => {
           };
           fileReader.readAsBinaryString(importEDI[i].file);
         }
-      } else setDiableEDI(true);
-    } else setDiableEDI(true);
+      } else setDisableEDI(true);
+    } else setDisableEDI(true);
   }, [importEDI]);
 
   useEffect(() => {
@@ -273,6 +324,22 @@ const WalmartImport = () => {
 
   return (
     <div className="flex flex-col w-full items-center space-y-4">
+      <div className="flex flex-row w-1/2 h-auto space-x-2">
+        <div className="flex flex-row pb-2 bg-base-300 rounded">
+          <DateComponent inline date={date} maxDate={new Date()} setDate={setDate} />
+        </div>
+
+        <div className="flex flex-col w-full space-y-2">
+          <div className="flex flex-row w-full h-full">
+            <Results textRef={b2bRef} />
+          </div>
+
+          <button type="button" className={`btn btn-primary btn-mid ${loadB2B ? "loading" : ""}`} disabled={disableB2B} onClick={handleSubmitB2B}>
+            Submit
+          </button>
+        </div>
+      </div>
+
       <div className="flex flex-row w-full space-x-2">
         <ImportSection
           label={"EDI Files"}
@@ -285,6 +352,7 @@ const WalmartImport = () => {
           setImportFile={setImportEDI}
           handleSubmit={handleSubmitEDI}
         />
+
         <ImportSection
           label={"HTML Files"}
           disabled={disableHTML}
@@ -296,6 +364,7 @@ const WalmartImport = () => {
           setImportFile={setImportHTML}
           handleSubmit={handleSubmitHTML}
         />
+
         <ImportSection
           label={"Tracker File"}
           disabled={disableTracker}
@@ -308,6 +377,7 @@ const WalmartImport = () => {
           handleSubmit={handleSubmitTracker}
         />
       </div>
+
       <div className="hidden">{iframeHTML ? iframeHTML.map((item, i) => <iframe key={i} title="htmlData" id={`ediDoc-${i}`} srcDoc={item} />) : null}</div>
     </div>
   );

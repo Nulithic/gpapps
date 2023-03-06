@@ -21,4 +21,10 @@ export const socketListen = (id: string, textRef: RefObject<HTMLTextAreaElement>
   });
 };
 
+export const clearRef = (textRef: RefObject<HTMLTextAreaElement>) => {
+  if (textRef && textRef.current) {
+    textRef.current.value = "";
+  }
+};
+
 export default socket;
