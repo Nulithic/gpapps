@@ -18,7 +18,8 @@ import {
   Row,
 } from "@tanstack/react-table";
 
-import { getDearLocations } from "@/api/dear";
+import socket from "@/libs/socket";
+import { getDearLocations, updateDearInventory } from "@/api/dear";
 import { getLogs } from "@/api/log";
 import ImportFile from "@/components/ImportFile";
 import DataTable from "@/components/DataTable";
@@ -40,6 +41,9 @@ interface CompareData extends ImportData {
 }
 
 const Compare = () => {
+  const [progress, setProgress] = useState(0);
+  const [maxProgress, setMaxProgress] = useState(100);
+
   const [pageLoading, setPageLoading] = useState(true);
   const [processLoading, setProcessLoading] = useState(false);
 
@@ -150,19 +154,26 @@ const Compare = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getDearLocations();
-        const list = res.data.filter((item: DearLocations) => item.bin === "");
+        socket.on("updateDearInventoryMax", (args) => {
+          setMaxProgress(args);
+        });
+        socket.on("updateDearInventory", (args) => {
+          setProgress(args);
+        });
+
+        const resLocations = await getDearLocations();
+        const list = resLocations.data.filter((item: DearLocations) => item.bin === "");
         setLocationList(list);
-        setPageLoading(false);
-      } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
-      }
-    })();
-    (async () => {
-      try {
-        const res = await getLogs("updateDearInventory");
-        setLog(res.data.lastUpdated);
+
+        if (resLocations.status === 200) {
+          const resUpdate = await updateDearInventory(socket.id);
+          if (resUpdate.status === 200) {
+            const resLog = await getLogs("updateDearInventory");
+
+            setLog(resLog.data.lastUpdated);
+            setPageLoading(false);
+          }
+        }
       } catch (err: any) {
         console.log(err);
         toast.error(err.message);
@@ -216,8 +227,9 @@ const Compare = () => {
   return (
     <>
       {pageLoading ? (
-        <div className="flex h-full items-center">
-          <progress className="progress progress-secondary w-56"></progress>
+        <div className="flex flex-col h-full justify-center space-y-2">
+          <a>Updating Inventory...</a>
+          <progress className="progress progress-secondary w-56" max={maxProgress} value={progress}></progress>
         </div>
       ) : (
         <div className="flex flex-col w-full items-center space-y-4">

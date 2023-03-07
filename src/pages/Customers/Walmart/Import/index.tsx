@@ -6,7 +6,7 @@ import ImportSection from "./ImportSection";
 import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 import { WalmartTracker, HTMLOrder, HTMLOrderAllowancesAndCharges, HTMLItems } from "@/types/walmartType";
-import { postWalmartImportEDI, postWalmartImportHTML, postWalmartImportB2B } from "@/api/customers/Walmart";
+import { postWalmartImportEDI, postWalmartImportHTML, postWalmartImportB2B, postWalmartImportTracker } from "@/api/customers/Walmart";
 import socket, { socketListen, clearRef } from "@/libs/socket";
 
 const WalmartImport = () => {
@@ -86,8 +86,24 @@ const WalmartImport = () => {
     setLoadB2B(false);
     setDisableB2B(false);
   };
-  const handleSubmitTracker = () => {
+  const handleSubmitTracker = async () => {
     console.log(dataTracker);
+    try {
+      const res = await postWalmartImportTracker(dataTracker);
+      console.log(res.data);
+      if (trackerRef && trackerRef.current) {
+        if (trackerRef.current.value !== "") trackerRef.current.value += `\n`;
+        trackerRef.current.value += "Import completed.";
+        trackerRef.current.scrollTop = trackerRef.current.scrollHeight;
+      }
+    } catch (err) {
+      console.log(err);
+      if (trackerRef && trackerRef.current) {
+        if (trackerRef.current.value !== "") trackerRef.current.value += `\n`;
+        trackerRef.current.value += "Import failed.";
+        trackerRef.current.scrollTop = trackerRef.current.scrollHeight;
+      }
+    }
   };
 
   const handleDynamicData = (order: JQuery<HTMLElement>, length: number, title: string) => {
@@ -340,7 +356,7 @@ const WalmartImport = () => {
         </div>
       </div>
 
-      <div className="flex flex-row w-full space-x-2">
+      <div className="flex flex-row w-1/2 space-x-2">
         <ImportSection
           label={"EDI Files"}
           disabled={disableEDI}
@@ -353,7 +369,7 @@ const WalmartImport = () => {
           handleSubmit={handleSubmitEDI}
         />
 
-        <ImportSection
+        {/* <ImportSection
           label={"HTML Files"}
           disabled={disableHTML}
           loading={loadHTML}
@@ -363,7 +379,7 @@ const WalmartImport = () => {
           importFile={importHTML}
           setImportFile={setImportHTML}
           handleSubmit={handleSubmitHTML}
-        />
+        /> */}
 
         <ImportSection
           label={"Tracker File"}

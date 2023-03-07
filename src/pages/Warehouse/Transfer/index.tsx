@@ -16,7 +16,7 @@ import {
   ExpandedState,
 } from "@tanstack/react-table";
 
-import { getDearInventory, getDearLocations, getDearProducts } from "@/api/dear";
+import { getDearInventory, getDearLocations, getDearProducts, updateDearInventory } from "@/api/dear";
 import { getLogs } from "@/api/log";
 import { postTransfer } from "@/api/warehouse";
 import socket, { socketListen } from "@/libs/socket";
@@ -29,6 +29,7 @@ import SelectBar from "./SelectBar";
 import AddLine from "./AddLine";
 import ProcessDialog from "./ProcessDialog";
 import ImportDialog from "./ImportDialog";
+import Results from "@/components/Results";
 
 interface TransferData {
   [key: string]: any;
@@ -44,6 +45,9 @@ interface TransferData {
 
 const Transfer = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const [progress, setProgress] = useState(0);
+  const [maxProgress, setMaxProgress] = useState(100);
 
   const [pageLoading, setPageLoading] = useState(true);
   const [processLoading, setProcessLoading] = useState(false);
@@ -228,38 +232,33 @@ const Transfer = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getDearInventory();
-        setInventory(res.data);
-      } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
-      }
-    })();
-    (async () => {
-      try {
-        const res = await getDearProducts();
-        const list = res.data.map((item: DearProducts) => ({ ...item, value: item.sku, label: item.sku }));
-        setProducts(list);
-      } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
-      }
-    })();
-    (async () => {
-      try {
-        const res = await getDearLocations();
-        const list = res.data.map((item: DearLocations) => ({ ...item, value: item.location, label: item.location }));
-        setLocations(list);
-        setPageLoading(false);
-      } catch (err: any) {
-        console.log(err);
-        toast.error(err.message);
-      }
-    })();
-    (async () => {
-      try {
-        const res = await getLogs("updateDearInventory");
-        setLog(res.data.lastUpdated);
+        socket.on("updateDearInventoryMax", (args) => {
+          setMaxProgress(args);
+        });
+        socket.on("updateDearInventory", (args) => {
+          setProgress(args);
+        });
+
+        const resProducts = await getDearProducts();
+        const productList = resProducts.data.map((item: DearProducts) => ({ ...item, value: item.sku, label: item.sku }));
+        setProducts(productList);
+
+        const resLocations = await getDearLocations();
+        const LocationList = resLocations.data.map((item: DearLocations) => ({ ...item, value: item.location, label: item.location }));
+        setLocations(LocationList);
+
+        if (resProducts.status === 200 && resLocations.status === 200) {
+          const resUpdate = await updateDearInventory(socket.id);
+          if (resUpdate.status === 200) {
+            const resInventory = await getDearInventory();
+            setInventory(resInventory.data);
+
+            const resLog = await getLogs("updateDearInventory");
+
+            setLog(resLog.data.lastUpdated);
+            setPageLoading(false);
+          }
+        }
       } catch (err: any) {
         console.log(err);
         toast.error(err.message);
@@ -272,8 +271,9 @@ const Transfer = () => {
   return (
     <>
       {pageLoading ? (
-        <div className="flex h-full items-center">
-          <progress className="progress progress-secondary w-56"></progress>
+        <div className="flex flex-col h-full justify-center space-y-2">
+          <a>Updating Inventory...</a>
+          <progress className="progress progress-secondary w-56" max={maxProgress} value={progress}></progress>
         </div>
       ) : (
         <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
