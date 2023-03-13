@@ -17,7 +17,7 @@
 }
 
 .btn {
-  @apply rounded;
+  @apply rounded min-h-0;
 }
 
 .btn-error {
@@ -45,7 +45,7 @@
 @layer components {
   .btn-mid {
     height: 2.25rem;
-    min-height: 2.25rem;
+    min-height: unset;
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 0.875rem;
@@ -54,7 +54,7 @@
 
   .input-mid {
     height: 2.25rem;
-    min-height: 2.25rem;
+    min-height: unset;
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 0.875rem;
@@ -63,7 +63,7 @@
 
   .select-mid {
     height: 2.25rem;
-    min-height: 2.25rem;
+    min-height: unset;
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 0.875rem;

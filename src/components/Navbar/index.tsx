@@ -36,8 +36,8 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end">
-            <button className="btn btn-sm btn-error" onClick={handleLogout}>
-              <ArrowRightOnRectangleIcon className="h-4 w-4 group-hover/admin:rotate-180 transition-transform" />
+            <button className="btn btn-mid btn-error" onClick={handleLogout}>
+              <ArrowRightOnRectangleIcon className="h-5 w-5" />
             </button>
           </div>
         </div>
