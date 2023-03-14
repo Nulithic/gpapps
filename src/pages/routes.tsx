@@ -33,8 +33,7 @@ const Router = () => {
     },
     {
       path: "/home",
-      element: <Navbar />,
-      children: [{ index: true, element: <Home /> }],
+      element: <Home />,
     },
     {
       path: "/admin",
