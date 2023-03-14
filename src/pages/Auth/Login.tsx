@@ -47,7 +47,6 @@ export default function Login() {
           placeholder="Username"
           className="input input-bordered input-primary w-fit"
           name="username"
-          autoComplete="username"
           required
           value={form.username}
           onChange={updateForm}
@@ -57,7 +56,6 @@ export default function Login() {
           placeholder="Password"
           className="input input-bordered input-primary w-fit"
           name="password"
-          autoComplete="current-password"
           required
           value={form.password}
           onChange={updateForm}

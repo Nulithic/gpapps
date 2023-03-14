@@ -32,17 +32,17 @@ const Home = () => {
               {parent.role === "customer" ? (
                 <div className="flex flex-col overflow-y-auto space-y-4">
                   {roles.map((role) =>
-                    role.parent?.includes("customer") && role.path.match(/\//g)?.length === 2 ? (
+                    role.parent?.includes("customer") && role.path.match(/\//g)?.length === 2 && role.status ? (
                       <div key={role.role} className="grid grid-cols-4 gap-4">
                         <h2 className="card-title text-xl whitespace-nowrap pl-8">{role.name}</h2>
                         {roles.map((customer) =>
-                          customer.parent === role.role ? (
+                          customer.parent === role.role && customer.status ? (
                             <div
                               key={customer.role}
                               className="card bg-base-300 shadow hover:bg-slate-600 hover:shadow-xl cursor-pointer"
                               onClick={() => navigate(customer.path)}
                             >
-                              <div className="card-body">
+                              <div className="card-body items-center">
                                 <h2 className="card-title">{customer.name}</h2>
                               </div>
                             </div>
@@ -55,13 +55,13 @@ const Home = () => {
               ) : (
                 <div className="grid grid-cols-4 gap-4">
                   {roles.map((role) =>
-                    role.path.includes(parent.role) && role.parent !== "" ? (
+                    role.path.includes(parent.role) && role.parent !== "" && role.status ? (
                       <div
                         key={role.role}
                         className="card bg-base-300 shadow hover:bg-slate-600 hover:shadow-xl cursor-pointer"
                         onClick={() => navigate(role.path)}
                       >
-                        <div className="card-body">
+                        <div className="card-body items-center">
                           <h2 className="card-title">{role.name}</h2>
                         </div>
                       </div>
