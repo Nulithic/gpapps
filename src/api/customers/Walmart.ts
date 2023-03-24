@@ -1,8 +1,12 @@
 import axios from "axios";
 import { getUserToken } from "@/auth/storage";
 
-export const getWalmartOrders = () => {
+export const getWalmartOrders = (option: string) => {
   return axios.get("/api/get/customer/walmart/orders", {
+    params: {
+      option: option,
+    },
+
     headers: { "x-access-token": getUserToken() },
   });
 };
@@ -56,6 +60,50 @@ export const postWalmartLocation = (locationData: any) => {
     {
       locationData,
     },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+
+export const postWalmartPackingList = (selection: any) => {
+  return axios.post(
+    "/api/post/customer/walmart/order/packing_list",
+    {
+      selection,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const postWalmartUnderlyingBOL = (selection: any) => {
+  return axios.post(
+    "/api/post/customer/walmart/import/location",
+    {
+      selection,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const postWalmartMasterBOL = (selection: any) => {
+  return axios.post(
+    "/api/post/customer/walmart/import/location",
+    {
+      selection,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+
+export const postWalmartArchiveOrder = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart/order/archive",
+    { data },
     {
       headers: { "x-access-token": getUserToken() },
     }

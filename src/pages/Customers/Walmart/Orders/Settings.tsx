@@ -9,13 +9,14 @@ import { arrayMove, insertAtIndex, removeAtIndex } from "./DnD/array";
 
 interface DialogProps {
   filterList: any[];
+  tableOptions: string;
+  handleTableOptions: (value: string) => void;
 }
-
 interface filterList {
   [key: string]: string[];
 }
 
-const SettingsDialog = ({ filterList }: DialogProps) => {
+const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: DialogProps) => {
   const [itemGroups, setItemGroups] = useState<filterList>({
     group1: [],
     group2: [],
@@ -134,17 +135,25 @@ const SettingsDialog = ({ filterList }: DialogProps) => {
     <>
       <input type="checkbox" id="settingsDialog" className="modal-toggle" />
       <div className="modal">
-        <div className="modal-box max-w-5xl">
-          <h3 className="font-bold text-lg pb-4">Settings</h3>
+        <div className="modal-box max-w-5xl space-y-4">
+          <h3 className="font-bold text-lg">Settings</h3>
+
+          <div className="flex flex-col">
+            <select className="select select-bordered select-mid w-full" value={tableOptions} onChange={(e) => handleTableOptions(e.target.value)}>
+              <option value="All Orders">All Orders</option>
+              <option value="Active Orders">Active Orders</option>
+              <option value="Archived Orders">Archived Orders</option>
+            </select>
+          </div>
 
           <div className="flex flex-col">
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragCancel={handleDragCancel} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
               <div className="flex space-x-10">
                 {Object.keys(itemGroups).map((group) => (
-                  <div key={group} className="flex flex-col w-full space-y-4">
+                  <div key={group} className="flex flex-col w-full space-y-2">
                     <p>{group === "group1" ? "Hidden List" : "Filter List"}</p>
                     <Droppable id={group} items={itemGroups[group]} />
-                    <button className="btn btn-primary" onClick={() => handleMoveAll(group)}>
+                    <button className="btn btn-mid btn-primary" onClick={() => handleMoveAll(group)}>
                       {group === "group1" ? "Move All to Filter List" : "Move All to Hidden List"}
                     </button>
                   </div>
