@@ -169,6 +169,7 @@ export interface WalmartTracker {
   purchaseOrderEventCode: string;
   actualWeight: string;
   billOfLading: string;
+  carrierName: string;
   carrierSCAC: string;
   carrierReference: string;
   class: string;

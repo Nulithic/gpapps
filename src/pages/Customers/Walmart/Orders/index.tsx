@@ -17,14 +17,15 @@ import {
 } from "@tanstack/react-table";
 import { PDFViewer } from "@react-pdf/renderer";
 
-import PackingList from "./PDF/PackingList";
-
 import socket, { socketListen } from "@/libs/socket";
 import IndeterminateCheckbox from "@/components/CheckBox";
 import DataTable from "@/components/DataTable";
 import ActionBar from "./ActionBar";
 import { getWalmartOrders } from "@/api/customers/Walmart";
 import WalmartOrder from "@/types/walmart/orderType";
+
+import PackingList from "./PDF/PackingList";
+import UnderlyingBOL from "./PDF/UnderlyingBOL";
 
 const filterList = [
   {
@@ -229,6 +230,46 @@ const selectCol: ColumnDef<any> = {
   ),
 };
 
+interface PDFModalProps {
+  pdf: string;
+  selection: WalmartOrder[];
+  frame: boolean;
+  handleFrame: () => void;
+}
+
+const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
+  return (
+    <>
+      <PDFViewer height="1000px" width="100%">
+        <UnderlyingBOL selection={selection} />
+      </PDFViewer>
+      <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
+      <div className="modal">
+        <div className="modal-box relative h-[calc(100vh-216px)] max-w-full p-12">
+          <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
+            ✕
+          </label>
+          {frame && pdf === "packingList" ? (
+            <PDFViewer height="100%" width="100%">
+              <PackingList selection={selection} />
+            </PDFViewer>
+          ) : null}
+          {frame && pdf === "underlyingBOL" ? (
+            <PDFViewer height="100%" width="100%">
+              <UnderlyingBOL selection={selection} />
+            </PDFViewer>
+          ) : null}
+          {frame && pdf === "masterBOL" ? (
+            <PDFViewer height="100%" width="100%">
+              <PackingList selection={selection} />
+            </PDFViewer>
+          ) : null}
+        </div>
+      </div>
+    </>
+  );
+};
+
 const Walmart = () => {
   const [columns, setColumns] = useState<ColumnDef<any>[]>([]);
 
@@ -246,6 +287,8 @@ const Walmart = () => {
   const [tableOptions, setTableOptions] = useState<string>("All");
 
   const [packingListFrame, setPackingListFrame] = useState(false);
+  const [underlyingBOLFrame, setUnderlyingBOLFrame] = useState(false);
+  const [masterBOLFrame, setMasterBOLFrame] = useState(false);
 
   const handleTableOptions = (value: string) => {
     localStorage.setItem("walmartTableOptions", value);
@@ -253,6 +296,12 @@ const Walmart = () => {
   };
   const handlePackingListFrame = () => {
     setPackingListFrame((prev) => !prev);
+  };
+  const handleUnderlyingBOLFrame = () => {
+    setUnderlyingBOLFrame((prev) => !prev);
+  };
+  const handleMasterBOLFrame = () => {
+    setMasterBOLFrame((prev) => !prev);
   };
 
   const table = useReactTable({
@@ -314,6 +363,7 @@ const Walmart = () => {
       let option = localStorage.getItem("walmartTableOptions")!!;
       const res = await getWalmartOrders(option);
       setData(res.data);
+      console.log(res.data);
     })();
   }, []);
 
@@ -1080,6 +1130,7 @@ const Walmart = () => {
           routing05: "CALL4792734300#",
         },
       ],
+      carrierName: "WAL-MART TRANSPORTATION LLC",
       carrierReference: "66503618",
       carrierSCAC: "WALM",
       class: "175",
@@ -1501,6 +1552,7 @@ const Walmart = () => {
           routing05: "CALL4792734300#",
         },
       ],
+      carrierName: "JB HUNT",
       carrierReference: "25603520",
       carrierSCAC: "HJBT",
       class: "175",
@@ -1724,6 +1776,7 @@ const Walmart = () => {
           routing05: "CALL4792734300#",
         },
       ],
+      carrierName: "WAL-MART TRANSPORTATION LLC",
       carrierReference: "66503618",
       carrierSCAC: "WALM",
       class: "100",
@@ -1898,22 +1951,13 @@ const Walmart = () => {
         tableOptions={tableOptions}
         handleTableOptions={handleTableOptions}
         handlePackingListFrame={handlePackingListFrame}
+        handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
+        handleMasterBOLFrame={handleMasterBOLFrame}
       />
-      <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
-
-      <input type="checkbox" id="pdfModal" className="modal-toggle" checked={packingListFrame} />
-      <div className="modal">
-        <div className="modal-box relative h-[calc(100vh-216px)] max-w-full p-12">
-          <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handlePackingListFrame}>
-            ✕
-          </label>
-          {packingListFrame ? (
-            <PDFViewer height="100%" width="100%">
-              <PackingList selection={selection} />
-            </PDFViewer>
-          ) : null}
-        </div>
-      </div>
+      {/* <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" /> */}
+      {/* <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} /> */}
+      <PDFModal pdf={"underlyingBOL"} selection={tempSelection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
+      {/* <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} /> */}
     </div>
   );
 };

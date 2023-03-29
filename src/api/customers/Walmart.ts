@@ -66,39 +66,39 @@ export const postWalmartLocation = (locationData: any) => {
   );
 };
 
-export const postWalmartPackingList = (selection: any) => {
-  return axios.post(
-    "/api/post/customer/walmart/order/packing_list",
-    {
-      selection,
-    },
-    {
-      headers: { "x-access-token": getUserToken() },
-    }
-  );
-};
-export const postWalmartUnderlyingBOL = (selection: any) => {
-  return axios.post(
-    "/api/post/customer/walmart/import/location",
-    {
-      selection,
-    },
-    {
-      headers: { "x-access-token": getUserToken() },
-    }
-  );
-};
-export const postWalmartMasterBOL = (selection: any) => {
-  return axios.post(
-    "/api/post/customer/walmart/import/location",
-    {
-      selection,
-    },
-    {
-      headers: { "x-access-token": getUserToken() },
-    }
-  );
-};
+// export const postWalmartPackingList = (selection: any) => {
+//   return axios.post(
+//     "/api/post/customer/walmart/order/packing_list",
+//     {
+//       selection,
+//     },
+//     {
+//       headers: { "x-access-token": getUserToken() },
+//     }
+//   );
+// };
+// export const postWalmartUnderlyingBOL = (selection: any) => {
+//   return axios.post(
+//     "/api/post/customer/walmart/import/location",
+//     {
+//       selection,
+//     },
+//     {
+//       headers: { "x-access-token": getUserToken() },
+//     }
+//   );
+// };
+// export const postWalmartMasterBOL = (selection: any) => {
+//   return axios.post(
+//     "/api/post/customer/walmart/import/location",
+//     {
+//       selection,
+//     },
+//     {
+//       headers: { "x-access-token": getUserToken() },
+//     }
+//   );
+// };
 
 export const postWalmartArchiveOrder = (data: any) => {
   return axios.post(

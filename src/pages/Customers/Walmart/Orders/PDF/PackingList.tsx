@@ -159,7 +159,7 @@ export const PackingList = ({ selection }: PackingListProps) => (
           </View>
 
           {item.baselineItemDataPO1Loop.map((line) => (
-            <View style={styles.itemRowContainer}>
+            <View key={line.baselineItemDataPO1.assignedIdentification01} style={styles.itemRowContainer}>
               <View style={styles.itemRow}>
                 <Text style={styles.itemRowText}>{line.baselineItemDataPO1.productServiceId07}</Text>
               </View>

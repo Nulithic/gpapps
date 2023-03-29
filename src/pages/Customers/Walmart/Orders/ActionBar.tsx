@@ -1,6 +1,6 @@
 import SettingsDialog from "./Settings";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { postWalmartArchiveOrder, postWalmartPackingList } from "@/api/customers/Walmart";
+import { postWalmartArchiveOrder } from "@/api/customers/Walmart";
 import { toast } from "react-hot-toast";
 
 interface ActionBarProps {
@@ -9,16 +9,21 @@ interface ActionBarProps {
   tableOptions: string;
   handleTableOptions: (value: string) => void;
   handlePackingListFrame: () => void;
+  handleUnderlyingBOLFrame: () => void;
+  handleMasterBOLFrame: () => void;
 }
 
-const ActionBar = ({ filterList, selection, tableOptions, handleTableOptions, handlePackingListFrame }: ActionBarProps) => {
+const ActionBar = ({
+  filterList,
+  selection,
+  tableOptions,
+  handleTableOptions,
+  handlePackingListFrame,
+  handleUnderlyingBOLFrame,
+  handleMasterBOLFrame,
+}: ActionBarProps) => {
   const handleTest = () => {
     console.log(selection);
-  };
-
-  const handlePackingList = async () => {
-    console.log(selection);
-    handlePackingListFrame();
   };
 
   const handleArchiveOrders = async () => {
@@ -37,13 +42,13 @@ const ActionBar = ({ filterList, selection, tableOptions, handleTableOptions, ha
         <button className="btn btn-mid btn-primary" disabled={selection.length === 0}>
           Case Load Label
         </button>
-        <button className="btn btn-mid btn-primary" onClick={handlePackingList} disabled={selection.length === 0}>
+        <button className="btn btn-mid btn-primary" onClick={() => handlePackingListFrame()} disabled={selection.length === 0}>
           Packing List
         </button>
-        <button className="btn btn-mid btn-primary" disabled={selection.length === 0}>
+        <button className="btn btn-mid btn-primary" onClick={() => handleUnderlyingBOLFrame()} disabled={selection.length === 0}>
           Underlying BOL
         </button>
-        <button className="btn btn-mid btn-primary" disabled={selection.length === 0}>
+        <button className="btn btn-mid btn-primary" onClick={() => handleMasterBOLFrame()} disabled={selection.length === 0}>
           Master BOL
         </button>
       </div>
