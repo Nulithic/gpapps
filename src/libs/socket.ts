@@ -21,6 +21,27 @@ export const socketListen = (id: string, textRef: RefObject<HTMLTextAreaElement>
   });
 };
 
+export const socketListenSaleOrder = (id: string, textRef: RefObject<HTMLTextAreaElement>) => {
+  socket.on(id, (args) => {
+    console.log(args);
+    if (textRef && textRef.current) {
+      if (args && textRef.current.value !== "") textRef.current.value += `\n`;
+      textRef.current.value += `${args.Order.SaleOrderNumber} | Order created.`;
+      textRef.current.scrollTop = textRef.current.scrollHeight;
+    }
+  });
+};
+export const socketListenSaleOrderLine = (id: string, textRef: RefObject<HTMLTextAreaElement>) => {
+  socket.on(id, (args) => {
+    console.log(args);
+    if (textRef && textRef.current) {
+      if (args && textRef.current.value !== "") textRef.current.value += `\n`;
+      textRef.current.value += `${args.SaleOrderNumber} | Line items added.`;
+      textRef.current.scrollTop = textRef.current.scrollHeight;
+    }
+  });
+};
+
 export const clearRef = (textRef: RefObject<HTMLTextAreaElement>) => {
   if (textRef && textRef.current) {
     textRef.current.value = "";

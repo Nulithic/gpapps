@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { FileValidated } from "@dropzone-ui/react";
-import download from "downloadjs";
 
-import socket, { socketListen } from "@/libs/socket";
+import socket, { socketListen, socketListenSaleOrder, socketListenSaleOrderLine } from "@/libs/socket";
 import ImportFile from "@/components/ImportFile";
-import { getBulkShipTemplate, postBulkShip } from "@/api/warehouse";
 import Results from "@/components/Results";
+import { postHSNImport } from "@/api/customers/HSN";
 
-const BulkShip = () => {
+const Import = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const [importFile, setImportFile] = useState<Array<FileValidated>>([]);
@@ -15,31 +14,23 @@ const BulkShip = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleBulkShip = async () => {
+  const handleHSNImport = async () => {
     try {
       setLoading(true);
-      socketListen("getDearSaleOrderAPI", textRef);
-      socketListen("postDearSaleFulfilmentShipAPI", textRef);
+      socketListen("postHSNImport", textRef);
+      socketListenSaleOrder("postDearSaleOrderAPI", textRef);
+      socketListenSaleOrderLine("postDearSaleOrderLinesAPI", textRef);
 
-      const res = await postBulkShip(importData, socket.id);
+      const res = await postHSNImport(importData, socket.id);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
 
-    socket.off("getDearSaleOrderAPI");
-    socket.off("postDearSaleFulfilmentShipAPI");
+    socket.off("postDearSaleOrderAPI");
+    socket.off("postDearSaleOrderLinesAPI");
     setLoading(false);
     setImportFile([]);
-  };
-
-  const downloadTemplate = async () => {
-    try {
-      const res = await getBulkShipTemplate();
-      download(new Blob([res.data]), "BulkShipTemplate.xlsx");
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   useEffect(() => {
@@ -63,7 +54,7 @@ const BulkShip = () => {
   return (
     <div className="flex flex-col w-2/5 items-center space-y-4">
       <div className="flex flex-col w-full space-y-2">
-        <ImportFile label="Drop File" maxFiles={1} acceptFile=".xlsx" importFile={importFile} setImportFile={setImportFile} />
+        <ImportFile label="Drop File" maxFiles={1} acceptFile=".xls" importFile={importFile} setImportFile={setImportFile} />
         <div className="flex flex-row w-full h-56">
           <Results textRef={textRef} />
         </div>
@@ -73,10 +64,7 @@ const BulkShip = () => {
         <progress className="progress progress-secondary w-56"></progress>
       ) : (
         <div className="flex flex-row w-full justify-center space-x-4">
-          <button className="btn btn-mid" onClick={downloadTemplate}>
-            Template
-          </button>
-          <button className="btn btn-primary btn-mid" onClick={handleBulkShip}>
+          <button className="btn btn-primary btn-mid" onClick={handleHSNImport}>
             Submit
           </button>
         </div>
@@ -85,4 +73,4 @@ const BulkShip = () => {
   );
 };
 
-export default BulkShip;
+export default Import;
