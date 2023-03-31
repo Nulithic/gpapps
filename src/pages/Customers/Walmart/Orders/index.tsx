@@ -363,7 +363,7 @@ const Walmart = () => {
       let option = localStorage.getItem("walmartTableOptions")!!;
       const res = await getWalmartOrders(option);
       setData(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     })();
   }, []);
 
@@ -1954,9 +1954,9 @@ const Walmart = () => {
         handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
         handleMasterBOLFrame={handleMasterBOLFrame}
       />
-      {/* <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" /> */}
+      <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
       {/* <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} /> */}
-      <PDFModal pdf={"underlyingBOL"} selection={tempSelection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
+      <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       {/* <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} /> */}
     </div>
   );

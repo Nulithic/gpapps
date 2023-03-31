@@ -195,6 +195,7 @@ export interface WalmartTable {
   buyingParty: string;
   buyingPartyGLN: string;
   buyingPartyStreet: string;
+  buyingPartyStreet2: string;
   buyingPartyCity: string;
   buyingPartyStateOrProvince: string;
   buyingPartyPostalCode: string;
