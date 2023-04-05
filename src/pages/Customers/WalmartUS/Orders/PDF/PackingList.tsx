@@ -1,6 +1,6 @@
 import { Page, Text, View, Document, StyleSheet, Font } from "@react-pdf/renderer";
 
-import WalmartOrder from "@/types/walmart/orderType";
+import WalmartOrder from "@/types/WalmartUS/OrderType";
 
 interface PackingListProps {
   selection: WalmartOrder[];
