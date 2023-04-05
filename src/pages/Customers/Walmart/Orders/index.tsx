@@ -1133,7 +1133,7 @@ const Walmart = () => {
       carrierName: "WAL-MART TRANSPORTATION LLC",
       carrierReference: "66503618",
       carrierSCAC: "WALM",
-      class: "175",
+      carrierClass: "175",
       currencyCUR: {
         entityIdentifierCode01: "BY",
         currencyCode02: "USD",
@@ -1555,7 +1555,7 @@ const Walmart = () => {
       carrierName: "JB HUNT",
       carrierReference: "25603520",
       carrierSCAC: "HJBT",
-      class: "175",
+      carrierClass: "175",
       currencyCUR: {
         entityIdentifierCode01: "BY",
         currencyCode02: "USD",
@@ -1779,7 +1779,7 @@ const Walmart = () => {
       carrierName: "WAL-MART TRANSPORTATION LLC",
       carrierReference: "66503618",
       carrierSCAC: "WALM",
-      class: "100",
+      carrierClass: "100",
       currencyCUR: {
         entityIdentifierCode01: "BY",
         currencyCode02: "USD",

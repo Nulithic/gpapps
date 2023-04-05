@@ -172,7 +172,7 @@ export interface WalmartTracker {
   carrierName: string;
   carrierSCAC: string;
   carrierReference: string;
-  class: string;
+  carrierClass: string;
   nmfc: string;
   floorOrPallet: string;
   height: string;
@@ -204,6 +204,7 @@ export interface WalmartTable {
   internalVendorNumber: string;
   grossValue: string;
   archived: string;
+  distributionCenterName: string;
 }
 
 export default interface WalmartOrder extends StediPurchaseOrder, WalmartTracker, WalmartTable {}
