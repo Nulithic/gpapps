@@ -17,8 +17,8 @@ import InventoryCount from "./Warehouse/InventoryCount";
 import Settings from "./Dear/Settings";
 
 import MicroCenterOrders from "./Customers/MicroCenter/Orders";
-import WalmartOrders from "./Customers/Walmart/Orders";
-import WalmartImport from "./Customers/Walmart/Import";
+import WalmartUSOrders from "./Customers/WalmartUS/Orders";
+import WalmartUSImport from "./Customers/WalmartUS/Import";
 import HSNImport from "./Customers/HSN/Import";
 
 const Router = () => {
@@ -59,8 +59,8 @@ const Router = () => {
       element: <Navbar />,
       children: [
         { path: "micro_center", children: [{ path: "orders", element: <MicroCenterOrders /> }] },
-        { path: "walmart", children: [{ path: "orders", element: <WalmartOrders /> }] },
-        { path: "walmart", children: [{ path: "import", element: <WalmartImport /> }] },
+        { path: "walmart_us", children: [{ path: "orders", element: <WalmartUSOrders /> }] },
+        { path: "walmart_us", children: [{ path: "import", element: <WalmartUSImport /> }] },
         { path: "hsn", children: [{ path: "import", element: <HSNImport /> }] },
       ],
     },

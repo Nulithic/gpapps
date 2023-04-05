@@ -1,6 +1,6 @@
 import SettingsDialog from "./Settings";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { postWalmartArchiveOrder } from "@/api/customers/Walmart";
+import { postWalmartArchiveOrder } from "@/api/customers/WalmartUS";
 import { toast } from "react-hot-toast";
 
 interface ActionBarProps {

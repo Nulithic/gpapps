@@ -2,7 +2,7 @@ import axios from "axios";
 import { getUserToken } from "@/auth/storage";
 
 export const getWalmartOrders = (option: string) => {
-  return axios.get("/api/get/customer/walmart/orders", {
+  return axios.get("/api/get/customer/walmart_us/orders", {
     params: {
       option: option,
     },
@@ -13,7 +13,7 @@ export const getWalmartOrders = (option: string) => {
 
 export const postWalmartImportEDI = (dataEDI: any, socketID: string) => {
   return axios.post(
-    "/api/post/customer/walmart/import/edi",
+    "/api/post/customer/walmart_us/import/edi",
     {
       dataEDI,
       socketID,
@@ -25,7 +25,7 @@ export const postWalmartImportEDI = (dataEDI: any, socketID: string) => {
 };
 export const postWalmartImportHTML = (dataHTML: any) => {
   return axios.post(
-    "/api/post/customer/walmart/import/html",
+    "/api/post/customer/walmart_us/import/html",
     {
       dataHTML,
     },
@@ -36,7 +36,7 @@ export const postWalmartImportHTML = (dataHTML: any) => {
 };
 export const postWalmartImportB2B = (dataB2B: any, socketID: string) => {
   return axios.post(
-    "/api/post/customer/walmart/import/b2b",
+    "/api/post/customer/walmart_us/import/b2b",
     { dataB2B, socketID },
     {
       headers: { "x-access-token": getUserToken() },
@@ -45,7 +45,7 @@ export const postWalmartImportB2B = (dataB2B: any, socketID: string) => {
 };
 export const postWalmartImportTracker = (dataTracker: any) => {
   return axios.post(
-    "/api/post/customer/walmart/import/tracker",
+    "/api/post/customer/walmart_us/import/tracker",
     {
       dataTracker,
     },
@@ -56,7 +56,7 @@ export const postWalmartImportTracker = (dataTracker: any) => {
 };
 export const postWalmartLocation = (locationData: any) => {
   return axios.post(
-    "/api/post/customer/walmart/import/location",
+    "/api/post/customer/walmart_us/import/location",
     {
       locationData,
     },
@@ -66,43 +66,9 @@ export const postWalmartLocation = (locationData: any) => {
   );
 };
 
-// export const postWalmartPackingList = (selection: any) => {
-//   return axios.post(
-//     "/api/post/customer/walmart/order/packing_list",
-//     {
-//       selection,
-//     },
-//     {
-//       headers: { "x-access-token": getUserToken() },
-//     }
-//   );
-// };
-// export const postWalmartUnderlyingBOL = (selection: any) => {
-//   return axios.post(
-//     "/api/post/customer/walmart/import/location",
-//     {
-//       selection,
-//     },
-//     {
-//       headers: { "x-access-token": getUserToken() },
-//     }
-//   );
-// };
-// export const postWalmartMasterBOL = (selection: any) => {
-//   return axios.post(
-//     "/api/post/customer/walmart/import/location",
-//     {
-//       selection,
-//     },
-//     {
-//       headers: { "x-access-token": getUserToken() },
-//     }
-//   );
-// };
-
 export const postWalmartArchiveOrder = (data: any) => {
   return axios.post(
-    "/api/post/customer/walmart/order/archive",
+    "/api/post/customer/walmart_us/order/archive",
     { data },
     {
       headers: { "x-access-token": getUserToken() },

@@ -21,8 +21,8 @@ import socket, { socketListen } from "@/libs/socket";
 import IndeterminateCheckbox from "@/components/CheckBox";
 import DataTable from "@/components/DataTable";
 import ActionBar from "./ActionBar";
-import { getWalmartOrders } from "@/api/customers/Walmart";
-import WalmartOrder from "@/types/walmart/orderType";
+import { getWalmartOrders } from "@/api/customers/WalmartUS";
+import WalmartOrder from "@/types/WalmartUS/OrderType";
 
 import PackingList from "./PDF/PackingList";
 import UnderlyingBOL from "./PDF/UnderlyingBOL";
@@ -270,7 +270,7 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
   );
 };
 
-const Walmart = () => {
+const WalmartUS = () => {
   const [columns, setColumns] = useState<ColumnDef<any>[]>([]);
 
   const [data, setData] = useState<any[]>([]);
@@ -1962,4 +1962,4 @@ const Walmart = () => {
   );
 };
 
-export default Walmart;
+export default WalmartUS;
