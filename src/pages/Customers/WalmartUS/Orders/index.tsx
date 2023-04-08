@@ -26,6 +26,7 @@ import WalmartOrder from "@/types/WalmartUS/OrderType";
 
 import PackingList from "./PDF/PackingList";
 import UnderlyingBOL from "./PDF/UnderlyingBOL";
+import MasterBOL from "./PDF/MasterBOL";
 
 const filterList = [
   {
@@ -241,7 +242,7 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
   return (
     <>
       <PDFViewer height="1000px" width="100%">
-        <UnderlyingBOL selection={selection} />
+        <MasterBOL selection={selection} />
       </PDFViewer>
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
       <div className="modal">
