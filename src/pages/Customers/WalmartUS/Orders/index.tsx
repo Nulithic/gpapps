@@ -241,12 +241,12 @@ interface PDFModalProps {
 const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
   return (
     <>
-      <PDFViewer height="1000px" width="100%">
+      {/* <PDFViewer height="1000px" width="100%">
         <MasterBOL selection={selection} />
-      </PDFViewer>
+      </PDFViewer> */}
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
       <div className="modal">
-        <div className="modal-box relative h-[calc(100vh-216px)] max-w-full p-12">
+        <div className="modal-box relative h-[calc(100vh-150px)] max-w-full w-[98%] p-0 pt-12 rounded">
           <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
             ✕
           </label>
@@ -261,10 +261,10 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
             </PDFViewer>
           ) : null}
           {frame && pdf === "masterBOL" ? (
-            <PDFViewer height="100%" width="100%">
-              <PackingList selection={selection} />
-            </PDFViewer>
-          ) : null}
+            // <PDFViewer height="100%" width="100%">
+            <MasterBOL selection={selection} />
+          ) : // </PDFViewer>
+          null}
         </div>
       </div>
     </>
@@ -1957,8 +1957,8 @@ const WalmartUS = () => {
       />
       <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
       {/* <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} /> */}
-      <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
-      {/* <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} /> */}
+      {/* <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} /> */}
+      <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
     </div>
   );
 };
