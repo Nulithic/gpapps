@@ -21,8 +21,9 @@ import DataTable from "@/components/DataTable";
 
 import SelectBar from "./SelectBar";
 import AddLine from "./AddLine";
+import { getWalmartUSCaseSizes, addWalmartUSCaseSizes, deleteWalmartUSCaseSizes } from "@/api/customers/WalmartUS";
 
-interface ReferenceData {
+interface CaseSizeData {
   [key: string]: any;
   walmartItem: string;
   itemID: string;
@@ -32,8 +33,8 @@ interface ReferenceData {
   caseSize: number;
 }
 
-const Reference = () => {
-  const [data, setData] = useState<ReferenceData[]>([]);
+const CaseSizes = () => {
+  const [data, setData] = useState<CaseSizeData[]>([]);
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [expanded, setExpanded] = useState<ExpandedState>({});
@@ -45,8 +46,14 @@ const Reference = () => {
     pageSize: 50,
   });
 
-  const handleAddData = (addLineData: ReferenceData) => {
-    setData((prev) => [...prev, addLineData]);
+  const handleAddData = async (addLineData: CaseSizeData) => {
+    try {
+      const res = await addWalmartUSCaseSizes(addLineData);
+      setData(res.data);
+      toast.success("Update Success!");
+    } catch (err) {
+      toast.error("Update Failed!");
+    }
   };
 
   const columns = useMemo<ColumnDef<unknown>[]>(
@@ -110,14 +117,25 @@ const Reference = () => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const handleDelete = () => {
-    const rows = table.getSelectedRowModel().rows.map((item) => item.index);
-    const filtered = data.filter((_, index) => !rows.includes(index));
-    setData(filtered);
+  const handleDelete = async () => {
+    try {
+      const rows = table.getSelectedRowModel().rows.map((item) => item.original) as CaseSizeData[];
+      const res = await deleteWalmartUSCaseSizes(rows);
+      setData(res.data);
+      toast.success("Delete Success!");
+    } catch (err) {
+      toast.error("Delete Failed!");
+    }
+
     table.resetRowSelection();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    (async () => {
+      const res = await getWalmartUSCaseSizes();
+      setData(res.data);
+    })();
+  }, []);
 
   const selection = table.getSelectedRowModel().rows.length;
 
@@ -130,4 +148,4 @@ const Reference = () => {
   );
 };
 
-export default Reference;
+export default CaseSizes;

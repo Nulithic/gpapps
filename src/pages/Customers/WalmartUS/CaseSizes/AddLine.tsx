@@ -4,8 +4,12 @@ interface AddLineProps {
   handleAddData: (data: any) => void;
 }
 
+interface AddLineData {
+  [key: string]: any;
+}
+
 const AddLine = ({ handleAddData }: AddLineProps) => {
-  const [addLineData, setAddLineData] = useState({
+  const [addLineData, setAddLineData] = useState<AddLineData>({
     walmartItem: "",
     itemID: "",
     vsn: "",
@@ -13,6 +17,13 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
     description: "",
     caseSize: "",
   });
+
+  const checkEmpty = () => {
+    for (let key in addLineData) {
+      if (addLineData[key] === "") return true;
+    }
+    return false;
+  };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -73,7 +84,7 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
           onChange={handleInputChange}
           placeholder="Case Size"
         />
-        <button className="btn btn-mid" onClick={() => handleAddData(addLineData)}>
+        <button className="btn btn-mid" onClick={() => handleAddData(addLineData)} disabled={checkEmpty()}>
           Add
         </button>
       </div>
