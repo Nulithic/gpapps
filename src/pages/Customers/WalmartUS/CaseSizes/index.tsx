@@ -14,6 +14,7 @@ import {
   PaginationState,
   RowSelectionState,
   ExpandedState,
+  filterFns,
 } from "@tanstack/react-table";
 
 import IndeterminateCheckbox from "@/components/CheckBox";
@@ -87,7 +88,7 @@ const CaseSizes = () => {
       { accessorKey: "vsn", header: "VSN", enableColumnFilter: true },
       { accessorKey: "sku", header: "SKU", enableColumnFilter: true },
       { accessorKey: "description", header: "Description", enableColumnFilter: true },
-      { accessorKey: "caseSize", header: "Case Size", enableColumnFilter: true },
+      { accessorKey: "caseSize", header: "Case Size", enableColumnFilter: true, filterFn: filterFns.equalsString },
     ],
     []
   );

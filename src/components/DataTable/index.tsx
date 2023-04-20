@@ -17,7 +17,13 @@ interface TableProps {
 const Filter = ({ column }: FilterType) => {
   // const columnFilterValue = column.getFilterValue();
   const facetedUniqueValues = column.getFacetedUniqueValues();
-  const sortedUniqueValues = useMemo(() => Array.from(facetedUniqueValues.keys()).sort(), [facetedUniqueValues]).filter((x) => x !== "" && x !== null);
+  const sortedUniqueValues = useMemo(
+    () =>
+      Array.from(facetedUniqueValues.keys()).sort(function (a, b) {
+        return a - b;
+      }),
+    [facetedUniqueValues]
+  ).filter((x) => x !== "" && x !== null);
   const options = sortedUniqueValues.map((item: any) => ({ value: item, label: item }));
 
   const [value, setValue] = useState<any>();
