@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 import { Table, Column, Row, flexRender } from "@tanstack/react-table";
 import { ChevronUpIcon, ChevronDownIcon, ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 
@@ -68,12 +68,22 @@ const DataTable = ({ table, height, rowColors, enableFilter = false }: TableProp
             {table.getRowModel().rows.map((row) => {
               const rowColor = rowColors?.(row) ?? "";
               return (
-                <tr key={row.id} onClick={() => row.toggleSelected()}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className={rowColor}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <Fragment key={cell.id}>
+                        {cell.column.id === "select" ? (
+                          <td key={cell.id} className={rowColor} onClick={() => row.toggleSelected()}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </td>
+                        ) : (
+                          <td key={cell.id} className={rowColor}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </td>
+                        )}
+                      </Fragment>
+                    );
+                  })}
                 </tr>
               );
             })}

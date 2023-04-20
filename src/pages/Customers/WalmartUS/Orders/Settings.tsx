@@ -3,9 +3,9 @@ import { createPortal } from "react-dom";
 import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
-import Droppable from "./DnD/Droppable";
-import Item from "./DnD/Item";
-import { arrayMove, insertAtIndex, removeAtIndex } from "./DnD/array";
+import Droppable from "./ColumnList/Droppable";
+import Item from "./ColumnList/Droppable";
+import { arrayMove, insertAtIndex, removeAtIndex } from "./ColumnList/array";
 
 interface DialogProps {
   filterList: any[];
@@ -105,7 +105,7 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
       header: name,
       enableColumnFilter: true,
     }));
-    localStorage.setItem("walmartColumnFilters", JSON.stringify(list));
+    localStorage.setItem("walmartUSColumnFilters", JSON.stringify(list));
 
     window.location.reload();
   };
@@ -124,8 +124,8 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
   };
 
   useEffect(() => {
-    if (localStorage.getItem("walmartColumnFilters")) {
-      const getList = JSON.parse(localStorage.getItem("walmartColumnFilters")!!);
+    if (localStorage.getItem("walmartUSColumnFilters")) {
+      const getList = JSON.parse(localStorage.getItem("walmartUSColumnFilters")!!);
       const filterOut = filterList.filter((item: any) => !getList.some((name: any) => name.header === item.header));
       setItemGroups({ group1: filterOut.map((item: any) => item.header), group2: getList.map((item: any) => item.header) });
     }
@@ -136,9 +136,11 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
       <input type="checkbox" id="settingsDialog" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box max-w-5xl space-y-4">
-          <h3 className="font-bold text-lg">Settings</h3>
+          <p className="font-bold text-2xl">Settings</p>
 
           <div className="flex flex-col">
+            <p className="font-bold text-lg">Filter</p>
+
             <select className="select select-bordered select-mid w-full" value={tableOptions} onChange={(e) => handleTableOptions(e.target.value)}>
               <option value="All Orders">All Orders</option>
               <option value="Active Orders">Active Orders</option>
@@ -151,10 +153,10 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
               <div className="flex space-x-10">
                 {Object.keys(itemGroups).map((group) => (
                   <div key={group} className="flex flex-col w-full space-y-2">
-                    <p>{group === "group1" ? "Hidden List" : "Filter List"}</p>
+                    <p className="font-bold text-lg">{group === "group1" ? "Hidden Columns" : "Active Columns"}</p>
                     <Droppable id={group} items={itemGroups[group]} />
                     <button className="btn btn-mid btn-primary" onClick={() => handleMoveAll(group)}>
-                      {group === "group1" ? "Move All to Filter List" : "Move All to Hidden List"}
+                      {group === "group1" ? "Move All to Active Columns >>>" : "<<< Move All to Hidden Columns"}
                     </button>
                   </div>
                 ))}

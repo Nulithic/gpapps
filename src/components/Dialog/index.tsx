@@ -19,7 +19,7 @@ const Dialog = ({ id, submitID, title, body, loading, close, submit, handleClose
       <div className="modal">
         <div className="modal-box max-w-2xl">
           <h3 className="font-bold text-lg pb-4">{title}</h3>
-          <div className="flex h-48">{body}</div>
+          <div className="flex auto">{body}</div>
           <div className="modal-action">
             {loading ? (
               <progress className="progress progress-secondary w-full"></progress>

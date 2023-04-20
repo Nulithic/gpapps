@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useMemo, HTMLProps } from "react";
-import { toast } from "react-hot-toast";
 import {
   ColumnDef,
   useReactTable,
@@ -17,7 +16,6 @@ import {
 } from "@tanstack/react-table";
 import { PDFViewer } from "@react-pdf/renderer";
 
-import socket, { socketListen } from "@/libs/socket";
 import IndeterminateCheckbox from "@/components/CheckBox";
 import DataTable from "@/components/DataTable";
 import ActionBar from "./ActionBar";
@@ -27,6 +25,7 @@ import WalmartOrder from "@/types/WalmartUS/OrderType";
 import PackingList from "./PDF/PackingList";
 import UnderlyingBOL from "./PDF/UnderlyingBOL";
 import MasterBOL from "./PDF/MasterBOL";
+import PalletCaseLabel from "./PDF/PalletCaseLabel";
 
 const filterList = [
   {
@@ -241,9 +240,6 @@ interface PDFModalProps {
 const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
   return (
     <>
-      {/* <PDFViewer height="1000px" width="100%">
-        <MasterBOL selection={selection} />
-      </PDFViewer> */}
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
       <div className="modal">
         <div className="modal-box relative h-[calc(100vh-150px)] max-w-full w-[98%] p-0 pt-12 rounded">
@@ -260,11 +256,12 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
               <UnderlyingBOL selection={selection} />
             </PDFViewer>
           ) : null}
-          {frame && pdf === "masterBOL" ? (
-            // <PDFViewer height="100%" width="100%">
-            <MasterBOL selection={selection} />
-          ) : // </PDFViewer>
-          null}
+          {frame && pdf === "masterBOL" ? <MasterBOL selection={selection} /> : null}
+          {frame && pdf === "palletCaseLabel" ? (
+            <PDFViewer height="100%" width="100%">
+              <PalletCaseLabel selection={selection} />
+            </PDFViewer>
+          ) : null}
         </div>
       </div>
     </>
@@ -291,10 +288,13 @@ const WalmartUS = () => {
   const [underlyingBOLFrame, setUnderlyingBOLFrame] = useState(false);
   const [masterBOLFrame, setMasterBOLFrame] = useState(false);
 
+  const [palletCaseLabelFrame, setPalletCaseLabelFrame] = useState(false);
+
   const handleTableOptions = (value: string) => {
-    localStorage.setItem("walmartTableOptions", value);
+    localStorage.setItem("walmartUSTableOptions", value);
     setTableOptions(value);
   };
+
   const handlePackingListFrame = () => {
     setPackingListFrame((prev) => !prev);
   };
@@ -303,6 +303,9 @@ const WalmartUS = () => {
   };
   const handleMasterBOLFrame = () => {
     setMasterBOLFrame((prev) => !prev);
+  };
+  const handlePalletCaseLabelFrame = () => {
+    setPalletCaseLabelFrame((prev) => !prev);
   };
 
   const table = useReactTable({
@@ -315,7 +318,6 @@ const WalmartUS = () => {
       expanded,
       columnFilters,
     },
-    enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onExpandedChange: setExpanded,
     onColumnFiltersChange: setColumnFilters,
@@ -331,11 +333,11 @@ const WalmartUS = () => {
 
   useEffect(() => {
     const prepColumnFilter = () => {
-      if (!localStorage.getItem("walmartColumnFilters")) {
-        localStorage.setItem("walmartColumnFilters", JSON.stringify(filterList));
+      if (!localStorage.getItem("walmartUSColumnFilters")) {
+        localStorage.setItem("walmartUSColumnFilters", JSON.stringify(filterList));
         prepColumnFilter();
       } else {
-        let getColumns = JSON.parse(localStorage.getItem("walmartColumnFilters")!!);
+        let getColumns = JSON.parse(localStorage.getItem("walmartUSColumnFilters")!!);
         for (let col of getColumns) {
           col.cell = (info: any) => (info.getValue() ? info.getValue().toString() : <></>);
         }
@@ -348,11 +350,11 @@ const WalmartUS = () => {
 
   useEffect(() => {
     const prepTableOptions = () => {
-      if (!localStorage.getItem("walmartTableOptions")) {
-        localStorage.setItem("walmartTableOptions", "All Orders");
+      if (!localStorage.getItem("walmartUSTableOptions")) {
+        localStorage.setItem("walmartUSTableOptions", "All Orders");
         prepTableOptions();
       } else {
-        let option = localStorage.getItem("walmartTableOptions")!!;
+        let option = localStorage.getItem("walmartUSTableOptions")!!;
         setTableOptions(option);
       }
     };
@@ -361,7 +363,7 @@ const WalmartUS = () => {
 
   useEffect(() => {
     (async () => {
-      let option = localStorage.getItem("walmartTableOptions")!!;
+      let option = localStorage.getItem("walmartUSTableOptions")!!;
       const res = await getWalmartOrders(option);
       setData(res.data);
       // console.log(res.data);
@@ -1954,11 +1956,13 @@ const WalmartUS = () => {
         handlePackingListFrame={handlePackingListFrame}
         handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
         handleMasterBOLFrame={handleMasterBOLFrame}
+        handlePalletCaseLabelFrame={handlePalletCaseLabelFrame}
       />
       <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
-      {/* <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} /> */}
-      {/* <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} /> */}
+      <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} />
+      <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
+      <PDFModal pdf={"palletCaseLabel"} selection={selection} frame={palletCaseLabelFrame} handleFrame={handlePalletCaseLabelFrame} />
     </div>
   );
 };
