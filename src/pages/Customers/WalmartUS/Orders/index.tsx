@@ -22,10 +22,12 @@ import ActionBar from "./ActionBar";
 import { getWalmartOrders } from "@/api/customers/WalmartUS";
 import WalmartOrder from "@/types/WalmartUS/OrderType";
 
-import PackingList from "./PDF/PackingList";
-import UnderlyingBOL from "./PDF/UnderlyingBOL";
-import MasterBOL from "./PDF/MasterBOL";
-import PalletCaseLabel from "./PDF/PalletCaseLabel";
+import CaseLoadLabel from "./Documents/CaseLoadLabel";
+import PackingList from "./Documents/PackingList";
+import UnderlyingBOL from "./Documents/UnderlyingBOL";
+import MasterBOL from "./Documents/MasterBOL";
+
+import PalletCaseLabelDialog from "./PalletCaseLabel/PalletCaseLabelDialog";
 
 const filterList = [
   {
@@ -246,6 +248,11 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
           <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
             ✕
           </label>
+          {frame && pdf === "caseLoadLabel" ? (
+            <PDFViewer height="100%" width="100%">
+              <CaseLoadLabel selection={selection} />
+            </PDFViewer>
+          ) : null}
           {frame && pdf === "packingList" ? (
             <PDFViewer height="100%" width="100%">
               <PackingList selection={selection} />
@@ -257,11 +264,6 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
             </PDFViewer>
           ) : null}
           {frame && pdf === "masterBOL" ? <MasterBOL selection={selection} /> : null}
-          {frame && pdf === "palletCaseLabel" ? (
-            <PDFViewer height="100%" width="100%">
-              <PalletCaseLabel selection={selection} />
-            </PDFViewer>
-          ) : null}
         </div>
       </div>
     </>
@@ -284,17 +286,21 @@ const WalmartUS = () => {
 
   const [tableOptions, setTableOptions] = useState<string>("All");
 
+  const [caseLoadLabelFrame, setCaseLoadLabelFrame] = useState(false);
   const [packingListFrame, setPackingListFrame] = useState(false);
   const [underlyingBOLFrame, setUnderlyingBOLFrame] = useState(false);
   const [masterBOLFrame, setMasterBOLFrame] = useState(false);
 
-  const [palletCaseLabelFrame, setPalletCaseLabelFrame] = useState(false);
+  const [palletCaseLabelDialog, setPalletCaseLabelDialog] = useState(false);
 
   const handleTableOptions = (value: string) => {
     localStorage.setItem("walmartUSTableOptions", value);
     setTableOptions(value);
   };
 
+  const handleCaseLoadLabelFrame = () => {
+    setCaseLoadLabelFrame((prev) => !prev);
+  };
   const handlePackingListFrame = () => {
     setPackingListFrame((prev) => !prev);
   };
@@ -304,8 +310,9 @@ const WalmartUS = () => {
   const handleMasterBOLFrame = () => {
     setMasterBOLFrame((prev) => !prev);
   };
-  const handlePalletCaseLabelFrame = () => {
-    setPalletCaseLabelFrame((prev) => !prev);
+
+  const handlePalletCaseLabelDialog = () => {
+    setPalletCaseLabelDialog((prev) => !prev);
   };
 
   const table = useReactTable({
@@ -1947,23 +1954,30 @@ const WalmartUS = () => {
   ] as WalmartOrder[];
 
   return (
-    <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
-      <ActionBar
-        filterList={filterList}
-        selection={selection}
-        tableOptions={tableOptions}
-        handleTableOptions={handleTableOptions}
-        handlePackingListFrame={handlePackingListFrame}
-        handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
-        handleMasterBOLFrame={handleMasterBOLFrame}
-        handlePalletCaseLabelFrame={handlePalletCaseLabelFrame}
-      />
-      <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
+    <>
+      <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
+        <ActionBar
+          filterList={filterList}
+          selection={selection}
+          tableOptions={tableOptions}
+          handleTableOptions={handleTableOptions}
+          handleCaseLoadLabelFrame={handleCaseLoadLabelFrame}
+          handlePackingListFrame={handlePackingListFrame}
+          handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
+          handleMasterBOLFrame={handleMasterBOLFrame}
+          handlePalletCaseLabelDialog={handlePalletCaseLabelDialog}
+        />
+        <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
+      </div>
+      <PDFModal pdf={"caseLoadLabel"} selection={selection} frame={caseLoadLabelFrame} handleFrame={handleCaseLoadLabelFrame} />
       <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} />
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
-      <PDFModal pdf={"palletCaseLabel"} selection={selection} frame={palletCaseLabelFrame} handleFrame={handlePalletCaseLabelFrame} />
-    </div>
+
+      {palletCaseLabelDialog ? (
+        <PalletCaseLabelDialog selection={selection} palletCaseLabelDialog={palletCaseLabelDialog} handlePalletCaseLabelDialog={handlePalletCaseLabelDialog} />
+      ) : null}
+    </>
   );
 };
 
