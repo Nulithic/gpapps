@@ -22,7 +22,7 @@ import ActionBar from "./ActionBar";
 import { getWalmartOrders } from "@/api/customers/WalmartUS";
 import WalmartOrder from "@/types/WalmartUS/OrderType";
 
-import CaseLoadLabel from "./Documents/CaseLoadLabel";
+import CaseLabel from "./Documents/CaseLabel";
 import PackingList from "./Documents/PackingList";
 import UnderlyingBOL from "./Documents/UnderlyingBOL";
 import MasterBOL from "./Documents/MasterBOL";
@@ -244,26 +244,26 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
     <>
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
       <div className="modal">
-        <div className="modal-box relative h-[calc(100vh-150px)] max-w-full w-[98%] p-0 pt-12 rounded">
+        <div className="modal-box relative p-0 pt-12 rounded">
           <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
             ✕
           </label>
-          {frame && pdf === "caseLoadLabel" ? (
-            <PDFViewer height="100%" width="100%">
-              <CaseLoadLabel selection={selection} />
-            </PDFViewer>
-          ) : null}
+
           {frame && pdf === "packingList" ? (
             <PDFViewer height="100%" width="100%">
               <PackingList selection={selection} />
             </PDFViewer>
           ) : null}
+
           {frame && pdf === "underlyingBOL" ? (
             <PDFViewer height="100%" width="100%">
               <UnderlyingBOL selection={selection} />
             </PDFViewer>
           ) : null}
+
           {frame && pdf === "masterBOL" ? <MasterBOL selection={selection} /> : null}
+
+          {frame && pdf === "caseLabel" ? <CaseLabel selection={selection} /> : null}
         </div>
       </div>
     </>
@@ -286,7 +286,7 @@ const WalmartUS = () => {
 
   const [tableOptions, setTableOptions] = useState<string>("All");
 
-  const [caseLoadLabelFrame, setCaseLoadLabelFrame] = useState(false);
+  const [caseLabelFrame, setCaseLabelFrame] = useState(false);
   const [packingListFrame, setPackingListFrame] = useState(false);
   const [underlyingBOLFrame, setUnderlyingBOLFrame] = useState(false);
   const [masterBOLFrame, setMasterBOLFrame] = useState(false);
@@ -298,9 +298,6 @@ const WalmartUS = () => {
     setTableOptions(value);
   };
 
-  const handleCaseLoadLabelFrame = () => {
-    setCaseLoadLabelFrame((prev) => !prev);
-  };
   const handlePackingListFrame = () => {
     setPackingListFrame((prev) => !prev);
   };
@@ -309,6 +306,10 @@ const WalmartUS = () => {
   };
   const handleMasterBOLFrame = () => {
     setMasterBOLFrame((prev) => !prev);
+  };
+
+  const handleCaseLabelFrame = () => {
+    setCaseLabelFrame((prev) => !prev);
   };
 
   const handlePalletCaseLabelDialog = () => {
@@ -1961,7 +1962,7 @@ const WalmartUS = () => {
           selection={selection}
           tableOptions={tableOptions}
           handleTableOptions={handleTableOptions}
-          handleCaseLoadLabelFrame={handleCaseLoadLabelFrame}
+          handleCaseLabelFrame={handleCaseLabelFrame}
           handlePackingListFrame={handlePackingListFrame}
           handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
           handleMasterBOLFrame={handleMasterBOLFrame}
@@ -1969,7 +1970,7 @@ const WalmartUS = () => {
         />
         <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
       </div>
-      <PDFModal pdf={"caseLoadLabel"} selection={selection} frame={caseLoadLabelFrame} handleFrame={handleCaseLoadLabelFrame} />
+      <PDFModal pdf={"caseLabel"} selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
       <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} />
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />

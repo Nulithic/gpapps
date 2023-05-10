@@ -10,7 +10,7 @@ interface ActionBarProps {
   selection: any[];
   tableOptions: string;
   handleTableOptions: (value: string) => void;
-  handleCaseLoadLabelFrame: () => void;
+  handleCaseLabelFrame: () => void;
   handlePackingListFrame: () => void;
   handleUnderlyingBOLFrame: () => void;
   handleMasterBOLFrame: () => void;
@@ -22,7 +22,7 @@ const ActionBar = ({
   selection,
   tableOptions,
   handleTableOptions,
-  handleCaseLoadLabelFrame,
+  handleCaseLabelFrame,
   handlePackingListFrame,
   handleUnderlyingBOLFrame,
   handleMasterBOLFrame,
@@ -43,9 +43,6 @@ const ActionBar = ({
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row items-center space-x-2">
-        <button className="btn btn-mid btn-primary" onClick={handleCaseLoadLabelFrame} disabled={selection.length === 0}>
-          Case Load Label
-        </button>
         <button className="btn btn-mid btn-primary" onClick={handlePackingListFrame} disabled={selection.length === 0}>
           Packing List
         </button>
@@ -58,8 +55,12 @@ const ActionBar = ({
 
         <div className="divider divider-horizontal"></div>
 
+        <button className="btn btn-mid btn-primary" onClick={handleCaseLabelFrame} disabled={selection.length === 0}>
+          Case Label
+        </button>
+
         <button className="btn btn-mid btn-primary" onClick={handlePalletCaseLabelDialog} disabled={selection.length === 0}>
-          Pallet/Case Label
+          Pallet Label
         </button>
         <button className="btn btn-mid btn-primary" onClick={handleMasterBOLFrame} disabled={selection.length === 0}>
           Send ASN

@@ -82,9 +82,28 @@ export const postWalmartArchiveOrder = (data: any) => {
   );
 };
 
-export const postWalmartUSPalletCaseLabel = (data: any) => {
+export const checkWalmartUSCaseLabel = (data: any) => {
   return axios.post(
-    "/api/post/customer/walmart_us/order/pallet_case_label",
+    "/api/post/customer/walmart_us/order/case_label/check",
+    { data },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const getWalmartUSCaseLabel = (selection: string) => {
+  return axios.get("/api/get/customer/walmart_us/order/case_label", {
+    params: {
+      selection,
+    },
+    responseType: "blob",
+    headers: { "x-access-token": getUserToken() },
+  });
+};
+
+export const postWalmartUSPalletLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/pallet_label",
     { data },
     {
       headers: { "x-access-token": getUserToken() },
