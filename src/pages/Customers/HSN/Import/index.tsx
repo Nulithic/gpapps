@@ -53,6 +53,7 @@ const Import = () => {
 
   return (
     <div className="flex flex-col w-2/5 items-center space-y-4">
+      <p>View/Print Reports &gt; Order Processing &gt; Open Orders </p>
       <div className="flex flex-col w-full space-y-2">
         <ImportFile label="Drop File" maxFiles={1} acceptFile=".xls" importFile={importFile} setImportFile={setImportFile} />
         <div className="flex flex-row w-full h-56">
