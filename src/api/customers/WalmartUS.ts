@@ -91,14 +91,15 @@ export const checkWalmartUSCaseLabel = (data: any) => {
     }
   );
 };
-export const getWalmartUSCaseLabel = (selection: string) => {
-  return axios.get("/api/get/customer/walmart_us/order/case_label", {
-    params: {
-      selection,
-    },
-    responseType: "blob",
-    headers: { "x-access-token": getUserToken() },
-  });
+export const getWalmartUSCaseLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/case_label",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
 };
 
 export const postWalmartUSPalletLabel = (data: any) => {

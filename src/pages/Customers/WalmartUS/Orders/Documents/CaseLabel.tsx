@@ -54,7 +54,31 @@ export const CaseLabel = ({ selection }: PackingListProps) => {
   const handleFirstDownload = async () => {
     try {
       setLoading(true);
-      const res = await getWalmartUSCaseLabel(JSON.stringify(selection));
+      const res = await getWalmartUSCaseLabel(selection);
+      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
+      if (res.status === 200) setLoading(false);
+    } catch (err) {
+      toast.error("Error occurred.");
+      console.log(err);
+      setLoading(false);
+    }
+  };
+  const handleOldDownload = async () => {
+    try {
+      setLoading(true);
+      const res = await getWalmartUSCaseLabel(selection);
+      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
+      if (res.status === 200) setLoading(false);
+    } catch (err) {
+      toast.error("Error occurred.");
+      console.log(err);
+      setLoading(false);
+    }
+  };
+  const handleNewDownload = async () => {
+    try {
+      setLoading(true);
+      const res = await getWalmartUSCaseLabel(selection);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
       if (res.status === 200) setLoading(false);
     } catch (err) {
@@ -72,29 +96,33 @@ export const CaseLabel = ({ selection }: PackingListProps) => {
         <p key={item}>{item}</p>
       ))}
 
-      <button
-        className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`}
-        onClick={handleFirstDownload}
-        disabled={existingOrders.length !== 0 || loading || caseLabels.length !== 0}
-      >
-        Download
-      </button>
+      {existingOrders.length === 0 ? (
+        <button
+          className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`}
+          onClick={handleFirstDownload}
+          disabled={existingOrders.length !== 0 || loading || caseLabels.length !== 0}
+        >
+          Download
+        </button>
+      ) : (
+        <>
+          <button
+            className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`}
+            onClick={handleOldDownload}
+            disabled={existingOrders.length !== 0 || loading || caseLabels.length !== 0}
+          >
+            Download Old
+          </button>
 
-      <button
-        className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`}
-        onClick={handleFirstDownload}
-        disabled={existingOrders.length !== 0 || loading || caseLabels.length !== 0}
-      >
-        Download Old SSCC
-      </button>
-
-      <button
-        className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`}
-        onClick={handleFirstDownload}
-        disabled={existingOrders.length !== 0 || loading || caseLabels.length !== 0}
-      >
-        Download New SSCC
-      </button>
+          <button
+            className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`}
+            onClick={handleNewDownload}
+            disabled={existingOrders.length !== 0 || loading || caseLabels.length !== 0}
+          >
+            Download New
+          </button>
+        </>
+      )}
     </div>
   );
 };

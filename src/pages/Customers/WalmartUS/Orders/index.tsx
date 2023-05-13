@@ -28,6 +28,7 @@ import UnderlyingBOL from "./Documents/UnderlyingBOL";
 import MasterBOL from "./Documents/MasterBOL";
 
 import PalletCaseLabelDialog from "./PalletCaseLabel/PalletCaseLabelDialog";
+import Spinner from "@/components/Spinner";
 
 const filterList = [
   {
@@ -245,6 +246,7 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
       <div className="modal">
         <div className="modal-box relative p-0 pt-12 rounded">
+          <p className="absolute left-2 top-2 font-bold text-lg">{pdf === "caseLabel" ? "Case Label" : null}</p>
           <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
             ✕
           </label>
@@ -1956,24 +1958,32 @@ const WalmartUS = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
-        <ActionBar
-          filterList={filterList}
-          selection={selection}
-          tableOptions={tableOptions}
-          handleTableOptions={handleTableOptions}
-          handleCaseLabelFrame={handleCaseLabelFrame}
-          handlePackingListFrame={handlePackingListFrame}
-          handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
-          handleMasterBOLFrame={handleMasterBOLFrame}
-          handlePalletCaseLabelDialog={handlePalletCaseLabelDialog}
-        />
-        <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
-      </div>
-      <PDFModal pdf={"caseLabel"} selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
+      {data.length > 0 ? (
+        <div className="flex flex-col self-center w-full space-y-4 bg-base-300 rounded p-4">
+          <ActionBar
+            filterList={filterList}
+            selection={selection}
+            tableOptions={tableOptions}
+            handleTableOptions={handleTableOptions}
+            handleCaseLabelFrame={handleCaseLabelFrame}
+            handlePackingListFrame={handlePackingListFrame}
+            handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
+            handleMasterBOLFrame={handleMasterBOLFrame}
+            handlePalletCaseLabelDialog={handlePalletCaseLabelDialog}
+          />
+          <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
+        </div>
+      ) : (
+        <div className="flex flex-col self-center">
+          <Spinner size={50} />
+        </div>
+      )}
+
       <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} />
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
+
+      <PDFModal pdf={"caseLabel"} selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
 
       {palletCaseLabelDialog ? (
         <PalletCaseLabelDialog selection={selection} palletCaseLabelDialog={palletCaseLabelDialog} handlePalletCaseLabelDialog={handlePalletCaseLabelDialog} />
