@@ -264,8 +264,6 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
           ) : null}
 
           {frame && pdf === "masterBOL" ? <MasterBOL selection={selection} /> : null}
-
-          {frame && pdf === "caseLabel" ? <CaseLabel selection={selection} /> : null}
         </div>
       </div>
     </>
@@ -1983,7 +1981,7 @@ const WalmartUS = () => {
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
 
-      <PDFModal pdf={"caseLabel"} selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
+      <CaseLabel selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
 
       {palletCaseLabelDialog ? (
         <PalletCaseLabelDialog selection={selection} palletCaseLabelDialog={palletCaseLabelDialog} handlePalletCaseLabelDialog={handlePalletCaseLabelDialog} />

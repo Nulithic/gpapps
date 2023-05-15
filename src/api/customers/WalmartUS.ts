@@ -101,6 +101,26 @@ export const getWalmartUSCaseLabel = (data: any) => {
     }
   );
 };
+export const getExistingWalmartUSCaseLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/case_label/existing",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const getNewWalmartUSCaseLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/case_label/new",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
 
 export const postWalmartUSPalletLabel = (data: any) => {
   return axios.post(
