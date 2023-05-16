@@ -122,6 +122,46 @@ export const getNewWalmartUSCaseLabel = (data: any) => {
   );
 };
 
+export const checkWalmartUSPalletLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/pallet_label/check",
+    { data },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const getWalmartUSPalletLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/pallet_label",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const getExistingWalmartUSPalletLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/pallet_label/existing",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const getNewWalmartUSPalletLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/pallet_label/new",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+
 export const postWalmartUSPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label",

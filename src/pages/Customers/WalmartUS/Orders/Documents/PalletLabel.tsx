@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import download from "downloadjs";
 
-import { checkWalmartUSCaseLabel, getNewWalmartUSCaseLabel, getExistingWalmartUSCaseLabel, getWalmartUSCaseLabel } from "@/api/customers/WalmartUS";
+import { checkWalmartUSPalletLabel, getExistingWalmartUSPalletLabel, getNewWalmartUSPalletLabel, getWalmartUSPalletLabel } from "@/api/customers/WalmartUS";
 import WalmartOrder from "@/types/WalmartUS/OrderType";
 import { format } from "date-fns";
 
-interface CaseLabelProps {
+interface PalletLabelProps {
   selection: WalmartOrder[];
   frame: boolean;
   handleFrame: () => void;
@@ -43,10 +43,12 @@ const DownloadButton = ({ title, status, handleOnclick }: DownloadButtonProps) =
   );
 };
 
-export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => {
+export const PalletLabel = ({ selection, frame, handleFrame }: PalletLabelProps) => {
   const [existingOrders, setExistingOrders] = useState<string[]>([]);
-  const [caseLabels, setCaseLabels] = useState<WalmartLabel[]>([]);
+  const [palletLabels, setPalletLabels] = useState<WalmartLabel[]>([]);
   const [status, setStatus] = useState(false);
+
+  const [pdf, setPDF] = useState("");
 
   const purchaseOrderDateList = selection.map((item) => item.purchaseOrderDate);
   const getUniqueValues = (array: string[]) => [...new Set(array)];
@@ -58,14 +60,14 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
     (async () => {
       if (frame)
         try {
-          const res = await checkWalmartUSCaseLabel(selection);
+          const res = await checkWalmartUSPalletLabel(selection);
           const existingCaselabels = res.data as WalmartLabel[];
 
           const existingOrders = existingCaselabels.map((item) => item.purchaseOrderNumber);
           const getUniqueValues = (array: string[]) => [...new Set(array)];
           const existingUniqueOrders = getUniqueValues(existingOrders);
 
-          setCaseLabels(res.data);
+          setPalletLabels(res.data);
           setExistingOrders(existingUniqueOrders);
         } catch (err) {
           toast.error("Error occurred.");
@@ -77,8 +79,8 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
   const handleFirstDownload = async () => {
     try {
       setStatus(true);
-      const res = await getWalmartUSCaseLabel(selection);
-      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
+      const res = await getWalmartUSPalletLabel(selection);
+      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
       if (res.status === 200) {
         setStatus(false);
         handleFrame();
@@ -92,8 +94,10 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
   const handleExistingDownload = async () => {
     try {
       setStatus(true);
-      const res = await getExistingWalmartUSCaseLabel(caseLabels);
-      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
+      const res = await getExistingWalmartUSPalletLabel(palletLabels);
+      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
+      const pdfUrl = URL.createObjectURL(res.data);
+      setPDF(pdfUrl);
       if (res.status === 200) {
         setStatus(false);
         handleFrame();
@@ -107,8 +111,8 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
   const handleNewDownload = async () => {
     try {
       setStatus(true);
-      const res = await getNewWalmartUSCaseLabel({ caseLabels: caseLabels, selection: selection });
-      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
+      const res = await getNewWalmartUSPalletLabel({ palletLabels: palletLabels, selection: selection });
+      download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
       if (res.status === 200) {
         setStatus(false);
         handleFrame();
@@ -135,11 +139,10 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
       <div className="modal">
         <div className="modal-box relative p-0 pt-12 rounded">
-          <p className="absolute left-2 top-2 font-bold text-2xl">Case Label</p>
+          <p className="absolute left-2 top-2 font-bold text-2xl">Pallet Label</p>
           <label htmlFor="pdfModal" className={`btn btn-sm btn-circle absolute right-2 top-2 ${status ? "btn-disabled" : ""}`} onClick={handleFrame}>
             ✕
           </label>
-
           {frame ? (
             checkPurchaseOrderDate ? (
               <p className="p-2">Please select orders from only one PO date.</p>
@@ -163,10 +166,11 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
               </div>
             )
           ) : null}
+          {/* <iframe src={pdf} width="100%" height="500px"></iframe> */}
         </div>
       </div>
     </>
   );
 };
 
-export default CaseLabel;
+export default PalletLabel;

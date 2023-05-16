@@ -14,7 +14,7 @@ interface ActionBarProps {
   handlePackingListFrame: () => void;
   handleUnderlyingBOLFrame: () => void;
   handleMasterBOLFrame: () => void;
-  handlePalletCaseLabelDialog: () => void;
+  handlePalletLabelFrame: () => void;
 }
 
 const ActionBar = ({
@@ -26,10 +26,8 @@ const ActionBar = ({
   handlePackingListFrame,
   handleUnderlyingBOLFrame,
   handleMasterBOLFrame,
-  handlePalletCaseLabelDialog,
+  handlePalletLabelFrame,
 }: ActionBarProps) => {
-  //
-
   const handleArchiveOrders = async () => {
     try {
       await postWalmartArchiveOrder(selection);
@@ -58,10 +56,12 @@ const ActionBar = ({
         <button className="btn btn-mid btn-primary" onClick={handleCaseLabelFrame} disabled={selection.length === 0}>
           Case Label
         </button>
-
-        <button className="btn btn-mid btn-primary" onClick={handlePalletCaseLabelDialog} disabled={selection.length === 0}>
+        <button className="btn btn-mid btn-primary" onClick={handlePalletLabelFrame} disabled={selection.length === 0}>
           Pallet Label
         </button>
+
+        <div className="divider divider-horizontal"></div>
+
         <button className="btn btn-mid btn-primary" onClick={handleMasterBOLFrame} disabled={selection.length === 0}>
           Send ASN
         </button>
