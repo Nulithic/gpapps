@@ -96,8 +96,8 @@ export const PalletLabel = ({ selection, frame, handleFrame }: PalletLabelProps)
       setStatus(true);
       const res = await getExistingWalmartUSPalletLabel(palletLabels);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
-      const pdfUrl = URL.createObjectURL(res.data);
-      setPDF(pdfUrl);
+      // const pdfUrl = URL.createObjectURL(res.data);
+      // setPDF(pdfUrl);
       if (res.status === 200) {
         setStatus(false);
         handleFrame();
