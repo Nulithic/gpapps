@@ -397,7 +397,11 @@ const WalmartUS = () => {
         </div>
       )}
 
+<<<<<<< HEAD
       {packingSlipFrame ? <PackingSlip selection={selection} frame={packingSlipFrame} handleFrame={handlePackingSlipFrame} /> : null}
+=======
+      {packingListFrame ? <PackingList selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} /> : null}
+>>>>>>> 0897f69f772e90dab725fd8e52e6ca3ef2207d23
 
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
