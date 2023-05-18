@@ -252,12 +252,6 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
             ✕
           </label>
 
-          {frame && pdf === "packingList" ? (
-            <PDFViewer height="100%" width="100%">
-              <PackingList selection={selection} />
-            </PDFViewer>
-          ) : null}
-
           {frame && pdf === "underlyingBOL" ? (
             <PDFViewer height="100%" width="100%">
               <UnderlyingBOL selection={selection} />
@@ -403,16 +397,8 @@ const WalmartUS = () => {
         </div>
       )}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
       {packingSlipFrame ? <PackingSlip selection={selection} frame={packingSlipFrame} handleFrame={handlePackingSlipFrame} /> : null}
-=======
-      {packingListFrame ? <PackingList selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} /> : null}
->>>>>>> 0897f69f772e90dab725fd8e52e6ca3ef2207d23
 
-=======
-      <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} />
->>>>>>> parent of 0897f69 (packing slip render server side)
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
 
