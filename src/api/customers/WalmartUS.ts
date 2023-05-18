@@ -82,17 +82,6 @@ export const postWalmartArchiveOrder = (data: any) => {
   );
 };
 
-export const getWalmartUSPackingSlip = (data: any) => {
-  return axios.post(
-    "/api/post/customer/walmart_us/order/packing_slip",
-    { data },
-    {
-      responseType: "blob",
-      headers: { "x-access-token": getUserToken() },
-    }
-  );
-};
-
 export const checkWalmartUSCaseLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/case_label/check",
