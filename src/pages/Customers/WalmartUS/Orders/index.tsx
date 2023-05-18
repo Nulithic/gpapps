@@ -22,11 +22,12 @@ import ActionBar from "./ActionBar";
 import { getWalmartOrders } from "@/api/customers/WalmartUS";
 import WalmartOrder from "@/types/WalmartUS/OrderType";
 
-import CaseLabel from "./Documents/CaseLabel";
-import PalletLabel from "./Documents/PalletLabel";
-import PackingList from "./Documents/PackingList";
+import PackingSlip from "./Documents/PackingSlip";
 import UnderlyingBOL from "./Documents/UnderlyingBOL";
 import MasterBOL from "./Documents/MasterBOL";
+
+import CaseLabel from "./Documents/CaseLabel";
+import PalletLabel from "./Documents/PalletLabel";
 
 import Spinner from "@/components/Spinner";
 
@@ -251,12 +252,6 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
             ✕
           </label>
 
-          {frame && pdf === "packingList" ? (
-            <PDFViewer height="100%" width="100%">
-              <PackingList selection={selection} />
-            </PDFViewer>
-          ) : null}
-
           {frame && pdf === "underlyingBOL" ? (
             <PDFViewer height="100%" width="100%">
               <UnderlyingBOL selection={selection} />
@@ -286,7 +281,7 @@ const WalmartUS = () => {
 
   const [tableOptions, setTableOptions] = useState<string>("All");
 
-  const [packingListFrame, setPackingListFrame] = useState(false);
+  const [packingSlipFrame, setPackingSlipFrame] = useState(false);
   const [underlyingBOLFrame, setUnderlyingBOLFrame] = useState(false);
   const [masterBOLFrame, setMasterBOLFrame] = useState(false);
 
@@ -298,8 +293,8 @@ const WalmartUS = () => {
     setTableOptions(value);
   };
 
-  const handlePackingListFrame = () => {
-    setPackingListFrame((prev) => !prev);
+  const handlePackingSlipFrame = () => {
+    setPackingSlipFrame((prev) => !prev);
   };
   const handleUnderlyingBOLFrame = () => {
     setUnderlyingBOLFrame((prev) => !prev);
@@ -388,7 +383,7 @@ const WalmartUS = () => {
             selection={selection}
             tableOptions={tableOptions}
             handleTableOptions={handleTableOptions}
-            handlePackingListFrame={handlePackingListFrame}
+            handlePackingSlipFrame={handlePackingSlipFrame}
             handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
             handleMasterBOLFrame={handleMasterBOLFrame}
             handleCaseLabelFrame={handleCaseLabelFrame}
@@ -402,7 +397,8 @@ const WalmartUS = () => {
         </div>
       )}
 
-      <PDFModal pdf={"packingList"} selection={selection} frame={packingListFrame} handleFrame={handlePackingListFrame} />
+      {packingSlipFrame ? <PackingSlip selection={selection} frame={packingSlipFrame} handleFrame={handlePackingSlipFrame} /> : null}
+
       <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
 

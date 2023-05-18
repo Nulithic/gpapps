@@ -11,7 +11,7 @@ interface ActionBarProps {
   tableOptions: string;
   handleTableOptions: (value: string) => void;
   handleCaseLabelFrame: () => void;
-  handlePackingListFrame: () => void;
+  handlePackingSlipFrame: () => void;
   handleUnderlyingBOLFrame: () => void;
   handleMasterBOLFrame: () => void;
   handlePalletLabelFrame: () => void;
@@ -23,7 +23,7 @@ const ActionBar = ({
   tableOptions,
   handleTableOptions,
   handleCaseLabelFrame,
-  handlePackingListFrame,
+  handlePackingSlipFrame,
   handleUnderlyingBOLFrame,
   handleMasterBOLFrame,
   handlePalletLabelFrame,
@@ -41,7 +41,7 @@ const ActionBar = ({
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row items-center space-x-2">
-        <button className="btn btn-mid btn-primary" onClick={handlePackingListFrame} disabled={selection.length === 0}>
+        <button className="btn btn-mid btn-primary" onClick={handlePackingSlipFrame} disabled={selection.length === 0}>
           Packing List
         </button>
         <button className="btn btn-mid btn-primary" onClick={handleUnderlyingBOLFrame} disabled={selection.length === 0}>
