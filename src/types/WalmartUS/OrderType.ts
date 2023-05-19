@@ -204,6 +204,8 @@ export interface WalmartTable {
   internalVendorNumber: string;
   grossValue: string;
   archived: string;
+  asnSent: string;
+  invoiceSent: string;
   distributionCenterName: string;
 }
 

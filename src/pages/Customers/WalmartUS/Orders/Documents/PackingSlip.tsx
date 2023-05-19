@@ -12,7 +12,6 @@ interface PackingSlipProps {
 }
 
 export const PackingSlip = ({ selection, frame, handleFrame }: PackingSlipProps) => {
-  console.count("Render");
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPDFUrl] = useState("");
 

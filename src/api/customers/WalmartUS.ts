@@ -92,6 +92,16 @@ export const getWalmartUSPackingSlip = (data: any) => {
     }
   );
 };
+export const getWalmartUSUnderlyingBOL = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/underlying_bol",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
 
 export const checkWalmartUSCaseLabel = (data: any) => {
   return axios.post(

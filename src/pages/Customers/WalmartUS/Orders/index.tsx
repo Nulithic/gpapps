@@ -252,12 +252,6 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
             ✕
           </label>
 
-          {frame && pdf === "underlyingBOL" ? (
-            <PDFViewer height="100%" width="100%">
-              <UnderlyingBOL selection={selection} />
-            </PDFViewer>
-          ) : null}
-
           {frame && pdf === "masterBOL" ? <MasterBOL selection={selection} /> : null}
         </div>
       </div>
@@ -398,8 +392,8 @@ const WalmartUS = () => {
       )}
 
       {packingSlipFrame ? <PackingSlip selection={selection} frame={packingSlipFrame} handleFrame={handlePackingSlipFrame} /> : null}
+      {underlyingBOLFrame ? <UnderlyingBOL selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} /> : null}
 
-      <PDFModal pdf={"underlyingBOL"} selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} />
       <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
 
       <CaseLabel selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
