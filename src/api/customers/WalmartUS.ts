@@ -102,6 +102,16 @@ export const getWalmartUSUnderlyingBOL = (data: any) => {
     }
   );
 };
+export const getWalmartUSMasterBOL = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/master_bol",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
 
 export const checkWalmartUSCaseLabel = (data: any) => {
   return axios.post(

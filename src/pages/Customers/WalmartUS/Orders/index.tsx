@@ -251,8 +251,6 @@ const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
           <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
             ✕
           </label>
-
-          {frame && pdf === "masterBOL" ? <MasterBOL selection={selection} /> : null}
         </div>
       </div>
     </>
@@ -393,8 +391,7 @@ const WalmartUS = () => {
 
       {packingSlipFrame ? <PackingSlip selection={selection} frame={packingSlipFrame} handleFrame={handlePackingSlipFrame} /> : null}
       {underlyingBOLFrame ? <UnderlyingBOL selection={selection} frame={underlyingBOLFrame} handleFrame={handleUnderlyingBOLFrame} /> : null}
-
-      <PDFModal pdf={"masterBOL"} selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} />
+      {masterBOLFrame ? <MasterBOL selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} /> : null}
 
       <CaseLabel selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
       <PalletLabel selection={selection} frame={palletLabelFrame} handleFrame={handlePalletLabelFrame} />
