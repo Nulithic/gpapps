@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { jsPDF, AcroFormCheckBox, AcroFormTextField } from "jspdf";
 
 import WalmartOrder from "@/types/WalmartUS/OrderType";
 import Spinner from "@/components/Spinner";
@@ -13,7 +11,6 @@ interface MasterBOLProps {
   handleFrame: () => void;
 }
 
-// Create Document Component
 export const MasterBOL = ({ selection, frame, handleFrame }: MasterBOLProps) => {
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPDFUrl] = useState("");
