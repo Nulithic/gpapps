@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, HTMLProps } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import {
   ColumnDef,
@@ -22,20 +22,26 @@ import DataTable from "@/components/DataTable";
 
 import SelectBar from "./SelectBar";
 import AddLine from "./AddLine";
-import { getWalmartUSCaseSizes, addWalmartUSCaseSizes, deleteWalmartUSCaseSizes } from "@/api/customers/WalmartUS";
+import { getWalmartUSProducts, addWalmartUSProducts, deleteWalmartUSProducts } from "@/api/customers/WalmartUS";
 
-interface CaseSizeData {
+interface ProductData {
   [key: string]: any;
   walmartItem: string;
+  type: string;
+  package: string;
+  department: string;
   itemID: string;
   vsn: string;
   sku: string;
   description: string;
+  productGTIN: string;
+  whiteBoxGTIN: string;
+  brownBoxGTIN: string;
   caseSize: number;
 }
 
-const CaseSizes = () => {
-  const [data, setData] = useState<CaseSizeData[]>([]);
+const Products = () => {
+  const [data, setData] = useState<ProductData[]>([]);
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [expanded, setExpanded] = useState<ExpandedState>({});
@@ -47,9 +53,9 @@ const CaseSizes = () => {
     pageSize: 50,
   });
 
-  const handleAddData = async (addLineData: CaseSizeData) => {
+  const handleAddData = async (addLineData: ProductData) => {
     try {
-      const res = await addWalmartUSCaseSizes(addLineData);
+      const res = await addWalmartUSProducts(addLineData);
       setData(res.data);
       toast.success("Update Success!");
     } catch (err) {
@@ -84,10 +90,16 @@ const CaseSizes = () => {
         ),
       },
       { accessorKey: "walmartItem", header: "Walmart Item", enableColumnFilter: true },
+      { accessorKey: "type", header: "Type", enableColumnFilter: true },
+      { accessorKey: "package", header: "Package", enableColumnFilter: true },
+      { accessorKey: "department", header: "Department", enableColumnFilter: true },
       { accessorKey: "itemID", header: "Item ID", enableColumnFilter: true },
       { accessorKey: "vsn", header: "VSN", enableColumnFilter: true },
       { accessorKey: "sku", header: "SKU", enableColumnFilter: true },
       { accessorKey: "description", header: "Description", enableColumnFilter: true },
+      { accessorKey: "productGTIN", header: "Product GTIN", enableColumnFilter: true },
+      { accessorKey: "whiteBoxGTIN", header: "White Box GTIN", enableColumnFilter: true },
+      { accessorKey: "brownBoxGTIN", header: "Brown Box GTIN", enableColumnFilter: true },
       { accessorKey: "caseSize", header: "Case Size", enableColumnFilter: true, filterFn: filterFns.equalsString },
     ],
     []
@@ -120,8 +132,8 @@ const CaseSizes = () => {
 
   const handleDelete = async () => {
     try {
-      const rows = table.getSelectedRowModel().rows.map((item) => item.original) as CaseSizeData[];
-      const res = await deleteWalmartUSCaseSizes(rows);
+      const rows = table.getSelectedRowModel().rows.map((item) => item.original) as ProductData[];
+      const res = await deleteWalmartUSProducts(rows);
       setData(res.data);
       toast.success("Delete Success!");
     } catch (err) {
@@ -133,7 +145,7 @@ const CaseSizes = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await getWalmartUSCaseSizes();
+      const res = await getWalmartUSProducts();
       setData(res.data);
     })();
   }, []);
@@ -144,9 +156,9 @@ const CaseSizes = () => {
     <div className="flex flex-col w-full space-y-4 bg-base-300 rounded p-4">
       <AddLine handleAddData={handleAddData} />
       <SelectBar selection={selection} handleDelete={handleDelete} />
-      <DataTable table={table} enableFilter />
+      <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
     </div>
   );
 };
 
-export default CaseSizes;
+export default Products;

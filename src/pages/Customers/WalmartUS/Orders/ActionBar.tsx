@@ -15,6 +15,7 @@ interface ActionBarProps {
   handleUnderlyingBOLFrame: () => void;
   handleMasterBOLFrame: () => void;
   handlePalletLabelFrame: () => void;
+  handleASNFrame: () => void;
 }
 
 const ActionBar = ({
@@ -27,6 +28,7 @@ const ActionBar = ({
   handleUnderlyingBOLFrame,
   handleMasterBOLFrame,
   handlePalletLabelFrame,
+  handleASNFrame,
 }: ActionBarProps) => {
   const handleArchiveOrders = async () => {
     try {
@@ -41,6 +43,15 @@ const ActionBar = ({
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row items-center space-x-2">
+        <button className="btn btn-mid btn-primary" onClick={handleCaseLabelFrame} disabled={selection.length === 0}>
+          Case Label
+        </button>
+        <button className="btn btn-mid btn-primary" onClick={handlePalletLabelFrame} disabled={selection.length === 0}>
+          Pallet Label
+        </button>
+
+        <div className="divider divider-horizontal"></div>
+
         <button className="btn btn-mid btn-primary" onClick={handlePackingSlipFrame} disabled={selection.length === 0}>
           Packing List
         </button>
@@ -53,16 +64,7 @@ const ActionBar = ({
 
         <div className="divider divider-horizontal"></div>
 
-        <button className="btn btn-mid btn-primary" onClick={handleCaseLabelFrame} disabled={selection.length === 0}>
-          Case Label
-        </button>
-        <button className="btn btn-mid btn-primary" onClick={handlePalletLabelFrame} disabled={selection.length === 0}>
-          Pallet Label
-        </button>
-
-        <div className="divider divider-horizontal"></div>
-
-        <button className="btn btn-mid btn-primary" onClick={handleMasterBOLFrame} disabled={selection.length === 0}>
+        <button className="btn btn-mid btn-primary" onClick={handleASNFrame} disabled={selection.length === 0}>
           Send ASN
         </button>
       </div>

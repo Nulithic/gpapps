@@ -141,27 +141,23 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
           </label>
 
           {frame ? (
-            checkPurchaseOrderDate ? (
-              <p className="p-2">Please select orders from only one PO date.</p>
-            ) : (
-              <div className="flex flex-col items-center space-y-4 m-4">
-                <ExistingOrders />
-                {checkMixedOrders ? (
-                  <>
-                    {existingOrders.length === 0 ? (
-                      <DownloadButton title="Download" status={status} handleOnclick={handleFirstDownload} />
-                    ) : (
-                      <>
-                        <DownloadButton title="Download Existing" status={status} handleOnclick={handleExistingDownload} />
-                        <DownloadButton title="Download New" status={status} handleOnclick={handleNewDownload} />
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <p className="p-2">Please do not mix existing labels with new labels.</p>
-                )}
-              </div>
-            )
+            <div className="flex flex-col items-center space-y-4 m-4">
+              <ExistingOrders />
+              {checkMixedOrders ? (
+                <>
+                  {existingOrders.length === 0 ? (
+                    <DownloadButton title="Download" status={status} handleOnclick={handleFirstDownload} />
+                  ) : (
+                    <>
+                      <DownloadButton title="Download Existing" status={status} handleOnclick={handleExistingDownload} />
+                      <DownloadButton title="Download New" status={status} handleOnclick={handleNewDownload} />
+                    </>
+                  )}
+                </>
+              ) : (
+                <p className="p-2">Please do not mix existing labels with new labels.</p>
+              )}
+            </div>
           ) : null}
         </div>
       </div>

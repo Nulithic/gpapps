@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from "react";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 interface AddLineProps {
   handleAddData: (data: any) => void;
@@ -35,7 +36,13 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
 
   return (
     <>
-      <div className="flex flex-row items-center space-x-2">
+      <div className="flex flex-row items-center justify-between space-x-2">
+        <button className="btn btn-primary btn-mid">Add Product</button>
+        <label className="btn btn-mid" htmlFor="settingsDialog">
+          <Cog6ToothIcon className="h-6 w-6" />
+        </label>{" "}
+      </div>
+      {/* <div className="flex flex-row items-center space-x-2">
         <input
           type="text"
           name="walmartItem"
@@ -87,7 +94,7 @@ const AddLine = ({ handleAddData }: AddLineProps) => {
         <button className="btn btn-mid" onClick={() => handleAddData(addLineData)} disabled={checkEmpty()}>
           Add
         </button>
-      </div>
+      </div> */}
     </>
   );
 };

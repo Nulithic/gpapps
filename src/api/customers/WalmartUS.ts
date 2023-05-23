@@ -11,12 +11,6 @@ export const getWalmartOrders = (option: string) => {
   });
 };
 
-export const getWalmartUSCaseSizes = () => {
-  return axios.get("/api/get/customer/walmart_us/case_sizes", {
-    headers: { "x-access-token": getUserToken() },
-  });
-};
-
 export const postWalmartImportEDI = (dataEDI: any, socketID: string) => {
   return axios.post(
     "/api/post/customer/walmart_us/import/edi",
@@ -203,18 +197,33 @@ export const postWalmartUSPalletLabel = (data: any) => {
   );
 };
 
-export const addWalmartUSCaseSizes = (data: any) => {
+export const getWalmartUSProducts = () => {
+  return axios.get("/api/get/customer/walmart_us/products", {
+    headers: { "x-access-token": getUserToken() },
+  });
+};
+export const addWalmartUSProducts = (data: any) => {
   return axios.post(
-    "/api/post/customer/walmart_us/case_sizes/add",
+    "/api/post/customer/walmart_us/products/add",
     { data },
     {
       headers: { "x-access-token": getUserToken() },
     }
   );
 };
-export const deleteWalmartUSCaseSizes = (data: any) => {
+export const deleteWalmartUSProducts = (data: any) => {
   return axios.post(
-    "/api/post/customer/walmart_us/case_sizes/delete",
+    "/api/post/customer/walmart_us/products/delete",
+    { data },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+
+export const postWalmartASN = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/asn",
     { data },
     {
       headers: { "x-access-token": getUserToken() },

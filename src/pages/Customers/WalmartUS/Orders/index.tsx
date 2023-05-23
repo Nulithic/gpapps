@@ -30,6 +30,7 @@ import CaseLabel from "./Documents/CaseLabel";
 import PalletLabel from "./Documents/PalletLabel";
 
 import Spinner from "@/components/Spinner";
+import ASN from "./ASN";
 
 const filterList = [
   {
@@ -280,6 +281,8 @@ const WalmartUS = () => {
   const [caseLabelFrame, setCaseLabelFrame] = useState(false);
   const [palletLabelFrame, setPalletLabelFrame] = useState(false);
 
+  const [asnFrame, setASNFrame] = useState(false);
+
   const handleTableOptions = (value: string) => {
     localStorage.setItem("walmartUSTableOptions", value);
     setTableOptions(value);
@@ -300,6 +303,10 @@ const WalmartUS = () => {
   };
   const handlePalletLabelFrame = () => {
     setPalletLabelFrame((prev) => !prev);
+  };
+
+  const handleASNFrame = () => {
+    setASNFrame((prev) => !prev);
   };
 
   const table = useReactTable({
@@ -380,6 +387,7 @@ const WalmartUS = () => {
             handleMasterBOLFrame={handleMasterBOLFrame}
             handleCaseLabelFrame={handleCaseLabelFrame}
             handlePalletLabelFrame={handlePalletLabelFrame}
+            handleASNFrame={handleASNFrame}
           />
           <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
         </div>
@@ -395,6 +403,8 @@ const WalmartUS = () => {
 
       <CaseLabel selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
       <PalletLabel selection={selection} frame={palletLabelFrame} handleFrame={handlePalletLabelFrame} />
+
+      <ASN selection={selection} frame={asnFrame} handleFrame={handleASNFrame} />
     </>
   );
 };

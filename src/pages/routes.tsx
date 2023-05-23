@@ -19,7 +19,7 @@ import Settings from "./Dear/Settings";
 import MicroCenterOrders from "./Customers/MicroCenter/Orders";
 import WalmartUSOrders from "./Customers/WalmartUS/Orders";
 import WalmartUSImport from "./Customers/WalmartUS/Import";
-import CaseSizes from "./Customers/WalmartUS/CaseSizes";
+import Products from "./Customers/WalmartUS/Products";
 import HSNImport from "./Customers/HSN/Import";
 
 const Router = () => {
@@ -65,7 +65,7 @@ const Router = () => {
           children: [
             { path: "orders", element: <WalmartUSOrders /> },
             { path: "import", element: <WalmartUSImport /> },
-            { path: "case_sizes", element: <CaseSizes /> },
+            { path: "products", element: <Products /> },
           ],
         },
         { path: "hsn", children: [{ path: "import", element: <HSNImport /> }] },

@@ -207,6 +207,7 @@ export interface WalmartTable {
   asnSent: string;
   invoiceSent: string;
   distributionCenterName: string;
+  hasPalletLabel: string;
 }
 
 export default interface WalmartOrder extends StediPurchaseOrder, WalmartTracker, WalmartTable {}
