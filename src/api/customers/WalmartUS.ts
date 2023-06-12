@@ -187,9 +187,19 @@ export const getNewWalmartUSPalletLabel = (data: any) => {
   );
 };
 
-export const postWalmartUSPalletLabel = (data: any) => {
+export const downloadWalmartUSMultiPalletLabel = (data: any) => {
   return axios.post(
-    "/api/post/customer/walmart_us/order/pallet_label",
+    "/api/post/customer/walmart_us/order/pallet_label/multi/download",
+    { data },
+    {
+      responseType: "blob",
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
+export const deleteWalmartUSMultiPalletLabel = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/order/pallet_label/multi/delete",
     { data },
     {
       headers: { "x-access-token": getUserToken() },

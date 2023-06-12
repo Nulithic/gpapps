@@ -14,7 +14,8 @@ interface ActionBarProps {
   handlePackingSlipFrame: () => void;
   handleUnderlyingBOLFrame: () => void;
   handleMasterBOLFrame: () => void;
-  handlePalletLabelFrame: () => void;
+  handleSinglePalletLabelFrame: () => void;
+  handleMultiPalletLabelFrame: () => void;
   handleASNFrame: () => void;
 }
 
@@ -27,7 +28,8 @@ const ActionBar = ({
   handlePackingSlipFrame,
   handleUnderlyingBOLFrame,
   handleMasterBOLFrame,
-  handlePalletLabelFrame,
+  handleSinglePalletLabelFrame,
+  handleMultiPalletLabelFrame,
   handleASNFrame,
 }: ActionBarProps) => {
   const handleArchiveOrders = async () => {
@@ -46,8 +48,11 @@ const ActionBar = ({
         <button className="btn btn-mid btn-primary" onClick={handleCaseLabelFrame} disabled={selection.length === 0}>
           Case Label
         </button>
-        <button className="btn btn-mid btn-primary" onClick={handlePalletLabelFrame} disabled={selection.length === 0}>
-          Pallet Label
+        <button className="btn btn-mid btn-primary" onClick={handleSinglePalletLabelFrame} disabled={selection.length === 0}>
+          Single Pallet Label
+        </button>
+        <button className="btn btn-mid btn-primary" onClick={handleMultiPalletLabelFrame} disabled={selection.length !== 1}>
+          Multi Pallet Label
         </button>
 
         <div className="divider divider-horizontal"></div>

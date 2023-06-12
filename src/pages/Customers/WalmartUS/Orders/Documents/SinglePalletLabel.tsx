@@ -6,7 +6,7 @@ import { checkWalmartUSPalletLabel, getExistingWalmartUSPalletLabel, getNewWalma
 import WalmartOrder from "@/types/WalmartUS/OrderType";
 import { format } from "date-fns";
 
-interface PalletLabelProps {
+interface SinglePalletLabelProps {
   selection: WalmartOrder[];
   frame: boolean;
   handleFrame: () => void;
@@ -25,6 +25,8 @@ interface WalmartLabel {
   numberOfCases: number;
   serialNumber: number;
   type: string;
+  multiPallet: string;
+  multiPalletID: number;
   sscc: string;
   date: string;
 }
@@ -43,27 +45,22 @@ const DownloadButton = ({ title, status, handleOnclick }: DownloadButtonProps) =
   );
 };
 
-export const PalletLabel = ({ selection, frame, handleFrame }: PalletLabelProps) => {
+export const SinglePalletLabel = ({ selection, frame, handleFrame }: SinglePalletLabelProps) => {
   const [existingOrders, setExistingOrders] = useState<string[]>([]);
   const [palletLabels, setPalletLabels] = useState<WalmartLabel[]>([]);
   const [status, setStatus] = useState(false);
 
-  const [pdf, setPDF] = useState("");
-
-  const purchaseOrderDateList = selection.map((item) => item.purchaseOrderDate);
-  const getUniqueValues = (array: string[]) => [...new Set(array)];
-  const checkPurchaseOrderDate = getUniqueValues(purchaseOrderDateList).length > 1;
-
   const checkMixedOrders = existingOrders.length === selection.length || existingOrders.length === 0;
+  const checkMulitPallet = palletLabels.some((item) => item.multiPallet === "Yes");
 
   useEffect(() => {
     (async () => {
       if (frame)
         try {
           const res = await checkWalmartUSPalletLabel(selection);
-          const existingCaselabels = res.data as WalmartLabel[];
+          const existingPalletlabels = res.data as WalmartLabel[];
 
-          const existingOrders = existingCaselabels.map((item) => item.purchaseOrderNumber);
+          const existingOrders = existingPalletlabels.map((item) => item.purchaseOrderNumber);
           const getUniqueValues = (array: string[]) => [...new Set(array)];
           const existingUniqueOrders = getUniqueValues(existingOrders);
 
@@ -96,8 +93,6 @@ export const PalletLabel = ({ selection, frame, handleFrame }: PalletLabelProps)
       setStatus(true);
       const res = await getExistingWalmartUSPalletLabel(palletLabels);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
-      const pdfUrl = URL.createObjectURL(res.data);
-      setPDF(pdfUrl);
       if (res.status === 200) {
         setStatus(false);
         handleFrame();
@@ -137,36 +132,41 @@ export const PalletLabel = ({ selection, frame, handleFrame }: PalletLabelProps)
   return (
     <>
       <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
-      <div className="modal">
-        <div className="modal-box relative p-0 pt-12 rounded">
-          <p className="absolute left-2 top-2 font-bold text-2xl">Pallet Label</p>
-          <label htmlFor="pdfModal" className={`btn btn-sm btn-circle absolute right-2 top-2 ${status ? "btn-disabled" : ""}`} onClick={handleFrame}>
-            ✕
-          </label>
-          {frame ? (
+      {frame && (
+        <div className="modal">
+          <div className="modal-box relative p-5 pt-12 rounded">
+            <p className="absolute left-7 top-5 font-bold text-2xl">Pallet Label</p>
+            <label htmlFor="pdfModal" className={`btn btn-sm btn-circle absolute right-2 top-2 ${status ? "btn-disabled" : ""}`} onClick={handleFrame}>
+              ✕
+            </label>
+            <p className="p-2">This only creates one pallet label for PO. Please use the app on the scanner to create a multi pallet label.</p>
             <div className="flex flex-col items-center space-y-4 m-4">
               <ExistingOrders />
-              {checkMixedOrders ? (
+
+              {checkMulitPallet ? (
+                <p className="p-2">Multi Pallet Label detected. Please use the Multi Pallet Label instead.</p>
+              ) : (
                 <>
-                  {existingOrders.length === 0 ? (
-                    <DownloadButton title="Download" status={status} handleOnclick={handleFirstDownload} />
+                  {checkMixedOrders ? (
+                    existingOrders.length === 0 ? (
+                      <DownloadButton title="Download" status={status} handleOnclick={handleFirstDownload} />
+                    ) : (
+                      <>
+                        <DownloadButton title="Download Existing" status={status} handleOnclick={handleExistingDownload} />
+                        <DownloadButton title="Download New" status={status} handleOnclick={handleNewDownload} />
+                      </>
+                    )
                   ) : (
-                    <>
-                      <DownloadButton title="Download Existing" status={status} handleOnclick={handleExistingDownload} />
-                      <DownloadButton title="Download New" status={status} handleOnclick={handleNewDownload} />
-                    </>
+                    <p className="p-2">Please do not mix existing labels with new labels.</p>
                   )}
                 </>
-              ) : (
-                <p className="p-2">Please do not mix existing labels with new labels.</p>
               )}
             </div>
-          ) : null}
-          {/* <iframe src={pdf} width="100%" height="500px"></iframe> */}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
 
-export default PalletLabel;
+export default SinglePalletLabel;

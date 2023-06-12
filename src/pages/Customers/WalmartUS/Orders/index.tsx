@@ -27,10 +27,11 @@ import UnderlyingBOL from "./Documents/UnderlyingBOL";
 import MasterBOL from "./Documents/MasterBOL";
 
 import CaseLabel from "./Documents/CaseLabel";
-import PalletLabel from "./Documents/PalletLabel";
+import SinglePalletLabel from "./Documents/SinglePalletLabel";
 
 import Spinner from "@/components/Spinner";
 import ASN from "./ASN";
+import MultiPalletLabel from "./Documents/MultiPalletLabel";
 
 const filterList = [
   {
@@ -235,29 +236,6 @@ const selectCol: ColumnDef<any> = {
   ),
 };
 
-interface PDFModalProps {
-  pdf: string;
-  selection: WalmartOrder[];
-  frame: boolean;
-  handleFrame: () => void;
-}
-
-const PDFModal = ({ pdf, selection, frame, handleFrame }: PDFModalProps) => {
-  return (
-    <>
-      <input type="checkbox" id="pdfModal" className="modal-toggle" checked={frame} readOnly />
-      <div className="modal">
-        <div className="modal-box relative p-0 pt-12 rounded">
-          <p className="absolute left-2 top-2 font-bold text-lg">{pdf === "caseLabel" ? "Case Label" : null}</p>
-          <label htmlFor="pdfModal" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={handleFrame}>
-            ✕
-          </label>
-        </div>
-      </div>
-    </>
-  );
-};
-
 const WalmartUS = () => {
   const [columns, setColumns] = useState<ColumnDef<any>[]>([]);
 
@@ -279,7 +257,8 @@ const WalmartUS = () => {
   const [masterBOLFrame, setMasterBOLFrame] = useState(false);
 
   const [caseLabelFrame, setCaseLabelFrame] = useState(false);
-  const [palletLabelFrame, setPalletLabelFrame] = useState(false);
+  const [singlePalletLabelFrame, setSinglePalletLabelFrame] = useState(false);
+  const [multiPalletLabelFrame, setMultiPalletLabelFrame] = useState(false);
 
   const [asnFrame, setASNFrame] = useState(false);
 
@@ -301,8 +280,11 @@ const WalmartUS = () => {
   const handleCaseLabelFrame = () => {
     setCaseLabelFrame((prev) => !prev);
   };
-  const handlePalletLabelFrame = () => {
-    setPalletLabelFrame((prev) => !prev);
+  const handleSinglePalletLabelFrame = () => {
+    setSinglePalletLabelFrame((prev) => !prev);
+  };
+  const handleMultiPalletLabelFrame = () => {
+    setMultiPalletLabelFrame((prev) => !prev);
   };
 
   const handleASNFrame = () => {
@@ -386,7 +368,8 @@ const WalmartUS = () => {
             handleUnderlyingBOLFrame={handleUnderlyingBOLFrame}
             handleMasterBOLFrame={handleMasterBOLFrame}
             handleCaseLabelFrame={handleCaseLabelFrame}
-            handlePalletLabelFrame={handlePalletLabelFrame}
+            handleSinglePalletLabelFrame={handleSinglePalletLabelFrame}
+            handleMultiPalletLabelFrame={handleMultiPalletLabelFrame}
             handleASNFrame={handleASNFrame}
           />
           <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
@@ -402,7 +385,8 @@ const WalmartUS = () => {
       {masterBOLFrame ? <MasterBOL selection={selection} frame={masterBOLFrame} handleFrame={handleMasterBOLFrame} /> : null}
 
       <CaseLabel selection={selection} frame={caseLabelFrame} handleFrame={handleCaseLabelFrame} />
-      <PalletLabel selection={selection} frame={palletLabelFrame} handleFrame={handlePalletLabelFrame} />
+      <SinglePalletLabel selection={selection} frame={singlePalletLabelFrame} handleFrame={handleSinglePalletLabelFrame} />
+      <MultiPalletLabel selection={selection} frame={multiPalletLabelFrame} handleFrame={handleMultiPalletLabelFrame} />
 
       <ASN selection={selection} frame={asnFrame} handleFrame={handleASNFrame} />
     </>
