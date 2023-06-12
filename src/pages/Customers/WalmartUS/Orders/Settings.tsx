@@ -3,8 +3,7 @@ import { createPortal } from "react-dom";
 import { DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
-import Droppable from "./ColumnList/Droppable";
-import Item from "./ColumnList/Droppable";
+import Droppable, { Item } from "./ColumnList/Droppable";
 import { arrayMove, insertAtIndex, removeAtIndex } from "./ColumnList/array";
 
 interface DialogProps {
@@ -23,6 +22,8 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
   });
   const [activeId, setActiveId] = useState(null);
 
+  console.log(itemGroups);
+
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
@@ -31,10 +32,11 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
     })
   );
 
-  const handleDragStart = ({ active }: any) => setActiveId(active.id);
-
+  const handleDragStart = ({ active }: any) => {
+    console.log(active);
+    setActiveId(active.id);
+  };
   const handleDragCancel = () => setActiveId(null);
-
   const handleDragOver = ({ active, over }: any) => {
     // console.log("Over:", active);
     // console.log("Over:", over);
@@ -57,8 +59,10 @@ const SettingsDialog = ({ filterList, tableOptions, handleTableOptions }: Dialog
       });
     }
   };
-
   const handleDragEnd = ({ active, over }: any) => {
+    // console.log("End:", active);
+    // console.log("End:", over);
+
     if (!over) {
       setActiveId(null);
       return;
