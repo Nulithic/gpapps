@@ -20,7 +20,7 @@ const ImportSection = ({ label, disabled, loading, textRef, importFile, acceptFi
   return (
     <div className="flex flex-col w-full space-y-2">
       <ImportFile height="15rem" label={label} maxFiles={maxFiles} acceptFile={acceptFile} importFile={importFile} setImportFile={setImportFile} />
-      <div className="flex flex-row w-full h-44">
+      <div className="flex flex-row w-full h-28">
         <Results textRef={textRef} />
       </div>
       <button className={`btn btn-primary btn-mid ${loading ? "loading" : ""}`} onClick={handleSubmit} disabled={disabled}>

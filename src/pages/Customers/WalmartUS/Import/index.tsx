@@ -10,7 +10,6 @@ import socket, { socketListen, clearRef } from "@/libs/socket";
 
 const WalmartImport = () => {
   const ediRef = useRef<HTMLTextAreaElement>(null);
-  const htmlRef = useRef<HTMLTextAreaElement>(null);
   const b2bRef = useRef<HTMLTextAreaElement>(null);
   const trackerRef = useRef<HTMLTextAreaElement>(null);
 
@@ -23,7 +22,6 @@ const WalmartImport = () => {
 
   const [loadEDI, setLoadEDI] = useState(false);
   const [loadB2B, setLoadB2B] = useState(false);
-  const [loadTracker, setLoadTracker] = useState(false);
 
   const [disableEDI, setDisableEDI] = useState(true);
   const [disableB2B, setDisableB2B] = useState(false);
@@ -76,8 +74,10 @@ const WalmartImport = () => {
         trackerRef.current.value += "Import completed.";
         trackerRef.current.scrollTop = trackerRef.current.scrollHeight;
       }
+      if (res.status) setImportTracker([]);
     } catch (err) {
       console.log(err);
+      setImportTracker([]);
       if (trackerRef && trackerRef.current) {
         if (trackerRef.current.value !== "") trackerRef.current.value += `\n`;
         trackerRef.current.value += "Import failed.";
@@ -113,8 +113,16 @@ const WalmartImport = () => {
           const XLSX = await import("xlsx");
           const wb = XLSX.read(e.target?.result, { type: "binary" });
           const ws = wb.Sheets[wb.SheetNames[0]];
-          const data = XLSX.utils.sheet_to_json(ws, { defval: "" }) as any[];
-          setDataTracker(data);
+          const data = XLSX.utils.sheet_to_json(ws, { defval: "" }) as WalmartTracker[];
+
+          const modifiedData = data.map((item) => {
+            if (item.hasOwnProperty("Floor or Pallet")) {
+              return { ...item, ["Floor or Pallet"]: item["Floor or Pallet"].toUpperCase() };
+            }
+            return item;
+          });
+
+          setDataTracker(modifiedData);
         };
         importFileReader.readAsBinaryString(importTracker[0].file);
       };
@@ -156,7 +164,7 @@ const WalmartImport = () => {
         <ImportSection
           label={"Tracker File"}
           disabled={disableTracker}
-          loading={loadTracker}
+          loading={false}
           textRef={trackerRef}
           acceptFile={".xlsx"}
           maxFiles={1}
