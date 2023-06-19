@@ -11,6 +11,17 @@ export const getWalmartOrders = (option: string) => {
   });
 };
 
+export const postWalmartImportMFT = (socketID: string) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/import/mft",
+    {
+      socketID,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
 export const postWalmartImportEDI = (dataEDI: any, socketID: string) => {
   return axios.post(
     "/api/post/customer/walmart_us/import/edi",

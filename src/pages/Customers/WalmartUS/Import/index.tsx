@@ -5,10 +5,11 @@ import ImportSection from "./ImportSection";
 import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 import { WalmartTracker } from "@/types/WalmartUS/WalmartTrackerType";
-import { postWalmartImportEDI, postWalmartImportB2B, postWalmartImportTracker } from "@/api/customers/WalmartUS";
+import { postWalmartImportEDI, postWalmartImportB2B, postWalmartImportTracker, postWalmartImportMFT } from "@/api/customers/WalmartUS";
 import socket, { socketListen, clearRef } from "@/libs/socket";
 
 const WalmartImport = () => {
+  const mftRef = useRef<HTMLTextAreaElement>(null);
   const ediRef = useRef<HTMLTextAreaElement>(null);
   const b2bRef = useRef<HTMLTextAreaElement>(null);
   const trackerRef = useRef<HTMLTextAreaElement>(null);
@@ -20,13 +21,30 @@ const WalmartImport = () => {
   const [importTracker, setImportTracker] = useState<FileValidated[]>([]);
   const [dataTracker, setDataTracker] = useState<WalmartTracker[]>([]);
 
+  const [loadMFT, setLoadMFT] = useState(false);
   const [loadEDI, setLoadEDI] = useState(false);
   const [loadB2B, setLoadB2B] = useState(false);
 
+  const [disableMFT, setDisableMFT] = useState(false);
   const [disableEDI, setDisableEDI] = useState(true);
   const [disableB2B, setDisableB2B] = useState(false);
   const [disableTracker, setDisableTracker] = useState(true);
 
+  const handleSubmitMFT = async () => {
+    setLoadMFT(true);
+    setDisableMFT(true);
+    clearRef(mftRef);
+    try {
+      socketListen("postWalmartImportMFT", mftRef);
+      const res = await postWalmartImportMFT(socket.id);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    socket.off("postWalmartImportMFT");
+    setLoadMFT(false);
+    setDisableMFT(false);
+  };
   const handleSubmitEDI = async () => {
     setLoadEDI(true);
     setDisableEDI(true);
@@ -132,7 +150,7 @@ const WalmartImport = () => {
 
   return (
     <div className="flex flex-col w-full items-center space-y-4">
-      <div className="flex flex-row w-1/2 h-auto space-x-2">
+      {/* <div className="flex flex-row w-1/2 h-auto space-x-2">
         <div className="flex flex-row pb-2 bg-base-300 rounded">
           <DateComponent inline date={date} maxDate={new Date()} setDate={setDate} />
         </div>
@@ -146,10 +164,24 @@ const WalmartImport = () => {
             Submit
           </button>
         </div>
+      </div> */}
+
+      <div className="flex flex-col w-1/3 space-y-2">
+        <div className="flex flex-row w-full h-44">
+          <Results textRef={b2bRef} />
+        </div>
+
+        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleSubmitMFT}>
+          Import
+        </button>
       </div>
 
-      <div className="flex flex-row w-1/2 space-x-2">
-        <ImportSection
+      <div className="flex flex-col w-1/2">
+        <div className="flex divider divider-vertical"></div>
+      </div>
+
+      <div className="flex flex-row w-1/3 space-x-2">
+        {/* <ImportSection
           label={"EDI Files"}
           disabled={disableEDI}
           loading={loadEDI}
@@ -159,7 +191,7 @@ const WalmartImport = () => {
           importFile={importEDI}
           setImportFile={setImportEDI}
           handleSubmit={handleSubmitEDI}
-        />
+        /> */}
 
         <ImportSection
           label={"Tracker File"}
