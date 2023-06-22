@@ -32,6 +32,7 @@ import SinglePalletLabel from "./Documents/SinglePalletLabel";
 import Spinner from "@/components/Spinner";
 import ASN from "./ASN";
 import MultiPalletLabel from "./Documents/MultiPalletLabel";
+import Invoice from "./Invoice";
 
 const filterList = [
   {
@@ -261,6 +262,7 @@ const WalmartUS = () => {
   const [multiPalletLabelFrame, setMultiPalletLabelFrame] = useState(false);
 
   const [asnFrame, setASNFrame] = useState(false);
+  const [invoiceFrame, setInvoiceFrame] = useState(false);
 
   const handleTableOptions = (value: string) => {
     localStorage.setItem("walmartUSTableOptions", value);
@@ -289,6 +291,9 @@ const WalmartUS = () => {
 
   const handleASNFrame = () => {
     setASNFrame((prev) => !prev);
+  };
+  const handleInvoiceFrame = () => {
+    setInvoiceFrame((prev) => !prev);
   };
 
   const table = useReactTable({
@@ -371,6 +376,7 @@ const WalmartUS = () => {
             handleSinglePalletLabelFrame={handleSinglePalletLabelFrame}
             handleMultiPalletLabelFrame={handleMultiPalletLabelFrame}
             handleASNFrame={handleASNFrame}
+            handleInvoiceFrame={handleInvoiceFrame}
           />
           <DataTable table={table} enableFilter height="h-[calc(100vh-216px)]" />
         </div>
@@ -389,6 +395,7 @@ const WalmartUS = () => {
       <MultiPalletLabel selection={selection} frame={multiPalletLabelFrame} handleFrame={handleMultiPalletLabelFrame} />
 
       <ASN selection={selection} frame={asnFrame} handleFrame={handleASNFrame} />
+      <Invoice selection={selection} frame={invoiceFrame} handleFrame={handleInvoiceFrame} />
     </>
   );
 };

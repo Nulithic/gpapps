@@ -251,3 +251,12 @@ export const postWalmartASN = (data: any) => {
     }
   );
 };
+export const postWalmartInvoice = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/invoice",
+    { data },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};

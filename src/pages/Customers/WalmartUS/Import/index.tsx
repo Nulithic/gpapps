@@ -168,7 +168,7 @@ const WalmartImport = () => {
 
       <div className="flex flex-col w-1/3 space-y-2">
         <div className="flex flex-row w-full h-44">
-          <Results textRef={b2bRef} />
+          <Results textRef={mftRef} />
         </div>
 
         <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleSubmitMFT}>

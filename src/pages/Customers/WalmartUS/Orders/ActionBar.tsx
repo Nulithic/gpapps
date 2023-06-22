@@ -17,6 +17,7 @@ interface ActionBarProps {
   handleSinglePalletLabelFrame: () => void;
   handleMultiPalletLabelFrame: () => void;
   handleASNFrame: () => void;
+  handleInvoiceFrame: () => void;
 }
 
 const ActionBar = ({
@@ -31,6 +32,7 @@ const ActionBar = ({
   handleSinglePalletLabelFrame,
   handleMultiPalletLabelFrame,
   handleASNFrame,
+  handleInvoiceFrame,
 }: ActionBarProps) => {
   const handleArchiveOrders = async () => {
     try {
@@ -71,6 +73,12 @@ const ActionBar = ({
 
         <button className="btn btn-mid btn-primary" onClick={handleASNFrame} disabled={selection.length === 0}>
           Send ASN
+        </button>
+
+        <div className="divider divider-horizontal"></div>
+
+        <button className="btn btn-mid btn-primary" onClick={handleInvoiceFrame} disabled={selection.length === 0}>
+          Send Invoice
         </button>
       </div>
 
