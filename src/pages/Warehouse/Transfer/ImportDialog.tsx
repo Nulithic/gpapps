@@ -5,7 +5,7 @@ import download from "downloadjs";
 
 import ImportFile from "@/components/ImportFile";
 import Results from "@/components/Results";
-import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
+import { DearInventory, DearLocations, DearProducts } from "@/types/dearType";
 import { getTransferTemplate } from "@/api/warehouse";
 
 interface TransferData {

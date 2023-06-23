@@ -4,7 +4,7 @@ import { FileValidated } from "@dropzone-ui/react";
 import ImportSection from "./ImportSection";
 import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
-import { WalmartTracker } from "@/types/WalmartUS/WalmartTrackerType";
+import { WalmartTracker } from "@/types/WalmartUS/trackerType";
 import { postWalmartImportEDI, postWalmartImportB2B, postWalmartImportTracker, postWalmartImportMFT } from "@/api/customers/WalmartUS";
 import socket, { socketListen, clearRef } from "@/libs/socket";
 

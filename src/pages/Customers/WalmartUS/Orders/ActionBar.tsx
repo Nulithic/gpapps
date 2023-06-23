@@ -18,6 +18,7 @@ interface ActionBarProps {
   handleMultiPalletLabelFrame: () => void;
   handleASNFrame: () => void;
   handleInvoiceFrame: () => void;
+  handleSyncFrame: () => void;
 }
 
 const ActionBar = ({
@@ -33,6 +34,7 @@ const ActionBar = ({
   handleMultiPalletLabelFrame,
   handleASNFrame,
   handleInvoiceFrame,
+  handleSyncFrame,
 }: ActionBarProps) => {
   const handleArchiveOrders = async () => {
     try {
@@ -83,6 +85,10 @@ const ActionBar = ({
       </div>
 
       <div className="flex flex-row items-center space-x-2">
+        <button className="btn btn-mid btn-primary" onClick={handleSyncFrame} disabled={selection.length === 0}>
+          Sync
+        </button>
+        <div className="divider divider-horizontal"></div>
         <label className={`btn btn-mid btn-warning ${selection.length === 0 ? "btn-disabled" : null}`} htmlFor="archiveOrders">
           Archive
         </label>

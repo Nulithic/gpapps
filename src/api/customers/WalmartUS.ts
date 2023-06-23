@@ -260,3 +260,13 @@ export const postWalmartInvoice = (data: any) => {
     }
   );
 };
+
+export const postWalmartSync = (data: any) => {
+  return axios.post(
+    "/api/post/customer/walmart_us/sync",
+    { data },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};

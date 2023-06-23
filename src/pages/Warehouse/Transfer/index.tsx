@@ -20,7 +20,7 @@ import { getDearInventory, getDearLocations, getDearProducts, updateDearInventor
 import { getLogs } from "@/api/log";
 import { postTransfer } from "@/api/warehouse";
 import socket, { socketListen } from "@/libs/socket";
-import { DearInventory, DearLocations, DearProducts } from "@/types/dbType";
+import { DearInventory, DearLocations, DearProducts } from "@/types/dearType";
 import IndeterminateCheckbox from "@/components/CheckBox";
 import DataTable from "@/components/DataTable";
 

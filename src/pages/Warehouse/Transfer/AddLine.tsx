@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import AutoComplete from "@/components/AutoComplete";
 
-import { DearLocations, DearProducts } from "@/types/dbType";
+import { DearLocations, DearProducts } from "@/types/dearType";
 
 interface AddLineProps {
   locations: DearLocations[];

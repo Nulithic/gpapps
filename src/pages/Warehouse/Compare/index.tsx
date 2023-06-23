@@ -24,7 +24,7 @@ import { getLogs } from "@/api/log";
 import ImportFile from "@/components/ImportFile";
 import DataTable from "@/components/DataTable";
 
-import { DearLocations } from "@/types/dbType";
+import { DearLocations } from "@/types/dearType";
 import { getCompareTemplate, postCompare } from "@/api/warehouse";
 
 interface ImportData {
