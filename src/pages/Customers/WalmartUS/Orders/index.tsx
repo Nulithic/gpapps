@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, HTMLProps } from "react";
+import { useState, useEffect } from "react";
 import {
   ColumnDef,
   useReactTable,
@@ -14,13 +14,11 @@ import {
   RowSelectionState,
   ExpandedState,
 } from "@tanstack/react-table";
-import { PDFViewer } from "@react-pdf/renderer";
 
 import IndeterminateCheckbox from "@/components/CheckBox";
 import DataTable from "@/components/DataTable";
 import ActionBar from "./ActionBar";
 import { getWalmartOrders } from "@/api/customers/WalmartUS";
-import WalmartOrder from "@/types/WalmartUS/OrderType";
 
 import PackingSlip from "./Documents/PackingSlip";
 import UnderlyingBOL from "./Documents/UnderlyingBOL";
