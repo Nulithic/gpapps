@@ -48,16 +48,16 @@ const WalmartImport = () => {
   const handleSubmitEDI = async () => {
     setLoadEDI(true);
     setDisableEDI(true);
-    for (const data of dataEDI) {
-      const res = await postWalmartImportEDI(data, socket.id);
-      if (res.status === 200) {
+    try {
+      clearRef(ediRef);
+      socketListen("postWalmartUSImportEDI", ediRef);
+      for (const data of dataEDI) {
+        const res = await postWalmartImportEDI(data, socket.id);
         console.log(res.data);
-        if (ediRef && ediRef.current) {
-          if (ediRef.current.value !== "") ediRef.current.value += `\n`;
-          ediRef.current.value += "Orders have been imported.";
-          ediRef.current.scrollTop = ediRef.current.scrollHeight;
-        }
       }
+      socket.off("postWalmartUSImportEDI");
+    } catch (err) {
+      console.log(err);
     }
     setLoadEDI(false);
     setImportEDI([]);
@@ -108,6 +108,7 @@ const WalmartImport = () => {
     if (importEDI.length > 0) {
       const valid = importEDI.every((item) => item.valid === true);
       if (valid) {
+        clearRef(ediRef);
         setDisableEDI(false);
         setDataEDI([]);
         for (let i = 0; i < importEDI.length; i++) {
@@ -166,8 +167,8 @@ const WalmartImport = () => {
         </div>
       </div> */}
 
-      <div className="flex flex-col w-1/3 space-y-2">
-        <div className="flex flex-row w-full h-44">
+      <div className="flex flex-col w-1/2 space-y-2">
+        <div className="flex flex-row w-full h-28">
           <Results textRef={mftRef} />
         </div>
 
@@ -180,8 +181,8 @@ const WalmartImport = () => {
         <div className="flex divider divider-vertical"></div>
       </div>
 
-      <div className="flex flex-row w-1/3 space-x-2">
-        {/* <ImportSection
+      <div className="flex flex-row w-1/2 space-x-2">
+        <ImportSection
           label={"EDI Files"}
           disabled={disableEDI}
           loading={loadEDI}
@@ -191,7 +192,7 @@ const WalmartImport = () => {
           importFile={importEDI}
           setImportFile={setImportEDI}
           handleSubmit={handleSubmitEDI}
-        /> */}
+        />
 
         <ImportSection
           label={"Tracker File"}
