@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import download from "downloadjs";
 
-import { checkWalmartUSCaseLabel, getNewWalmartUSCaseLabel, getExistingWalmartUSCaseLabel, getWalmartUSCaseLabel } from "@/api/customers/WalmartUS";
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import { checkWalmartCaseLabel, getNewWalmartCaseLabel, getExistingWalmartCaseLabel, getWalmartCaseLabel } from "@/api/customers/WalmartUS";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import { format } from "date-fns";
 
 interface CaseLabelProps {
@@ -58,7 +58,7 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
     (async () => {
       if (frame)
         try {
-          const res = await checkWalmartUSCaseLabel(selection);
+          const res = await checkWalmartCaseLabel(selection);
           const existingCaselabels = res.data as WalmartLabel[];
 
           const existingOrders = existingCaselabels.map((item) => item.purchaseOrderNumber);
@@ -77,7 +77,7 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
   const handleFirstDownload = async () => {
     try {
       setStatus(true);
-      const res = await getWalmartUSCaseLabel(selection);
+      const res = await getWalmartCaseLabel(selection);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
       if (res.status === 200) {
         setStatus(false);
@@ -92,7 +92,7 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
   const handleExistingDownload = async () => {
     try {
       setStatus(true);
-      const res = await getExistingWalmartUSCaseLabel(caseLabels);
+      const res = await getExistingWalmartCaseLabel(caseLabels);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
       if (res.status === 200) {
         setStatus(false);
@@ -107,7 +107,7 @@ export const CaseLabel = ({ selection, frame, handleFrame }: CaseLabelProps) => 
   const handleNewDownload = async () => {
     try {
       setStatus(true);
-      const res = await getNewWalmartUSCaseLabel({ caseLabels: caseLabels, selection: selection });
+      const res = await getNewWalmartCaseLabel({ caseLabels: caseLabels, selection: selection });
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Case Label.pdf`);
       if (res.status === 200) {
         setStatus(false);

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import download from "downloadjs";
 
-import { checkWalmartUSPalletLabel, deleteWalmartUSMultiPalletLabel, downloadWalmartUSMultiPalletLabel } from "@/api/customers/WalmartUS";
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import { checkWalmartPalletLabel, deleteWalmartMultiPalletLabel, downloadWalmartMultiPalletLabel } from "@/api/customers/WalmartUS";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import { format } from "date-fns";
 
 interface MultiPalletLabelProps {
@@ -59,7 +59,7 @@ export const MultiPalletLabel = ({ selection, frame, handleFrame }: MultiPalletL
     (async () => {
       if (frame)
         try {
-          const res = await checkWalmartUSPalletLabel(selection);
+          const res = await checkWalmartPalletLabel(selection);
           const existingPalletlabels = res.data as WalmartLabel[];
 
           const existingOrders = existingPalletlabels.map((item) => item.purchaseOrderNumber);
@@ -78,7 +78,7 @@ export const MultiPalletLabel = ({ selection, frame, handleFrame }: MultiPalletL
   const handleDownload = async () => {
     try {
       setStatus(true);
-      const res = await downloadWalmartUSMultiPalletLabel(palletLabels);
+      const res = await downloadWalmartMultiPalletLabel(palletLabels);
       // const pdfUrl = URL.createObjectURL(res.data);
       // setPDF(pdfUrl);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Multi Pallet Label.pdf`);
@@ -95,7 +95,7 @@ export const MultiPalletLabel = ({ selection, frame, handleFrame }: MultiPalletL
   const handleDelete = async () => {
     try {
       setStatus(true);
-      const res = await deleteWalmartUSMultiPalletLabel(palletLabels);
+      const res = await deleteWalmartMultiPalletLabel(palletLabels);
       if (res.status === 200) {
         setStatus(false);
         toast.success("Multi pallet label deleted.");

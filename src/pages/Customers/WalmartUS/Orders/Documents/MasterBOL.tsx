@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import Spinner from "@/components/Spinner";
-import { getWalmartUSMasterBOL } from "@/api/customers/WalmartUS";
+import { getWalmartMasterBOL } from "@/api/customers/WalmartUS";
 import { toast } from "react-hot-toast";
 
 interface MasterBOLProps {
@@ -19,7 +19,7 @@ export const MasterBOL = ({ selection, frame, handleFrame }: MasterBOLProps) => 
     (async () => {
       try {
         setLoading(true);
-        const res = await getWalmartUSMasterBOL(selection);
+        const res = await getWalmartMasterBOL(selection);
         if (res.status === 200) {
           const pdfUrl = URL.createObjectURL(res.data);
           setPDFUrl(pdfUrl);

@@ -22,7 +22,7 @@ import DataTable from "@/components/DataTable";
 
 import SelectBar from "./SelectBar";
 import AddLine from "./AddLine";
-import { getWalmartUSProducts, addWalmartUSProducts, deleteWalmartUSProducts } from "@/api/customers/WalmartUS";
+import { getWalmartProducts, addWalmartProducts, deleteWalmartProducts } from "@/api/customers/WalmartUS";
 
 interface ProductData {
   [key: string]: any;
@@ -55,7 +55,7 @@ const Products = () => {
 
   const handleAddData = async (addLineData: ProductData) => {
     try {
-      const res = await addWalmartUSProducts(addLineData);
+      const res = await addWalmartProducts(addLineData);
       setData(res.data);
       toast.success("Update Success!");
     } catch (err) {
@@ -133,7 +133,7 @@ const Products = () => {
   const handleDelete = async () => {
     try {
       const rows = table.getSelectedRowModel().rows.map((item) => item.original) as ProductData[];
-      const res = await deleteWalmartUSProducts(rows);
+      const res = await deleteWalmartProducts(rows);
       setData(res.data);
       toast.success("Delete Success!");
     } catch (err) {
@@ -145,7 +145,7 @@ const Products = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await getWalmartUSProducts();
+      const res = await getWalmartProducts();
       setData(res.data);
     })();
   }, []);

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import Spinner from "@/components/Spinner";
-import { getWalmartUSUnderlyingBOL } from "@/api/customers/WalmartUS";
+import { getWalmartUnderlyingBOL } from "@/api/customers/WalmartCA";
 import { toast } from "react-hot-toast";
 
 interface UnderlyingBOLProps {
@@ -20,7 +20,7 @@ export const UnderlyingBOL = ({ selection, frame, handleFrame }: UnderlyingBOLPr
     (async () => {
       try {
         setLoading(true);
-        const res = await getWalmartUSUnderlyingBOL(selection);
+        const res = await getWalmartUnderlyingBOL(selection);
         if (res.status === 200) {
           const pdfUrl = URL.createObjectURL(res.data);
           setPDFUrl(pdfUrl);

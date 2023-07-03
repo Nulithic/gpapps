@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import download from "downloadjs";
 
-import { checkWalmartUSPalletLabel, getExistingWalmartUSPalletLabel, getNewWalmartUSPalletLabel, getWalmartUSPalletLabel } from "@/api/customers/WalmartUS";
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import { checkWalmartPalletLabel, getExistingWalmartPalletLabel, getNewWalmartPalletLabel, getWalmartPalletLabel } from "@/api/customers/WalmartUS";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import { format } from "date-fns";
 
 interface SinglePalletLabelProps {
@@ -57,7 +57,7 @@ export const SinglePalletLabel = ({ selection, frame, handleFrame }: SinglePalle
     (async () => {
       if (frame)
         try {
-          const res = await checkWalmartUSPalletLabel(selection);
+          const res = await checkWalmartPalletLabel(selection);
           const existingPalletlabels = res.data as WalmartLabel[];
 
           const existingOrders = existingPalletlabels.map((item) => item.purchaseOrderNumber);
@@ -76,7 +76,7 @@ export const SinglePalletLabel = ({ selection, frame, handleFrame }: SinglePalle
   const handleFirstDownload = async () => {
     try {
       setStatus(true);
-      const res = await getWalmartUSPalletLabel(selection);
+      const res = await getWalmartPalletLabel(selection);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
       if (res.status === 200) {
         setStatus(false);
@@ -91,7 +91,7 @@ export const SinglePalletLabel = ({ selection, frame, handleFrame }: SinglePalle
   const handleExistingDownload = async () => {
     try {
       setStatus(true);
-      const res = await getExistingWalmartUSPalletLabel(palletLabels);
+      const res = await getExistingWalmartPalletLabel(palletLabels);
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
       if (res.status === 200) {
         setStatus(false);
@@ -106,7 +106,7 @@ export const SinglePalletLabel = ({ selection, frame, handleFrame }: SinglePalle
   const handleNewDownload = async () => {
     try {
       setStatus(true);
-      const res = await getNewWalmartUSPalletLabel({ palletLabels: palletLabels, selection: selection });
+      const res = await getNewWalmartPalletLabel({ palletLabels: palletLabels, selection: selection });
       download(new Blob([res.data]), `${format(new Date(), "MM.dd.yyyy")} - Walmart Pallet Label.pdf`);
       if (res.status === 200) {
         setStatus(false);

@@ -87,7 +87,7 @@ export const postWalmartArchiveOrder = (data: any) => {
   );
 };
 
-export const getWalmartUSPackingSlip = (data: any) => {
+export const getWalmartPackingSlip = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/packing_slip",
     { data },
@@ -97,7 +97,7 @@ export const getWalmartUSPackingSlip = (data: any) => {
     }
   );
 };
-export const getWalmartUSUnderlyingBOL = (data: any) => {
+export const getWalmartUnderlyingBOL = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/underlying_bol",
     { data },
@@ -107,7 +107,7 @@ export const getWalmartUSUnderlyingBOL = (data: any) => {
     }
   );
 };
-export const getWalmartUSMasterBOL = (data: any) => {
+export const getWalmartMasterBOL = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/master_bol",
     { data },
@@ -118,7 +118,7 @@ export const getWalmartUSMasterBOL = (data: any) => {
   );
 };
 
-export const checkWalmartUSCaseLabel = (data: any) => {
+export const checkWalmartCaseLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/case_label/check",
     { data },
@@ -127,7 +127,7 @@ export const checkWalmartUSCaseLabel = (data: any) => {
     }
   );
 };
-export const getWalmartUSCaseLabel = (data: any) => {
+export const getWalmartCaseLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/case_label",
     { data },
@@ -137,7 +137,7 @@ export const getWalmartUSCaseLabel = (data: any) => {
     }
   );
 };
-export const getExistingWalmartUSCaseLabel = (data: any) => {
+export const getExistingWalmartCaseLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/case_label/existing",
     { data },
@@ -147,7 +147,7 @@ export const getExistingWalmartUSCaseLabel = (data: any) => {
     }
   );
 };
-export const getNewWalmartUSCaseLabel = (data: any) => {
+export const getNewWalmartCaseLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/case_label/new",
     { data },
@@ -158,7 +158,7 @@ export const getNewWalmartUSCaseLabel = (data: any) => {
   );
 };
 
-export const checkWalmartUSPalletLabel = (data: any) => {
+export const checkWalmartPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label/check",
     { data },
@@ -167,7 +167,7 @@ export const checkWalmartUSPalletLabel = (data: any) => {
     }
   );
 };
-export const getWalmartUSPalletLabel = (data: any) => {
+export const getWalmartPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label",
     { data },
@@ -177,7 +177,7 @@ export const getWalmartUSPalletLabel = (data: any) => {
     }
   );
 };
-export const getExistingWalmartUSPalletLabel = (data: any) => {
+export const getExistingWalmartPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label/existing",
     { data },
@@ -187,7 +187,7 @@ export const getExistingWalmartUSPalletLabel = (data: any) => {
     }
   );
 };
-export const getNewWalmartUSPalletLabel = (data: any) => {
+export const getNewWalmartPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label/new",
     { data },
@@ -198,7 +198,7 @@ export const getNewWalmartUSPalletLabel = (data: any) => {
   );
 };
 
-export const downloadWalmartUSMultiPalletLabel = (data: any) => {
+export const downloadWalmartMultiPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label/multi/download",
     { data },
@@ -208,7 +208,7 @@ export const downloadWalmartUSMultiPalletLabel = (data: any) => {
     }
   );
 };
-export const deleteWalmartUSMultiPalletLabel = (data: any) => {
+export const deleteWalmartMultiPalletLabel = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/order/pallet_label/multi/delete",
     { data },
@@ -218,12 +218,12 @@ export const deleteWalmartUSMultiPalletLabel = (data: any) => {
   );
 };
 
-export const getWalmartUSProducts = () => {
+export const getWalmartProducts = () => {
   return axios.get("/api/get/customer/walmart_us/products", {
     headers: { "x-access-token": getUserToken() },
   });
 };
-export const addWalmartUSProducts = (data: any) => {
+export const addWalmartProducts = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/products/add",
     { data },
@@ -232,7 +232,7 @@ export const addWalmartUSProducts = (data: any) => {
     }
   );
 };
-export const deleteWalmartUSProducts = (data: any) => {
+export const deleteWalmartProducts = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_us/products/delete",
     { data },

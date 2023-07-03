@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import Spinner from "@/components/Spinner";
-import { getWalmartUSPackingSlip } from "@/api/customers/WalmartUS";
+import { getWalmartPackingSlip } from "@/api/customers/WalmartCA";
 import { toast } from "react-hot-toast";
 
 interface PackingSlipProps {
@@ -19,7 +19,7 @@ export const PackingSlip = ({ selection, frame, handleFrame }: PackingSlipProps)
     (async () => {
       try {
         setLoading(true);
-        const res = await getWalmartUSPackingSlip(selection);
+        const res = await getWalmartPackingSlip(selection);
         if (res.status === 200) {
           const pdfUrl = URL.createObjectURL(res.data);
           setPDFUrl(pdfUrl);

@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import socket, { socketListen } from "@/libs/socket";
-import { postWalmartSync } from "@/api/customers/WalmartUS";
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import { postWalmartSync } from "@/api/customers/WalmartCA";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import Results from "@/components/Results";
 
 interface SyncProps {

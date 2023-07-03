@@ -4,7 +4,7 @@ import { format } from "date-fns";
 
 import socket, { socketListen } from "@/libs/socket";
 import { postWalmartInvoice } from "@/api/customers/WalmartUS";
-import WalmartOrder from "@/types/WalmartUS/OrderType";
+import WalmartOrder from "@/types/Walmart/OrderType";
 import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 
