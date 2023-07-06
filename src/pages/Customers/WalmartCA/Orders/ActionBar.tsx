@@ -1,6 +1,6 @@
 import SettingsDialog from "./Settings";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { postWalmartArchiveOrder } from "@/api/customers/WalmartCA";
+import { archiveWalmartOrder } from "@/api/customers/WalmartCA";
 import { toast } from "react-hot-toast";
 
 import Dialog from "@/components/Dialog";
@@ -38,7 +38,7 @@ const ActionBar = ({
 }: ActionBarProps) => {
   const handleArchiveOrders = async () => {
     try {
-      await postWalmartArchiveOrder(selection);
+      await archiveWalmartOrder(selection);
       toast.success("Orders have been archived.");
     } catch (err) {
       toast.error("Archiving Failed.");
@@ -53,23 +53,23 @@ const ActionBar = ({
           Case Label
         </button>
         <button className="btn btn-mid btn-primary" onClick={handleSinglePalletLabelFrame} disabled={selection.length === 0}>
-          Single Pallet Label
+          Pallet Label
         </button>
-        <button className="btn btn-mid btn-primary" onClick={handleMultiPalletLabelFrame} disabled={selection.length !== 1}>
+        {/* <button className="btn btn-mid btn-primary" onClick={handleMultiPalletLabelFrame} disabled={selection.length !== 1}>
           Multi Pallet Label
-        </button>
+        </button> */}
 
         <div className="divider divider-horizontal"></div>
 
         <button className="btn btn-mid btn-primary" onClick={handlePackingSlipFrame} disabled={selection.length === 0}>
           Packing List
         </button>
-        <button className="btn btn-mid btn-primary" onClick={handleUnderlyingBOLFrame} disabled={selection.length === 0}>
+        {/* <button className="btn btn-mid btn-primary" onClick={handleUnderlyingBOLFrame} disabled={selection.length === 0}>
           Underlying BOL
         </button>
         <button className="btn btn-mid btn-primary" onClick={handleMasterBOLFrame} disabled={selection.length === 0}>
           Master BOL
-        </button>
+        </button> */}
 
         <div className="divider divider-horizontal"></div>
 

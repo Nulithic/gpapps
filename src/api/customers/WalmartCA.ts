@@ -11,7 +11,7 @@ export const getWalmartOrders = (option: string) => {
   });
 };
 
-export const postWalmartImportMFT = (socketID: string) => {
+export const importWalmartOrdersMFT = (socketID: string) => {
   return axios.post(
     "/api/post/customer/walmart_ca/import/mft",
     {
@@ -22,7 +22,7 @@ export const postWalmartImportMFT = (socketID: string) => {
     }
   );
 };
-export const postWalmartImportEDI = (dataEDI: any, socketID: string) => {
+export const importWalmartOrdersEDI = (dataEDI: any, socketID: string) => {
   return axios.post(
     "/api/post/customer/walmart_ca/import/edi",
     {
@@ -45,7 +45,7 @@ export const postWalmartImportHTML = (dataHTML: any) => {
     }
   );
 };
-export const postWalmartImportB2B = (dataB2B: any, socketID: string) => {
+export const importWalmartOrdersB2B = (dataB2B: any, socketID: string) => {
   return axios.post(
     "/api/post/customer/walmart_ca/import/b2b",
     { dataB2B, socketID },
@@ -54,7 +54,7 @@ export const postWalmartImportB2B = (dataB2B: any, socketID: string) => {
     }
   );
 };
-export const postWalmartImportTracker = (dataTracker: any) => {
+export const importWalmartTracker = (dataTracker: any) => {
   return axios.post(
     "/api/post/customer/walmart_ca/import/tracker",
     {
@@ -77,7 +77,7 @@ export const postWalmartLocation = (locationData: any) => {
   );
 };
 
-export const postWalmartArchiveOrder = (data: any) => {
+export const archiveWalmartOrder = (data: any) => {
   return axios.post(
     "/api/post/customer/walmart_ca/order/archive",
     { data },

@@ -17,11 +17,13 @@ import InventoryCount from "./Warehouse/InventoryCount";
 import Settings from "./Dear/Settings";
 
 import MicroCenterOrders from "./Customers/MicroCenter/Orders";
-import WalmartUSOrders from "./Customers/WalmartUS/Orders";
-import WalmartUSImport from "./Customers/WalmartUS/Import";
-import Products from "./Customers/WalmartUS/Products";
 
-import WalmartCAOrders from "./Customers/WalmartCA/Orders";
+import WalmartOrdersUS from "./Customers/WalmartUS/Orders";
+import WalmartImportUS from "./Customers/WalmartUS/Import";
+import WalmartProductsUS from "./Customers/WalmartUS/Products";
+
+import WalmartOrdersCA from "./Customers/WalmartCA/Orders";
+import WalmartImportCA from "./Customers/WalmartCA/Import";
 
 import HSNImport from "./Customers/HSN/Import";
 
@@ -66,16 +68,16 @@ const Router = () => {
         {
           path: "walmart_us",
           children: [
-            { path: "orders", element: <WalmartUSOrders /> },
-            { path: "import", element: <WalmartUSImport /> },
-            { path: "products", element: <Products /> },
+            { path: "orders", element: <WalmartOrdersUS /> },
+            { path: "import", element: <WalmartImportUS /> },
+            { path: "products", element: <WalmartProductsUS /> },
           ],
         },
         {
           path: "walmart_ca",
           children: [
-            { path: "orders", element: <WalmartCAOrders /> },
-            // { path: "import", element: <WalmartUSImport /> },
+            { path: "orders", element: <WalmartOrdersCA /> },
+            { path: "import", element: <WalmartImportCA /> },
             // { path: "products", element: <Products /> },
           ],
         },
