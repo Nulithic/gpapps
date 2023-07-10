@@ -1,34 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { format } from "date-fns";
 
 import socket, { socketListen } from "@/libs/socket";
 import { postWalmartInvoice } from "@/api/customers/WalmartCA";
 import WalmartOrder from "@/types/Walmart/OrderType";
-import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 
 interface InvoiceProps {
   selection: WalmartOrder[];
   frame: boolean;
   handleFrame: () => void;
-}
-
-interface WalmartLabel {
-  purchaseOrderNumber: string;
-  buyingParty: string;
-  buyingPartyStreet: string;
-  buyingPartyAddress: string;
-  distributionCenterNumber: string;
-  purchaseOrderType: string;
-  departmentNumber: string;
-  wmit: string;
-  vsn: string;
-  numberOfCases: number;
-  serialNumber: number;
-  type: string;
-  sscc: string;
-  date: string;
 }
 
 interface DownloadButtonProps {
@@ -47,7 +28,6 @@ const DownloadButton = ({ title, status, handleOnclick }: DownloadButtonProps) =
 
 export const Invoice = ({ selection, frame, handleFrame }: InvoiceProps) => {
   const [status, setStatus] = useState(false);
-  const [date, setDate] = useState(new Date());
 
   const invoiceRef = useRef<HTMLTextAreaElement>(null);
 
@@ -55,7 +35,7 @@ export const Invoice = ({ selection, frame, handleFrame }: InvoiceProps) => {
     try {
       setStatus(true);
       socketListen("postWalmartInvoice", invoiceRef);
-      const res = await postWalmartInvoice({ selection: selection, date: date, socketID: socket.id });
+      const res = await postWalmartInvoice({ selection: selection, socketID: socket.id });
       console.log(res.data);
       if (res.status === 200) {
         setStatus(false);
@@ -79,7 +59,6 @@ export const Invoice = ({ selection, frame, handleFrame }: InvoiceProps) => {
             ✕
           </label>
           <div className="flex flex-col items-center space-y-4 m-4">
-            <DateComponent date={date} setDate={setDate} />
             <DownloadButton title="Submit Invoice" status={status} handleOnclick={handleInvoice} />
           </div>
           <div className="flex h-52">

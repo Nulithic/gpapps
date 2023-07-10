@@ -3,8 +3,6 @@ import { toast } from "react-hot-toast";
 
 import { postWalmartASN } from "@/api/customers/WalmartCA";
 import WalmartOrder from "@/types/Walmart/OrderType";
-import { format } from "date-fns";
-import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 import socket, { socketListen } from "@/libs/socket";
 
@@ -12,23 +10,6 @@ interface ASNProps {
   selection: WalmartOrder[];
   frame: boolean;
   handleFrame: () => void;
-}
-
-interface WalmartLabel {
-  purchaseOrderNumber: string;
-  buyingParty: string;
-  buyingPartyStreet: string;
-  buyingPartyAddress: string;
-  distributionCenterNumber: string;
-  purchaseOrderType: string;
-  departmentNumber: string;
-  wmit: string;
-  vsn: string;
-  numberOfCases: number;
-  serialNumber: number;
-  type: string;
-  sscc: string;
-  date: string;
 }
 
 interface DownloadButtonProps {
@@ -47,7 +28,6 @@ const DownloadButton = ({ title, status, handleOnclick }: DownloadButtonProps) =
 
 export const ASN = ({ selection, frame, handleFrame }: ASNProps) => {
   const [status, setStatus] = useState(false);
-  const [date, setDate] = useState(new Date());
 
   const asnRef = useRef<HTMLTextAreaElement>(null);
 
@@ -55,7 +35,7 @@ export const ASN = ({ selection, frame, handleFrame }: ASNProps) => {
     try {
       setStatus(true);
       socketListen("postWalmartASN", asnRef);
-      const res = await postWalmartASN({ selection: selection, date: date, socketID: socket.id });
+      const res = await postWalmartASN({ selection: selection, socketID: socket.id });
       console.log(res.data);
       if (res.status === 200) {
         setStatus(false);
@@ -79,7 +59,6 @@ export const ASN = ({ selection, frame, handleFrame }: ASNProps) => {
             ✕
           </label>
           <div className="flex flex-col items-center space-y-4 m-4">
-            <DateComponent date={date} setDate={setDate} />
             <DownloadButton title="Submit ASN" status={status} handleOnclick={handleASN} />
           </div>
           <div className="flex h-52">
