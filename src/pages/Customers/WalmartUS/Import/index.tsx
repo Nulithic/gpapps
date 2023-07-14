@@ -5,7 +5,7 @@ import ImportSection from "./ImportSection";
 import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 import { WalmartTracker } from "@/types/Walmart/trackerType";
-import { postWalmartImportEDI, postWalmartImportB2B, postWalmartImportTracker, postWalmartImportMFT } from "@/api/customers/WalmartUS";
+import { postWalmartImportEDI, postWalmartImportB2B, postWalmartImportTracker, postWalmartImportMFT, postWalmartRefreshMFT } from "@/api/customers/WalmartUS";
 import socket, { socketListen, clearRef } from "@/libs/socket";
 
 const WalmartImport = () => {
@@ -30,7 +30,19 @@ const WalmartImport = () => {
   const [disableB2B, setDisableB2B] = useState(false);
   const [disableTracker, setDisableTracker] = useState(true);
 
-  const handleSubmitMFT = async () => {
+  const handleDownloadMFT = async () => {
+    setLoadMFT(true);
+    setDisableMFT(true);
+    try {
+      const res = await postWalmartRefreshMFT(socket.id);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoadMFT(false);
+    setDisableMFT(false);
+  };
+  const handleImportMFT = async () => {
     setLoadMFT(true);
     setDisableMFT(true);
     clearRef(mftRef);
@@ -45,7 +57,7 @@ const WalmartImport = () => {
     setLoadMFT(false);
     setDisableMFT(false);
   };
-  const handleSubmitEDI = async () => {
+  const handleImportEDI = async () => {
     setLoadEDI(true);
     setDisableEDI(true);
     try {
@@ -63,7 +75,7 @@ const WalmartImport = () => {
     setImportEDI([]);
     setDataEDI([]);
   };
-  const handleSubmitB2B = async () => {
+  const handleImportB2B = async () => {
     setLoadB2B(true);
     setDisableB2B(true);
     clearRef(b2bRef);
@@ -82,7 +94,7 @@ const WalmartImport = () => {
     setLoadB2B(false);
     setDisableB2B(false);
   };
-  const handleSubmitTracker = async () => {
+  const handleImportTracker = async () => {
     console.log(dataTracker);
     try {
       const res = await postWalmartImportTracker(dataTracker);
@@ -172,8 +184,11 @@ const WalmartImport = () => {
           <Results textRef={mftRef} />
         </div>
 
-        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleSubmitMFT}>
-          Import
+        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleDownloadMFT}>
+          Download Messages
+        </button>
+        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleImportMFT}>
+          Import Orders
         </button>
       </div>
 
@@ -191,7 +206,7 @@ const WalmartImport = () => {
           maxFiles={0}
           importFile={importEDI}
           setImportFile={setImportEDI}
-          handleSubmit={handleSubmitEDI}
+          handleSubmit={handleImportEDI}
         />
 
         <ImportSection
@@ -203,7 +218,7 @@ const WalmartImport = () => {
           maxFiles={1}
           importFile={importTracker}
           setImportFile={setImportTracker}
-          handleSubmit={handleSubmitTracker}
+          handleSubmit={handleImportTracker}
         />
       </div>
     </div>
