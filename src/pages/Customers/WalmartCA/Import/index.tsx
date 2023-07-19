@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FileValidated } from "@dropzone-ui/react";
 
 import ImportSection from "./ImportSection";
-import DateComponent from "@/components/DatePicker";
 import Results from "@/components/Results";
 import { WalmartTracker } from "@/types/Walmart/trackerType";
-import { importWalmartOrdersEDI, importWalmartOrdersB2B, importWalmartTracker, importWalmartOrdersMFT } from "@/api/customers/WalmartCA";
+import { importWalmartOrdersEDI, importWalmartTracker, downloadWalmartMFT, importWalmartOrdersMFT } from "@/api/customers/WalmartCA";
 import socket, { socketListen, clearRef } from "@/libs/socket";
 
 const WalmartImportCA = () => {
@@ -30,7 +29,19 @@ const WalmartImportCA = () => {
   const [disableB2B, setDisableB2B] = useState(false);
   const [disableTracker, setDisableTracker] = useState(true);
 
-  const handleSubmitMFT = async () => {
+  const handleDownloadMFT = async () => {
+    setLoadMFT(true);
+    setDisableMFT(true);
+    try {
+      const res = await downloadWalmartMFT(socket.id);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoadMFT(false);
+    setDisableMFT(false);
+  };
+  const handleImportMFT = async () => {
     setLoadMFT(true);
     setDisableMFT(true);
     clearRef(mftRef);
@@ -45,7 +56,7 @@ const WalmartImportCA = () => {
     setLoadMFT(false);
     setDisableMFT(false);
   };
-  const handleSubmitEDI = async () => {
+  const handleImportEDI = async () => {
     setLoadEDI(true);
     setDisableEDI(true);
     try {
@@ -63,26 +74,8 @@ const WalmartImportCA = () => {
     setImportEDI([]);
     setDataEDI([]);
   };
-  const handleSubmitB2B = async () => {
-    setLoadB2B(true);
-    setDisableB2B(true);
-    clearRef(b2bRef);
-    try {
-      const b2bData = {
-        date: date,
-        fileType: "POS",
-      };
-      socketListen("importWalmartOrdersB2B", b2bRef);
-      const res = await importWalmartOrdersB2B(b2bData, socket.id);
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-    socket.off("importWalmartOrdersB2B");
-    setLoadB2B(false);
-    setDisableB2B(false);
-  };
-  const handleSubmitTracker = async () => {
+
+  const handleImportTracker = async () => {
     console.log(dataTracker);
     try {
       const res = await importWalmartTracker(dataTracker);
@@ -151,29 +144,16 @@ const WalmartImportCA = () => {
 
   return (
     <div className="flex flex-col w-full items-center space-y-4">
-      {/* <div className="flex flex-row w-1/2 h-auto space-x-2">
-        <div className="flex flex-row pb-2 bg-base-300 rounded">
-          <DateComponent inline date={date} maxDate={new Date()} setDate={setDate} />
-        </div>
-
-        <div className="flex flex-col w-full space-y-2">
-          <div className="flex flex-row w-full h-full">
-            <Results textRef={b2bRef} />
-          </div>
-
-          <button type="button" className={`btn btn-primary btn-mid ${loadB2B ? "loading" : ""}`} disabled={disableB2B} onClick={handleSubmitB2B}>
-            Submit
-          </button>
-        </div>
-      </div> */}
-
       <div className="flex flex-col w-1/2 space-y-2">
         <div className="flex flex-row w-full h-28">
           <Results textRef={mftRef} />
         </div>
 
-        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleSubmitMFT}>
-          Import
+        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleDownloadMFT}>
+          Download Messages
+        </button>
+        <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleImportMFT}>
+          Import Orders
         </button>
       </div>
 
@@ -191,7 +171,7 @@ const WalmartImportCA = () => {
           maxFiles={0}
           importFile={importEDI}
           setImportFile={setImportEDI}
-          handleSubmit={handleSubmitEDI}
+          handleSubmit={handleImportEDI}
         />
 
         <ImportSection
@@ -203,7 +183,7 @@ const WalmartImportCA = () => {
           maxFiles={1}
           importFile={importTracker}
           setImportFile={setImportTracker}
-          handleSubmit={handleSubmitTracker}
+          handleSubmit={handleImportTracker}
         />
       </div>
     </div>

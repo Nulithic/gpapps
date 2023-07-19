@@ -11,6 +11,17 @@ export const getWalmartOrders = (option: string) => {
   });
 };
 
+export const downloadWalmartMFT = (socketID: string) => {
+  return axios.post(
+    "/api/post/customer/walmart_ca/download/mft",
+    {
+      socketID,
+    },
+    {
+      headers: { "x-access-token": getUserToken() },
+    }
+  );
+};
 export const importWalmartOrdersMFT = (socketID: string) => {
   return axios.post(
     "/api/post/customer/walmart_ca/import/mft",
@@ -29,26 +40,6 @@ export const importWalmartOrdersEDI = (dataEDI: any, socketID: string) => {
       dataEDI,
       socketID,
     },
-    {
-      headers: { "x-access-token": getUserToken() },
-    }
-  );
-};
-export const postWalmartImportHTML = (dataHTML: any) => {
-  return axios.post(
-    "/api/post/customer/walmart_ca/import/html",
-    {
-      dataHTML,
-    },
-    {
-      headers: { "x-access-token": getUserToken() },
-    }
-  );
-};
-export const importWalmartOrdersB2B = (dataB2B: any, socketID: string) => {
-  return axios.post(
-    "/api/post/customer/walmart_ca/import/b2b",
-    { dataB2B, socketID },
     {
       headers: { "x-access-token": getUserToken() },
     }
