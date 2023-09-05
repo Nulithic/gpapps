@@ -47,13 +47,13 @@ const WalmartImport = () => {
     setDisableMFT(true);
     clearRef(mftRef);
     try {
-      socketListen("postWalmartImportMFT", mftRef);
+      socketListen("importWalmartOrdersMFT", mftRef);
       const res = await postWalmartImportMFT(socket.id);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
-    socket.off("postWalmartImportMFT");
+    socket.off("importWalmartOrdersMFT");
     setLoadMFT(false);
     setDisableMFT(false);
   };
@@ -62,12 +62,12 @@ const WalmartImport = () => {
     setDisableEDI(true);
     try {
       clearRef(ediRef);
-      socketListen("postWalmartUSImportEDI", ediRef);
+      socketListen("importWalmartOrdersEDI", ediRef);
       for (const data of dataEDI) {
         const res = await postWalmartImportEDI(data, socket.id);
         console.log(res.data);
       }
-      socket.off("postWalmartUSImportEDI");
+      socket.off("importWalmartOrdersEDI");
     } catch (err) {
       console.log(err);
     }
@@ -84,13 +84,13 @@ const WalmartImport = () => {
         date: date,
         fileType: "POS",
       };
-      socketListen("postWalmartImportB2B", b2bRef);
+      socketListen("importWalmartOrdersB2B", b2bRef);
       const res = await postWalmartImportB2B(b2bData, socket.id);
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
-    socket.off("postWalmartImportB2B");
+    socket.off("importWalmartOrdersB2B");
     setLoadB2B(false);
     setDisableB2B(false);
   };
@@ -163,7 +163,7 @@ const WalmartImport = () => {
 
   return (
     <div className="flex flex-col w-full items-center space-y-4">
-      {/* <div className="flex flex-row w-1/2 h-auto space-x-2">
+      <div className="flex flex-row w-1/2 h-auto space-x-2">
         <div className="flex flex-row pb-2 bg-base-300 rounded">
           <DateComponent inline date={date} maxDate={new Date()} setDate={setDate} />
         </div>
@@ -173,13 +173,13 @@ const WalmartImport = () => {
             <Results textRef={b2bRef} />
           </div>
 
-          <button type="button" className={`btn btn-primary btn-mid ${loadB2B ? "loading" : ""}`} disabled={disableB2B} onClick={handleSubmitB2B}>
+          <button type="button" className={`btn btn-primary btn-mid ${loadB2B ? "loading" : ""}`} disabled={disableB2B} onClick={handleImportB2B}>
             Submit
           </button>
         </div>
-      </div> */}
+      </div>
 
-      <div className="flex flex-col w-1/2 space-y-2">
+      {/* <div className="flex flex-col w-1/2 space-y-2">
         <div className="flex flex-row w-full h-28">
           <Results textRef={mftRef} />
         </div>
@@ -190,7 +190,7 @@ const WalmartImport = () => {
         <button type="button" className={`btn btn-primary btn-mid ${loadMFT ? "loading" : ""}`} disabled={disableMFT} onClick={handleImportMFT}>
           Import Orders
         </button>
-      </div>
+      </div> */}
 
       <div className="flex flex-col w-1/2">
         <div className="flex divider divider-vertical"></div>

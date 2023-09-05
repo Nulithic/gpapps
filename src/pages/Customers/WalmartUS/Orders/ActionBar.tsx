@@ -73,7 +73,7 @@ const ActionBar = ({
 
         <div className="divider divider-horizontal"></div>
 
-        <button className="btn btn-mid btn-primary" onClick={handleASNFrame} disabled={selection.length === 0}>
+        {/* <button className="btn btn-mid btn-primary" onClick={handleASNFrame} disabled={selection.length === 0}>
           Send ASN
         </button>
 
@@ -81,13 +81,13 @@ const ActionBar = ({
 
         <button className="btn btn-mid btn-primary" onClick={handleInvoiceFrame} disabled={selection.length === 0}>
           Send Invoice
-        </button>
+        </button> */}
       </div>
 
       <div className="flex flex-row items-center space-x-2">
-        <button className="btn btn-mid btn-primary" onClick={handleSyncFrame} disabled={selection.length === 0}>
+        {/* <button className="btn btn-mid btn-primary" onClick={handleSyncFrame} disabled={selection.length === 0}>
           Sync
-        </button>
+        </button> */}
         <div className="divider divider-horizontal"></div>
         <label className={`btn btn-mid btn-warning ${selection.length === 0 ? "btn-disabled" : null}`} htmlFor="archiveOrders">
           Archive
